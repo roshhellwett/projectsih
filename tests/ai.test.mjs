@@ -1,5 +1,7 @@
 /* AI engine unit test — runs the real lib against fixture problems */
-import { classify, priorityScore, haversine, CATS } from "../lib/ai.js";
+import { classify, priorityScore, haversine, CATS, suggestDescription, generateProposalDraft } from "../lib/ai.js";
+
+// ... existing code continues below ...
 
 const fixtures = [
   ["Hand pump broken near school, children carry water for weeks", "water"],
@@ -39,6 +41,31 @@ if (nullKm1 === null && nullKm2 === null) {
   pass++;
 } else {
   console.log(`✗ haversine null handling failed: got ${nullKm1}, ${nullKm2}`);
+  fail++;
+}
+
+// Test suggestDescription
+const desc = await suggestDescription("Broken culvert in Ormanjhi");
+if (desc && typeof desc === "string" && desc.length > 20) {
+  console.log(`✓ suggestDescription: generated ${desc.length} chars description`);
+  pass++;
+} else {
+  console.log(`✗ suggestDescription failed`);
+  fail++;
+}
+
+// Test generateProposalDraft
+const prop = await generateProposalDraft({
+  title: "Arsenic contamination in drinking water",
+  category: "water",
+  district: "Sahibganj",
+  description: "High arsenic levels detected in 14 village tube wells, affecting over 3000 families.",
+});
+if (prop && prop.title && prop.methodology && prop.recommendedFundingINR > 0) {
+  console.log(`✓ generateProposalDraft: generated proposal "${prop.title}" with budget ₹${prop.recommendedFundingINR}`);
+  pass++;
+} else {
+  console.log(`✗ generateProposalDraft failed`);
   fail++;
 }
 

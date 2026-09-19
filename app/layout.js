@@ -1,15 +1,16 @@
 import "./globals.css";
-import { Archivo, Public_Sans, IBM_Plex_Mono, Tiro_Devanagari_Hindi } from "next/font/google";
+import { Libre_Baskerville, IBM_Plex_Sans, IBM_Plex_Mono, Tiro_Devanagari_Hindi } from "next/font/google";
+import GlobalErrorBoundary from "@/components/error/GlobalErrorBoundary";
 
-const archivo = Archivo({
+const libre = Libre_Baskerville({
   subsets: ["latin"],
-  weight: ["500", "600", "700", "800"],
+  weight: ["400", "700"],
   variable: "--f-display",
   display: "swap",
 });
-const publicSans = Public_Sans({
+const plexSans = IBM_Plex_Sans({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
+  weight: ["400", "500", "600", "700"],
   variable: "--f-body",
   display: "swap",
 });
@@ -43,8 +44,13 @@ export const viewport = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${archivo.variable} ${publicSans.variable} ${plexMono.variable} ${tiroDeva.variable}`}>
-      <body>{children}</body>
+    <html lang="en" className={`${libre.variable} ${plexSans.variable} ${plexMono.variable} ${tiroDeva.variable}`} suppressHydrationWarning>
+      <body>
+        <a href="#main-content" className="skip-link">Skip to main content</a>
+        <GlobalErrorBoundary>
+          {children}
+        </GlobalErrorBoundary>
+      </body>
     </html>
   );
 }

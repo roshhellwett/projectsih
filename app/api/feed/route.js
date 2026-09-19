@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 
+export const dynamic = "force-dynamic";
+
 /* Public landing feed: latest problems for the live bridge panel.
    Anon REST read (same RLS as the portal list). Degrades honestly. */
 export async function GET() {
@@ -15,6 +17,7 @@ export async function GET() {
         "&order=created_at.desc&limit=8",
       {
         headers: { apikey: anon, Authorization: "Bearer " + anon },
+        cache: "no-store",
         signal: AbortSignal.timeout(5000),
       }
     );

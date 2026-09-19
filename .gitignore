@@ -92,3 +92,5 @@ $RECYCLE.BIN/
 *.temp
 .cache/
 *.tsbuildinfo
+
+dist/

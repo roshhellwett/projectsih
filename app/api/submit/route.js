@@ -40,7 +40,7 @@ export async function POST(req) {
       longitude: typeof longitude === "number" ? longitude : null,
       submitted_by,
     });
-    const { cls, isDup, dup, dupScore, pr, routedTo, embedding } = result;
+    const { cls, isDup, dup, dupScore, dupEngine, dupReason, pr, routedTo } = result;
 
     if (isDup) {
       /* merge as vote — deduplication resolution */
@@ -62,7 +62,7 @@ export async function POST(req) {
       await admin.from("notifications").insert({
         send_to: "citizen",
         channel: "SMS",
-        text: `Similar report detected. Your submission was merged as a vote on "${dup.title.slice(0, 40)}…" — priority is now ${Math.max(pr.score, 7).toFixed(1)}.`,
+        text: `Similar report detected. Your submission was merged as an upvote on "${dup.title.slice(0, 40)}…" — priority is now ${Math.max(pr.score, 7).toFixed(1)}.`,
       });
 
       return NextResponse.json({
@@ -71,16 +71,21 @@ export async function POST(req) {
         problem_id: dup.id,
         matched_title: dup.title,
         score: +dupScore.toFixed(2),
+        engine: dupEngine,
+        reason: dupReason,
         votes,
       });
     }
 
+    const finalDescription = address && address.trim()
+      ? `${cleanDescription}\n\n📍 Landmark: ${address.trim().slice(0, 300)}`
+      : cleanDescription;
+
     const insert = {
       title: cleanTitle,
-      description: cleanDescription,
+      description: finalDescription,
       category: cls.category,
       district: sanitizedDistrict,
-      address: address ? address.trim().slice(0, 500) : null,
       latitude: typeof latitude === "number" ? latitude : null,
       longitude: typeof longitude === "number" ? longitude : null,
       photo_url: typeof photo_url === "string" && photo_url.startsWith("http") ? photo_url : null,
@@ -91,10 +96,6 @@ export async function POST(req) {
     };
 
     if (routedTo) insert.routed_to = routedTo;
-    if (embedding && Array.isArray(embedding)) {
-      /* pgvector literal: '[0.1,0.2,...]' */
-      insert.embedding = `[${embedding.join(",")}]`;
-    }
 
     const { data: inserted, error } = await admin.from("problems").insert(insert).select("id").single();
     if (error) throw error;
@@ -110,12 +111,12 @@ export async function POST(req) {
       duplicate: false,
       problem_id: inserted.id,
       category: cls.category,
+      department: cls.department,
       engine: cls.engine,
       confidence: cls.confidence,
       priority: pr.score,
       hits: pr.hitWords.slice(0, 4),
       routed_to_university: routedTo,
-      embedding_engine: result.embEngine,
     });
   } catch (e) {
     return NextResponse.json({ ok: false, error: e.message }, { status: 500 });
