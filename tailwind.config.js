@@ -60,12 +60,7 @@ export default {
         sans: ['"IBM Plex Sans"', 'system-ui', 'sans-serif'],
         mono: ['"IBM Plex Mono"', 'monospace'],
         display: ['"Libre Baskerville"', 'Georgia', 'serif'],
-      },
-      transitionTimingFunction: {
-        fluid: 'cubic-bezier(0.16, 1, 0.3, 1)',
-        spring: 'cubic-bezier(0.34, 1.56, 0.64, 1)',
-        hover: 'cubic-bezier(0.2, 0.8, 0.2, 1)',
-      },
+      }
     },
   },
   plugins: [],

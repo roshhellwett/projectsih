@@ -92,7 +92,7 @@ export function Shell({
               <a
                 key={id}
                 href="#"
-                className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-medium transition-all spring-press ${
+                className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-medium transition-all ${
                   isActive 
                     ? "bg-white text-green-2 shadow-sm font-bold" 
                     : "text-white/70 hover:bg-white/10 hover:text-white"
@@ -140,10 +140,10 @@ export function Shell({
       {/* Main Content Area */}
       <main className="flex-1 flex flex-col h-[100dvh] overflow-hidden bg-paper relative" id="main-content">
         {/* Topbar */}
-        <div className="shrink-0 min-h-[68px] glass-nav border-b border-line grid grid-cols-[auto_minmax(0,1fr)_auto] items-center px-4 md:px-7 gap-3 md:gap-4 sticky top-0 z-30 transition-all duration-300">
+        <div className="shrink-0 min-h-[68px] bg-surface border-b border-line grid grid-cols-[auto_minmax(0,1fr)_auto] items-center px-4 md:px-7 gap-3 md:gap-4 sticky top-0 z-30">
           <button
             type="button"
-            className="md:hidden p-2 -ml-2 text-ink-2 hover:text-ink rounded-lg hover:bg-surface-2/60 transition-colors spring-press"
+            className="md:hidden p-2 -ml-2 text-ink-2 hover:text-ink rounded-lg hover:bg-surface transition-colors"
             onClick={() => setOpen(!open)}
             aria-label="Toggle navigation menu"
           >
@@ -179,17 +179,17 @@ export function Shell({
 
           <div className="ml-auto flex items-center gap-2 shrink-0">
             {/* Multilingual Selector */}
-            <div className="flex items-center gap-1 glass-pill rounded-lg px-1.5 py-1" role="group" aria-label="Portal Language">
+            <div className="flex items-center gap-1 bg-surface-2 border border-line rounded px-1 py-0.5" role="group" aria-label="Portal Language">
               <Globe size={14} className="text-ink-3 ml-0.5 shrink-0 hidden sm:inline" />
               {SUPPORTED_LANGUAGES.map((item) => (
                 <button
                   key={item.code}
                   type="button"
                   title={item.name}
-                  className={`px-1.5 py-0.5 text-[10px] md:text-[11px] font-semibold rounded transition-colors spring-press ${
+                  className={`px-1.5 py-0.5 text-[10px] md:text-[11px] font-semibold rounded transition-colors ${
                     lang === item.code
-                      ? "bg-green text-white shadow-xs"
-                      : "text-ink-2 hover:bg-surface-2/60"
+                      ? "bg-green text-white"
+                      : "text-ink-2 hover:bg-surface"
                   }`}
                   onClick={() => changeLanguage(item.code)}
                 >
@@ -199,10 +199,10 @@ export function Shell({
               ))}
             </div>
 
-            <Button variant="ghost" size="icon" className="hidden sm:inline-flex spring-press" aria-label="Notifications">
+            <Button variant="ghost" size="icon" className="hidden sm:inline-flex" aria-label="Notifications">
               <Bell size={19} />
             </Button>
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full glass-pill text-green text-[9px] md:text-[10px] font-mono tracking-widest uppercase font-bold whitespace-nowrap shadow-xs">
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-green-soft bg-green-tint text-green text-[9px] md:text-[10px] font-mono tracking-widest uppercase font-bold whitespace-nowrap">
               <i className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-green animate-pulse" /> Live
             </span>
           </div>
@@ -213,11 +213,11 @@ export function Shell({
           {children}
         </div>
 
-        <nav className="fixed inset-x-0 bottom-0 z-30 grid grid-flow-col auto-cols-fr border-t border-line glass-nav px-1 pb-[env(safe-area-inset-bottom)] md:hidden shadow-lg" aria-label="Portal mobile navigation">
+        <nav className="fixed inset-x-0 bottom-0 z-30 grid grid-flow-col auto-cols-fr border-t border-line bg-surface px-1 pb-[env(safe-area-inset-bottom)] md:hidden" aria-label="Portal mobile navigation">
           {navItems.slice(0, 4).map(([id, label, icon, count]) => {
             const isActive = active === id;
             return (
-              <button key={id} type="button" className={`relative flex min-w-0 flex-col items-center justify-center gap-1 px-1 py-2 text-[10px] font-semibold spring-press ${isActive ? "text-green" : "text-ink-3"}`} onClick={() => onNav(id)}>
+              <button key={id} type="button" className={`relative flex min-w-0 flex-col items-center justify-center gap-1 px-1 py-2 text-[10px] font-semibold ${isActive ? "text-green" : "text-ink-3"}`} onClick={() => onNav(id)}>
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" dangerouslySetInnerHTML={{ __html: icon }} className="h-5 w-5 shrink-0" />
                 <span className="max-w-full truncate">{label.replace(/Citizen |Statewide |Corporate |Civic |My /g, "")}</span>
                 {count !== undefined && count !== null && count > 0 && <span className="absolute right-3 top-1 min-w-4 rounded-full bg-red px-1 text-[9px] text-white">{count}</span>}

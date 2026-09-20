@@ -214,7 +214,7 @@ function AuthForm() {
             </div>
 
             {/* Evaluation Mode Banner */}
-            <div className="p-5 rounded-2xl glass-card border border-white/15">
+            <div className="p-5 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md">
               <div className="flex items-center justify-between gap-2 mb-2">
                 <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-emerald-300">
                   Jury & Evaluator Rapid Access
@@ -238,7 +238,7 @@ function AuthForm() {
                 type="button"
                 disabled={busy}
                 onClick={() => demoLoginAs("citizen")}
-                className="w-full text-left p-4 rounded-xl glass-card sheen-hover border border-white/10 hover:border-amber-400/50 transition-all group flex items-center justify-between cursor-pointer spring-press"
+                className="w-full text-left p-4 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-amber-400/50 transition-all group flex items-center justify-between cursor-pointer"
               >
                 <div className="flex items-center gap-3.5 min-w-0">
                   <div className="w-11 h-11 rounded-xl bg-emerald-500/20 border border-emerald-400/30 flex items-center justify-center text-emerald-300 shrink-0 group-hover:scale-105 transition-transform">
@@ -271,7 +271,7 @@ function AuthForm() {
                 type="button"
                 disabled={busy}
                 onClick={() => demoLoginAs("university")}
-                className="w-full text-left p-4 rounded-xl glass-card sheen-hover border border-white/10 hover:border-amber-400/50 transition-all group flex items-center justify-between cursor-pointer spring-press"
+                className="w-full text-left p-4 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-amber-400/50 transition-all group flex items-center justify-between cursor-pointer"
               >
                 <div className="flex items-center gap-3.5 min-w-0">
                   <div className="w-11 h-11 rounded-xl bg-blue-500/20 border border-blue-400/30 flex items-center justify-center text-blue-300 shrink-0 group-hover:scale-105 transition-transform">
@@ -304,7 +304,7 @@ function AuthForm() {
                 type="button"
                 disabled={busy}
                 onClick={() => demoLoginAs("industry")}
-                className="w-full text-left p-4 rounded-xl glass-card sheen-hover border border-white/10 hover:border-amber-400/50 transition-all group flex items-center justify-between cursor-pointer spring-press"
+                className="w-full text-left p-4 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-amber-400/50 transition-all group flex items-center justify-between cursor-pointer"
               >
                 <div className="flex items-center gap-3.5 min-w-0">
                   <div className="w-11 h-11 rounded-xl bg-purple-500/20 border border-purple-400/30 flex items-center justify-center text-purple-300 shrink-0 group-hover:scale-105 transition-transform">
@@ -337,7 +337,7 @@ function AuthForm() {
                 type="button"
                 disabled={busy}
                 onClick={() => demoLoginAs("admin")}
-                className="w-full text-left p-4 rounded-xl glass-card sheen-hover border border-white/10 hover:border-amber-400/50 transition-all group flex items-center justify-between cursor-pointer spring-press"
+                className="w-full text-left p-4 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-amber-400/50 transition-all group flex items-center justify-between cursor-pointer"
               >
                 <div className="flex items-center gap-3.5 min-w-0">
                   <div className="w-11 h-11 rounded-xl bg-amber-500/20 border border-amber-400/30 flex items-center justify-center text-amber-300 shrink-0 group-hover:scale-105 transition-transform">
@@ -387,13 +387,13 @@ function AuthForm() {
             RIGHT COLUMN: SOVEREIGN AUTHENTICATION BOX (LOGIN & SIGNUP)
         ════════════════════════════════════════════════════════════════════ */}
         <div className="flex items-center justify-center p-6 sm:p-10 lg:p-12 overflow-y-auto bg-surface">
-          <div className="w-full max-w-[520px] flex flex-col gap-6 glass-elevated p-6 sm:p-9 rounded-3xl border border-line shadow-xl">
+          <div className="w-full max-w-[520px] flex flex-col gap-6">
             
             {/* Top Navigation Back Link */}
             <div className="flex items-center justify-between">
               <Link
                 href="/"
-                className="inline-flex items-center gap-2 text-xs font-bold text-ink-3 hover:text-green transition-colors spring-press"
+                className="inline-flex items-center gap-2 text-xs font-bold text-ink-3 hover:text-green transition-colors"
               >
                 <ArrowLeft size={16} /> Return to Public Portal (मुख्य पोर्टल)
               </Link>
@@ -430,7 +430,7 @@ function AuthForm() {
                 <button
                   type="button"
                   onClick={() => demoLoginAs("citizen")}
-                  className="flex items-center justify-center gap-2 py-2.5 px-3 rounded-lg glass-card sheen-hover border border-line hover:border-ink-3 transition-all text-xs font-bold text-ink cursor-pointer spring-press"
+                  className="flex items-center justify-center gap-2 py-2.5 px-3 rounded-lg bg-paper hover:bg-surface-2 border border-line hover:border-ink-3 transition-all text-xs font-bold text-ink cursor-pointer"
                 >
                   <Fingerprint size={16} weight="duotone" className="text-green" />
                   <span>Jan Parichay SSO</span>
@@ -438,7 +438,7 @@ function AuthForm() {
                 <button
                   type="button"
                   onClick={() => demoLoginAs("citizen")}
-                  className="flex items-center justify-center gap-2 py-2.5 px-3 rounded-lg glass-card sheen-hover border border-line hover:border-ink-3 transition-all text-xs font-bold text-ink cursor-pointer spring-press"
+                  className="flex items-center justify-center gap-2 py-2.5 px-3 rounded-lg bg-paper hover:bg-surface-2 border border-line hover:border-ink-3 transition-all text-xs font-bold text-ink cursor-pointer"
                 >
                   <IdentificationCard size={16} weight="duotone" className="text-blue" />
                   <span>MeriPehchaan DigiLocker</span>
@@ -448,19 +448,19 @@ function AuthForm() {
 
             {/* Divider */}
             <div className="relative text-center my-1">
-              <span className="bg-surface/80 px-3 font-mono text-[10px] text-ink-3 tracking-widest font-semibold uppercase relative z-10">
+              <span className="bg-surface px-3 font-mono text-[10px] text-ink-3 tracking-widest font-semibold uppercase relative z-10">
                 OR SOVEREIGN CREDENTIALS (अथवा क्रेडेंशियल)
               </span>
               <div className="absolute top-1/2 left-0 right-0 h-px bg-line -z-10" />
             </div>
 
             {/* Tab Switcher (Sign In vs Register) */}
-            <div className="grid grid-cols-2 gap-1 p-1 glass-pill rounded-xl border border-line" role="tablist">
+            <div className="grid grid-cols-2 gap-1 p-1 bg-paper rounded-xl border border-line" role="tablist">
               <button
                 type="button"
                 role="tab"
                 aria-selected={mode === "signin"}
-                className={`py-2.5 text-xs font-bold rounded-lg transition-all spring-press ${
+                className={`py-2.5 text-xs font-bold rounded-lg transition-all ${
                   mode === "signin"
                     ? "bg-surface text-ink shadow-xs border border-line font-extrabold"
                     : "text-ink-3 hover:text-ink"
@@ -473,7 +473,7 @@ function AuthForm() {
                 type="button"
                 role="tab"
                 aria-selected={mode === "signup"}
-                className={`py-2.5 text-xs font-bold rounded-lg transition-all spring-press ${
+                className={`py-2.5 text-xs font-bold rounded-lg transition-all ${
                   mode === "signup"
                     ? "bg-surface text-ink shadow-xs border border-line font-extrabold"
                     : "text-ink-3 hover:text-ink"
@@ -498,10 +498,10 @@ function AuthForm() {
                       <button
                         type="button"
                         key={r.id}
-                        className={`flex items-center gap-2.5 p-2.5 rounded-lg border transition-all text-left cursor-pointer spring-press ${
+                        className={`flex items-center gap-2.5 p-2.5 rounded-lg border transition-all text-left cursor-pointer ${
                           isSelected
                             ? "border-green bg-green-tint/40 shadow-xs"
-                            : "border-line bg-paper/60 hover:border-ink-3"
+                            : "border-line bg-paper hover:border-ink-3"
                         }`}
                         onClick={() => setRole(r.id)}
                       >
@@ -714,7 +714,7 @@ function AuthForm() {
               <Button
                 type="submit"
                 size="lg"
-                className="w-full mt-2 bg-green hover:bg-green/90 text-white font-bold shadow-md h-12 text-sm spring-press"
+                className="w-full mt-2 bg-green hover:bg-green/90 text-white font-bold shadow-md h-12 text-sm"
                 disabled={busy}
               >
                 {busy ? (

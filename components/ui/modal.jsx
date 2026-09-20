@@ -48,17 +48,17 @@ export function Modal({ title, onClose, children, wide }) {
   }, [onClose]);
 
   return (
-    <div className="modal-bg backdrop-blur-md bg-ink/40" onClick={(e) => e.target === e.currentTarget && onClose()}>
+    <div className="modal-bg" onClick={(e) => e.target === e.currentTarget && onClose()}>
       <div
         ref={panelRef}
-        className={`modal glass-modal ${wide ? "modal-wide" : ""}`}
+        className={`modal ${wide ? "modal-wide" : ""}`}
         role="dialog"
         aria-modal="true"
         aria-labelledby="modal-title"
       >
-        <div className="modal-head glass-nav border-b border-line">
+        <div className="modal-head">
           <h3 id="modal-title">{title}</h3>
-          <Button variant="ghost" size="icon" className="modal-x spring-press" onClick={onClose} aria-label="Close dialog">
+          <Button variant="ghost" size="icon" className="modal-x" onClick={onClose} aria-label="Close dialog">
             <X size={18} weight="bold" />
           </Button>
         </div>

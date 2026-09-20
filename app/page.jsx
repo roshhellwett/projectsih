@@ -37,7 +37,7 @@ export default function LandingPage() {
       <GovUtilityBar lang={lang} setLang={handleLangChange} />
 
       {/* Primary service header */}
-      <header className="sticky top-0 z-40 glass-nav border-b border-line/80 shadow-xs transition-all duration-300">
+      <header className="sticky top-0 z-40 bg-surface/95 backdrop-blur-md border-b border-line">
         <div className="max-w-[1240px] mx-auto px-4 sm:px-6 min-h-16 h-auto py-2.5 sm:py-0 grid grid-cols-[minmax(0,1fr)_auto] lg:grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 sm:gap-4">
           <GovBrandLockup
             variant="dual"
@@ -57,12 +57,12 @@ export default function LandingPage() {
 
           <div className="flex items-center gap-3">
             <Link href="/login">
-              <Button variant="ghost" className="hidden sm:inline-flex spring-press">
+              <Button variant="ghost" className="hidden sm:inline-flex">
                 {t.btnSignIn}
               </Button>
             </Link>
             <Link href="/login">
-              <Button className="bg-green hover:bg-green/90 text-white shadow-md spring-press">
+              <Button className="bg-green hover:bg-green/90 text-white shadow-md">
                 {t.btnEnter}
               </Button>
             </Link>
@@ -76,7 +76,7 @@ export default function LandingPage() {
           <div className="relative max-w-[1240px] mx-auto px-4 sm:px-6 flex flex-col gap-10">
             <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_460px] gap-8 lg:gap-12 items-center">
               <div className="flex flex-col gap-5">
-                <div className="hero-in hero-d1 inline-flex flex-wrap items-center gap-2 px-3 py-1.5 rounded-lg glass-pill w-fit">
+                <div className="hero-in hero-d1 inline-flex flex-wrap items-center gap-2 px-3 py-1.5 rounded-lg bg-surface border border-line w-fit shadow-xs">
                   <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-saffron-tint text-saffron-2 text-[11px] font-bold tracking-wider uppercase border border-saffron/20">
                     <span className="w-2 h-2 rounded-full bg-saffron animate-pulse" />
                     SIH 2026 • Problem #26043
@@ -119,13 +119,13 @@ export default function LandingPage() {
 
                 <div className="hero-in hero-d4 grid grid-cols-1 sm:flex items-center gap-3 mt-2">
                   <Link href="/login?role=citizen" className="w-full sm:w-auto">
-                    <Button size="lg" className="w-full sm:w-auto h-12 px-6 text-[15px] bg-green hover:bg-green/90 text-white shadow-md lift spring-press">
+                    <Button size="lg" className="w-full sm:w-auto h-12 px-6 text-[15px] bg-green hover:bg-green/90 text-white shadow-md lift">
                       <FileText size={20} weight="bold" className="mr-2" />
                       {t.btnReport}
                     </Button>
                   </Link>
                   <Link href="/login?role=industry" className="w-full sm:w-auto">
-                    <Button size="lg" variant="outline" className="w-full sm:w-auto h-12 px-6 text-[15px] border-line hover:border-ink-3 hover:bg-surface-2 lift spring-press">
+                    <Button size="lg" variant="outline" className="w-full sm:w-auto h-12 px-6 text-[15px] border-line hover:border-ink-3 hover:bg-surface-2 lift">
                       <MagnifyingGlass size={20} weight="bold" className="mr-2" />
                       Explore CSR Marketplace
                     </Button>
@@ -139,15 +139,15 @@ export default function LandingPage() {
 
                 {/* Verified Trust Badges */}
                 <div className="hero-in hero-d5 flex flex-wrap items-center gap-2 mt-2 text-[12px] font-medium text-ink-3">
-                  <span className="flex items-center gap-1.5 glass-pill px-3 py-1.5 rounded-md">
+                  <span className="flex items-center gap-1.5 bg-surface px-3 py-1.5 rounded-md border border-line">
                     <ShieldCheck size={16} weight="fill" className="text-green" />
                     GIGW 3.0 Standard
                   </span>
-                  <span className="flex items-center gap-1.5 glass-pill px-3 py-1.5 rounded-md">
+                  <span className="flex items-center gap-1.5 bg-surface px-3 py-1.5 rounded-md border border-line">
                     <Cpu size={16} weight="fill" className="text-amber" />
                     Groq Llama 3.3 AI Triage
                   </span>
-                  <span className="flex items-center gap-1.5 glass-pill px-3 py-1.5 rounded-md">
+                  <span className="flex items-center gap-1.5 bg-surface px-3 py-1.5 rounded-md border border-line">
                     <CheckCircle size={16} weight="fill" className="text-green" />
                     Jan Parichay & DigiLocker Ready
                   </span>
@@ -166,7 +166,7 @@ export default function LandingPage() {
                     className="w-full h-auto object-contain float-soft drop-shadow-2xl"
                   />
                   {/* Sovereign Floating Telemetry Pill */}
-                  <div className="absolute -bottom-2 left-4 sm:left-6 glass-pill px-4 py-2.5 shadow-xl flex items-center gap-3">
+                  <div className="absolute -bottom-2 left-4 sm:left-6 bg-surface/95 backdrop-blur-md border border-line rounded-xl px-4 py-2.5 shadow-lg flex items-center gap-3">
                     <span className="w-2.5 h-2.5 rounded-full bg-green animate-pulse" />
                     <div className="flex flex-col">
                       <span className="text-[10px] font-mono text-ink-3 uppercase font-bold tracking-wider">Live Sovereign Node</span>
@@ -179,7 +179,7 @@ export default function LandingPage() {
 
             {/* Real-time 24-District Telemetry Strip */}
             <div className="w-full grid grid-cols-2 md:grid-cols-4 gap-3 pt-2">
-              <div className="p-4 rounded-xl glass-card sheen-hover shadow-xs flex flex-col">
+              <div className="p-4 rounded-xl bg-surface border border-line shadow-xs flex flex-col">
                 <div className="flex items-center justify-between text-ink-3 text-[11px] font-bold uppercase tracking-wider mb-1">
                   <span>Districts Active</span>
                   <span className="w-2 h-2 rounded-full bg-green animate-pulse" />
@@ -190,7 +190,7 @@ export default function LandingPage() {
                 <span className="text-[12px] text-ink-3 mt-1.5">100% GIS telemetry interlinked</span>
               </div>
 
-              <div className="p-4 rounded-xl glass-card sheen-hover shadow-xs flex flex-col">
+              <div className="p-4 rounded-xl bg-surface border border-line shadow-xs flex flex-col">
                 <div className="flex items-center justify-between text-ink-3 text-[11px] font-bold uppercase tracking-wider mb-1">
                   <span>AI Triaged Today</span>
                   <span className="text-[10px] text-green font-bold bg-green-tint/50 px-1.5 py-0.2 rounded font-mono">118ms</span>
@@ -201,7 +201,7 @@ export default function LandingPage() {
                 <span className="text-[12px] text-ink-3 mt-1.5">Zero duplicate grievances filed</span>
               </div>
 
-              <div className="p-4 rounded-xl glass-card sheen-hover shadow-xs flex flex-col">
+              <div className="p-4 rounded-xl bg-surface border border-line shadow-xs flex flex-col">
                 <div className="flex items-center justify-between text-ink-3 text-[11px] font-bold uppercase tracking-wider mb-1">
                   <span>University R&D</span>
                   <span className="text-[10px] text-blue font-bold bg-blue-tint/50 px-1.5 py-0.2 rounded font-mono">CUJ/BIT</span>
@@ -212,7 +212,7 @@ export default function LandingPage() {
                 <span className="text-[12px] text-ink-3 mt-1.5">Active engineering capstones</span>
               </div>
 
-              <div className="p-4 rounded-xl glass-card sheen-hover shadow-xs flex flex-col">
+              <div className="p-4 rounded-xl bg-surface border border-line shadow-xs flex flex-col">
                 <div className="flex items-center justify-between text-ink-3 text-[11px] font-bold uppercase tracking-wider mb-1">
                   <span>CSR Capital Escrow</span>
                   <span className="text-[10px] text-purple font-bold bg-purple-tint/50 px-1.5 py-0.2 rounded font-mono">CAG Safe</span>
@@ -253,14 +253,14 @@ export default function LandingPage() {
                 <Reveal key={tile.href + i} delay={i * 80} className="h-full">
                   <Link
                     href={tile.href}
-                    className={`group h-full flex flex-col p-6 rounded-2xl glass-card sheen-hover border border-line/80 hover:border-green transition-all duration-300 ${tile.border}`}
+                    className={`group h-full flex flex-col p-5 rounded-lg bg-surface border border-line lift ${tile.border}`}
                   >
-                    <div className={`w-16 h-16 rounded-xl ${tile.pad} flex items-center justify-center mb-6 transition-transform duration-300 group-hover:scale-105`}>
+                    <div className={`w-16 h-16 rounded-xl ${tile.pad} flex items-center justify-center mb-6`}>
                       <Image src={tile.img} alt="" aria-hidden="true" width={816} height={816} loading="lazy" className="w-11 h-11 tilt-3d" />
                     </div>
                     <h3 className="font-display font-bold text-[18px] text-ink mb-2">{tile.title}</h3>
                     <p className="text-[14px] text-ink-2 leading-relaxed mb-6 flex-1">{tile.desc}</p>
-                    <div className={`flex items-center gap-2 text-[14px] font-semibold ${tile.text} group-hover:translate-x-1 transition-transform duration-200`}>
+                    <div className={`flex items-center gap-2 text-[14px] font-semibold ${tile.text} group-hover:translate-x-1 transition-transform`}>
                       {tile.cta} <ArrowRight size={16} />
                     </div>
                   </Link>
@@ -273,7 +273,7 @@ export default function LandingPage() {
         {/* Real Metrics Band (Jal Jeevan Mission / Gov Dashboard style) */}
         <section className="py-12 bg-surface-2 border-y border-line">
           <div className="max-w-[1400px] mx-auto px-6">
-            <div className="glass-card p-6 sm:p-8 rounded-3xl border border-line/80 shadow-xs grid grid-cols-2 lg:grid-cols-4 gap-y-8 gap-x-4 lg:divide-x lg:divide-line">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-y-8 gap-x-4 lg:divide-x lg:divide-line">
               {[
                 { v: t.stat1, l: t.stat1L, s: "Ranchi to Sahibganj", c: "text-ink" },
                 { v: t.stat2, l: t.stat2L, s: "Water, Health, Roads...", c: "text-ink" },
@@ -358,14 +358,14 @@ export default function LandingPage() {
                   "NIC MeghRaj Ready",
                   "GIGW 3.0 / WCAG 2.1 AA",
                 ].map((chip) => (
-                  <span key={chip} className="px-3 py-1.5 rounded-full glass-pill text-[13px] font-medium text-ink-2">
+                  <span key={chip} className="px-3 py-1.5 rounded-full bg-surface border border-line text-[13px] font-medium text-ink-2">
                     {chip}
                   </span>
                 ))}
               </div>
             </div>
 
-            <div className="glass-elevated rounded-2xl border border-glass-rim p-8 shadow-xl">
+            <div className="bg-surface rounded-2xl border-2 border-line p-8 shadow-xl">
               <h4 className="flex items-center gap-2 font-display text-[20px] font-bold text-ink mb-8 pb-4 border-b border-line">
                 <Sparkle size={24} weight="fill" className="text-amber" />
                 Production Deployment Roadmap
