@@ -47,63 +47,83 @@ export function BridgePanel({ lang = "en" }) {
   }, []);
 
   const demoItems = [
-    { title: "Solar pump dysfunctional at Anganwadi center", district: "Gumla", category: "water", votes: 24 },
-    { title: "Primary Health Center roof leakage in monsoon", district: "Ranchi", category: "health", votes: 41 },
-    { title: "Smart classroom projector setup required", district: "Dhanbad", category: "education", votes: 19 },
-    { title: "Culvert damage on rural link road PMGSY", district: "Hazaribagh", category: "infrastructure", votes: 37 },
-    { title: "Soil salinity testing kit needed for tribal farmers", district: "Khunti", category: "agriculture", votes: 15 },
+    { title: "Solar pump dysfunctional at Anganwadi center", district: "Gumla", category: "water", votes: 24, time: "4m ago" },
+    { title: "Primary Health Center roof leakage in monsoon", district: "Ranchi", category: "health", votes: 41, time: "12m ago" },
+    { title: "Smart classroom projector setup required", district: "Dhanbad", category: "education", votes: 19, time: "28m ago" },
+    { title: "Culvert damage on rural link road PMGSY", district: "Hazaribagh", category: "infrastructure", votes: 37, time: "45m ago" },
+    { title: "Soil salinity testing kit needed for tribal farmers", district: "Khunti", category: "agriculture", votes: 15, time: "1h ago" },
   ];
 
   const activeItems = (items && items.length) ? items : demoItems;
 
   return (
-    <div className="bg-surface rounded-lg border border-line shadow-lg overflow-hidden flex flex-col h-full max-h-[500px]">
-      <div className="bg-surface-2 border-b border-line p-4 flex items-center justify-between">
+    <div className="bg-surface rounded-2xl border border-line shadow-md overflow-hidden flex flex-col w-full">
+      {/* Feed Header */}
+      <div className="bg-surface-2/80 border-b border-line p-4 sm:p-5 flex items-center justify-between">
         <div>
-          <h3 className="font-display font-bold text-ink text-[16px]">
-            {t.liveStreamTitle}
-          </h3>
-          <span className="text-[12px] text-ink-3">
+          <div className="flex items-center gap-2 mb-0.5">
+            <h3 className="font-display font-bold text-ink text-[16px] sm:text-[17px]">
+              {t.liveStreamTitle}
+            </h3>
+          </div>
+          <p className="text-[12px] text-ink-3">
             {t.liveStreamSub}
-          </span>
+          </p>
         </div>
-        <span className="inline-flex items-center gap-1.5 px-2 py-1 rounded-full bg-red-tint/30 border border-red/20 text-[10px] font-bold text-red tracking-widest uppercase shadow-sm shadow-red/10">
-          <span className="w-1.5 h-1.5 rounded-full bg-red animate-pulse" />
+        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-red-tint/40 border border-red/25 text-[11px] font-bold text-red tracking-wider uppercase shadow-xs shrink-0">
+          <span className="w-2 h-2 rounded-full bg-red animate-pulse" />
           LIVE
         </span>
       </div>
 
-      <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-3 custom-scrollbar">
+      {/* Feed Items (Clean list without nested scrollbar traps) */}
+      <div className="p-3 sm:p-4 flex flex-col gap-2.5">
         {activeItems.slice(0, 5).map((p, i) => (
-          <div key={i} className="flex items-start gap-3 p-3 rounded-md bg-surface border border-line hover:border-green transition-colors">
+          <div
+            key={i}
+            className="flex items-start gap-3 p-3 rounded-xl bg-surface border border-line hover:border-green/50 hover:shadow-xs transition-all group"
+          >
             <span
-              className={`mt-1 shrink-0 w-2.5 h-2.5 rounded-full ${CAT_COLOR[p.category] || CAT_COLOR.other}`}
+              className={`mt-1.5 shrink-0 w-2.5 h-2.5 rounded-full ${CAT_COLOR[p.category] || CAT_COLOR.other}`}
               title={p.category}
             />
             <div className="flex-1 min-w-0">
-              <span className="block text-[14px] font-semibold text-ink leading-snug mb-1 truncate">{p.title}</span>
-              <div className="flex items-center gap-2 text-[12px] text-ink-3">
+              <span className="block text-[13.5px] font-semibold text-ink leading-snug mb-1 group-hover:text-green transition-colors">
+                {p.title}
+              </span>
+              <div className="flex flex-wrap items-center gap-2 text-[11.5px] text-ink-3">
                 <span className="font-medium text-ink-2 inline-flex items-center gap-1">
                   <MapPin size={12} weight="fill" className="text-green shrink-0" />
                   {p.district || "Jharkhand"}
                 </span>
                 <span>•</span>
-                <span>{getCatLabel(lang, p.category)}</span>
+                <span className="capitalize">{getCatLabel(lang, p.category)}</span>
+                {p.time && (
+                  <>
+                    <span>•</span>
+                    <span className="font-mono text-ink-3">{p.time}</span>
+                  </>
+                )}
               </div>
             </div>
-            <div className="flex flex-col items-end shrink-0 pl-2 border-l border-line">
-              <b className="text-[15px] text-green font-display">{p.votes ?? 0}</b>
-              <span className="text-[10px] text-ink-3 uppercase font-bold tracking-wider">{t.votes}</span>
+            <div className="flex flex-col items-end shrink-0 pl-2.5 border-l border-line">
+              <b className="text-[15px] text-green font-display font-bold leading-none">{p.votes ?? 0}</b>
+              <span className="text-[9.5px] text-ink-3 uppercase font-bold tracking-wider mt-0.5">{t.votes}</span>
             </div>
           </div>
         ))}
       </div>
 
-      <div className="bg-surface-2 border-t border-line p-3 px-4 flex items-center justify-between">
-        <span className="text-[11px] text-ink-3 font-medium">
+      {/* Feed Footer */}
+      <div className="bg-surface-2/60 border-t border-line p-3 px-4 sm:px-5 flex items-center justify-between text-[11.5px]">
+        <span className="text-ink-3 font-medium flex items-center gap-1.5">
+          <span className="w-1.5 h-1.5 rounded-full bg-green" />
           {t.triagedByAI}
         </span>
-        <Link href="/login" className="text-[12px] font-bold text-green hover:text-green/80 transition-colors flex items-center gap-1">
+        <Link
+          href="/login"
+          className="font-bold text-green hover:text-green/80 transition-colors inline-flex items-center gap-1"
+        >
           {t.viewAllReports} <ArrowRight size={12} />
         </Link>
       </div>
@@ -630,35 +650,44 @@ export function DistrictCoverageExplorer({ lang = "en" }) {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-8">
-        {filtered.map((d) => (
-          <div key={d.name} className="bg-surface rounded-xl p-5 border border-line shadow-sm hover:border-green hover:shadow-md transition-all">
-            <div className="flex items-start justify-between mb-4">
-              <div className="flex items-center gap-2">
-                <MapPin size={16} weight="fill" className="text-amber" />
-                <strong className="text-[16px] font-bold text-ink">{lang === "hi" ? d.hi : d.name}</strong>
+      {/* 2-Column Responsive Layout: Districts Grid + Live Civic Grievance Feed */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 mb-8 items-start">
+        {/* District Cards Grid (8 cols on lg) */}
+        <div className="lg:col-span-7 xl:col-span-8 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
+          {filtered.map((d) => (
+            <div key={d.name} className="bg-surface rounded-xl p-5 border border-line shadow-xs hover:border-green hover:shadow-md transition-all flex flex-col justify-between">
+              <div className="flex items-start justify-between mb-4">
+                <div className="flex items-center gap-2">
+                  <MapPin size={16} weight="fill" className="text-amber shrink-0" />
+                  <strong className="text-[16px] font-bold text-ink">{lang === "hi" ? d.hi : d.name}</strong>
+                </div>
+                <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-surface-2 text-ink-3">
+                  {d.zone.split(' ')[0]}
+                </span>
               </div>
-              <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-surface-2 text-ink-3">
-                {d.zone.split(' ')[0]}
-              </span>
-            </div>
 
-            <div className="flex items-center gap-4 border-t border-line pt-4">
-              <div className="flex-1">
-                <span className="block text-[11px] font-bold uppercase tracking-wider text-ink-3 mb-0.5">
-                  {lang === "hi" ? "सक्रिय" : lang === "bn" ? "সক্রিয়" : lang === "sat" ? "ᱪᱟᱞᱟᱜ ᱠᱟᱱ" : lang === "ur" ? "فعال" : "Active"}
-                </span>
-                <span className="font-display text-[20px] font-bold text-amber">{d.activeCount}</span>
-              </div>
-              <div className="flex-1 pl-4 border-l border-line">
-                <span className="block text-[11px] font-bold uppercase tracking-wider text-ink-3 mb-0.5">
-                  {lang === "hi" ? "समाधित" : lang === "bn" ? "সমাধানকৃত" : lang === "sat" ? "ᱥᱚᱞᱦᱮ ᱦᱩᱭᱮᱱ" : lang === "ur" ? "حل شدہ" : "Resolved"}
-                </span>
-                <span className="font-display text-[20px] font-bold text-green">{d.resolved}</span>
+              <div className="flex items-center gap-4 border-t border-line pt-4">
+                <div className="flex-1">
+                  <span className="block text-[11px] font-bold uppercase tracking-wider text-ink-3 mb-0.5">
+                    {lang === "hi" ? "सक्रिय" : lang === "bn" ? "সক্রিয়" : lang === "sat" ? "ᱪᱟᱞᱟᱜ ᱠᱟᱱ" : lang === "ur" ? "فعال" : "Active"}
+                  </span>
+                  <span className="font-display text-[20px] font-bold text-amber">{d.activeCount}</span>
+                </div>
+                <div className="flex-1 pl-4 border-l border-line">
+                  <span className="block text-[11px] font-bold uppercase tracking-wider text-ink-3 mb-0.5">
+                    {lang === "hi" ? "समाधित" : lang === "bn" ? "সমাধানকৃত" : lang === "sat" ? "ᱥᱚᱞᱦᱮ ᱦᱩᱭᱮᱱ" : lang === "ur" ? "حل شدہ" : "Resolved"}
+                  </span>
+                  <span className="font-display text-[20px] font-bold text-green">{d.resolved}</span>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
+
+        {/* Live Civic Grievance Feed Card (4-5 cols on lg, sticky) */}
+        <div className="lg:col-span-5 xl:col-span-4 lg:sticky lg:top-24 w-full">
+          <BridgePanel lang={lang} />
+        </div>
       </div>
 
       <div className="flex items-center justify-between border-t border-line pt-6">
