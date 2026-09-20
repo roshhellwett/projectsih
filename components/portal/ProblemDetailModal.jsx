@@ -99,7 +99,7 @@ export default function ProblemDetailModal({
 
   return (
     <Modal title={`Civic Grievance Case File · #${problem?.id ? problem.id.slice(0, 8) : "N/A"}`} onClose={onClose} wide>
-      <div className="flex flex-col gap-6 font-body text-ink max-h-[85vh] overflow-y-auto p-1 custom-scrollbar">
+      <div className="flex flex-col gap-6 font-body text-ink">
         {/* Header Summary */}
         <div className="flex flex-col gap-3">
           <div className="flex flex-wrap items-center gap-2">

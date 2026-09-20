@@ -49,10 +49,10 @@ export function Shell({
 
       {/* Sidebar */}
       <aside 
-        className={`fixed inset-y-0 left-0 z-50 w-[264px] bg-green-2 text-white border-r border-green flex flex-col transition-transform duration-300 md:relative md:translate-x-0 ${open ? "translate-x-0" : "-translate-x-full"}`}
+        className={`fixed inset-y-0 left-0 z-50 w-[264px] bg-green-2 text-white border-r border-green flex flex-col transition-transform duration-300 md:relative md:translate-x-0 overflow-hidden shrink-0 ${open ? "translate-x-0" : "-translate-x-full"}`}
       >
-        <div className="flex items-center justify-between gap-2 p-4 border-b border-white/10 shrink-0">
-          <GovBrandLockup variant="dual" theme="dark" size="sm" href="/portal" />
+        <div className="flex items-center justify-between gap-2 p-4 border-b border-white/10 shrink-0 min-w-0 overflow-hidden">
+          <GovBrandLockup variant="dual" theme="dark" size="sm" href="/portal" compact />
           <button 
             className="md:hidden p-2 text-white/70 hover:text-white rounded" 
             onClick={() => setOpen(false)}
@@ -138,7 +138,7 @@ export function Shell({
       </aside>
 
       {/* Main Content Area */}
-      <main className="flex-1 flex flex-col h-[100dvh] overflow-hidden bg-paper relative" id="main-content">
+      <main className="flex-1 flex flex-col h-[100dvh] overflow-hidden bg-paper relative min-w-0" id="main-content">
         {/* Topbar */}
         <div className="shrink-0 min-h-[68px] bg-surface border-b border-line grid grid-cols-[auto_minmax(0,1fr)_auto] items-center px-4 md:px-7 gap-3 md:gap-4 sticky top-0 z-30">
           <button

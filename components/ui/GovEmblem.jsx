@@ -244,8 +244,10 @@ export function GovBrandLockup({
   href = "/",
   showSihBadge = true,
   className = "",
+  compact = false,
 }) {
   const isDark = theme === "dark";
+  const isCompact = compact || size === "sm";
   const sizeMap = {
     sm: { emblem: 36, title: "text-base", sub: "text-[9.5px]" },
     md: { emblem: 44, title: "text-lg sm:text-xl", sub: "text-[10px] sm:text-xs" },
@@ -254,18 +256,18 @@ export function GovBrandLockup({
   const s = sizeMap[size] || sizeMap.md;
 
   const content = (
-    <div className={`inline-flex items-center gap-2.5 sm:gap-3.5 min-w-0 ${className}`}>
+    <div className={`inline-flex items-center gap-2.5 sm:gap-3.5 min-w-0 max-w-full overflow-hidden ${className}`}>
       {/* Official State Seal */}
       <div className="relative flex items-center shrink-0">
         {variant === "ashoka" ? (
           <AshokaLionCapital size={s.emblem} />
         ) : (
-          <JharkhandStateSeal size={s.emblem} className="w-9 h-9 sm:w-11 sm:h-11" />
+          <JharkhandStateSeal size={s.emblem} className="w-9 h-9 sm:w-11 sm:h-11 shrink-0" />
         )}
       </div>
 
       {/* Typography Section */}
-      <div className="flex flex-col min-w-0">
+      <div className="flex flex-col min-w-0 overflow-hidden">
         <div className="flex items-baseline gap-1.5 sm:gap-2">
           <span className={`font-display font-black tracking-tight ${s.title} ${isDark ? "text-white" : "text-slate-900"}`}>
             SAHYOG
@@ -274,11 +276,17 @@ export function GovBrandLockup({
             (सहयोग)
           </span>
         </div>
-        <span className={`font-mono font-semibold tracking-wider uppercase ${s.sub} ${isDark ? "text-emerald-300" : "text-emerald-700"} whitespace-nowrap truncate`}>
-          <span className="sm:hidden">Govt. of Jharkhand</span>
-          <span className="hidden sm:inline">Government of Jharkhand</span>
-          <span className="text-slate-400 font-normal mx-1">|</span>
-          <span>झारखण्ड सरकार</span>
+        <span className={`font-mono font-semibold tracking-wider uppercase ${s.sub} ${isDark ? "text-emerald-300" : "text-emerald-700"} truncate`}>
+          {isCompact ? (
+            <span>Govt. of Jharkhand</span>
+          ) : (
+            <>
+              <span className="sm:hidden">Govt. of Jharkhand</span>
+              <span className="hidden sm:inline">Government of Jharkhand</span>
+              <span className="text-slate-400 font-normal mx-1">|</span>
+              <span>झारखण्ड सरकार</span>
+            </>
+          )}
         </span>
       </div>
     </div>
