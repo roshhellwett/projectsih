@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { GovUtilityBar, GovFooter } from "@/components/GovHeaderFooter";
-import { BridgePanel, RoleDossier, JourneyRail, DistrictCoverageExplorer } from "@/components/landing";
+import { RoleDossier, JourneyRail, DistrictCoverageExplorer } from "@/components/landing";
 import AiPipelineVisualizer from "@/components/landing/AiPipelineVisualizer";
 import { Button } from "@/components/ui/button";
 import { GovBrandLockup } from "@/components/ui/GovEmblem";
@@ -157,19 +157,26 @@ export default function LandingPage() {
                 </div>
               </div>
 
-              {/* Right: 3D civic scene + live feed island */}
-              <div className="hero-in hero-d4 w-full max-w-md mx-auto lg:ml-auto lg:mr-0 flex flex-col gap-6">
-                <div className="hidden lg:block glow-pad max-w-[380px] w-full ml-auto">
+              {/* Right: 3D Civic Innovation Diorama */}
+              <div className="hero-in hero-d4 w-full max-w-[480px] lg:max-w-[520px] mx-auto lg:ml-auto lg:mr-0 flex items-center justify-center relative">
+                <div className="hidden lg:block glow-pad w-full relative">
                   <Image
                     src="/illustrations/hero-civic.png"
                     alt="Illustration of a Jharkhand village and town connected by a bridge, with school, water supply and solar facilities"
                     width={1280}
                     height={1024}
                     priority
-                    className="w-full h-auto object-contain float-soft"
+                    className="w-full h-auto object-contain float-soft drop-shadow-2xl"
                   />
+                  {/* Sovereign Floating Telemetry Pill */}
+                  <div className="absolute -bottom-2 left-4 sm:left-6 bg-surface/95 backdrop-blur-md border border-line rounded-xl px-4 py-2.5 shadow-lg flex items-center gap-3">
+                    <span className="w-2.5 h-2.5 rounded-full bg-green animate-pulse" />
+                    <div className="flex flex-col">
+                      <span className="text-[10px] font-mono text-ink-3 uppercase font-bold tracking-wider">Live Sovereign Node</span>
+                      <strong className="text-[12.5px] text-ink font-semibold">24 Districts • 72h SLA Active</strong>
+                    </div>
+                  </div>
                 </div>
-                <BridgePanel lang={lang} />
               </div>
             </div>
 
