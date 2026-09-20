@@ -11,6 +11,9 @@
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
+    "verify:tokens": "node scripts/verify-tokens.mjs",
+    "verify": "npm run verify:tokens && npm run lint && npm run typecheck && npm run test",
+    "test:e2e": "node tests/e2e-server-auth.mjs",
     "test": "node tests/ai.test.mjs && node tests/groq-pipeline.test.mjs && node tests/test-supabase.mjs",
     "prepare": "husky"
   },

@@ -3,19 +3,8 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { SUPPORTED_LANGUAGES, setStoredLang } from "@/lib/i18n";
-import {
-  Globe,
-  Sun,
-  Moon,
-  TextT,
-  MagnifyingGlass,
-  ArrowSquareOut,
-  Phone,
-  EnvelopeSimple,
-  MapPin,
-  ShieldCheck,
-  CheckCircle,
-} from "@phosphor-icons/react";
+import { GovBrandLockup } from "@/components/ui/GovEmblem";
+import { Globe, Sun, Moon, ArrowSquareOut, Phone, ShieldCheck, CheckCircle } from "@phosphor-icons/react";
 
 export function GovUtilityBar({ lang, setLang }) {
   const [fontSize, setFontSize] = useState("normal");
@@ -51,15 +40,19 @@ export function GovUtilityBar({ lang, setLang }) {
           {/* Left: State / National Identification */}
           <div className="flex items-center gap-4 text-ink-2 font-medium">
             <span className="flex min-w-0 items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-info shrink-0" />
+              <span className="w-2 h-2 rounded-full bg-green animate-pulse shrink-0" title="NIC MeghRaj Sovereign Node Active" />
               <span className="flex min-w-0 items-center gap-1.5">
                 <strong className="text-ink truncate">Government of Jharkhand</strong>
                 <span className="hidden sm:inline text-ink-3">|</span>
-                <span className="hidden sm:inline">झारखण्ड सरकार</span>
+                <span className="hidden sm:inline font-deva">झारखण्ड सरकार</span>
               </span>
             </span>
-            <span className="hidden md:inline-block px-2 py-0.5 rounded bg-surface border border-line text-[11px] uppercase tracking-wide font-bold">
-              SIH 2026 Civic Innovation Portal
+            <span className="hidden md:inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-surface border border-line text-[11px] uppercase tracking-wide font-semibold text-ink-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-green" />
+              SIH 2026 • SIH26043 Civic Portal
+            </span>
+            <span className="hidden xl:inline-flex items-center gap-1 text-[11px] text-ink-3">
+              NIC MeghRaj Cloud • 24 DEOCs Linked
             </span>
           </div>
 
@@ -141,7 +134,6 @@ export function GovUtilityBar({ lang, setLang }) {
 }
 
 export function GovFooter({ lang = "en" }) {
-  const [visitorCount, setVisitorCount] = useState("1,428,950");
   const [todayDate, setTodayDate] = useState("");
 
   useEffect(() => {
@@ -158,25 +150,12 @@ export function GovFooter({ lang = "en" }) {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
           {/* Col 1: Portal Identity */}
           <div className="flex flex-col gap-4">
-            <div className="flex items-center gap-3">
-              <span className="w-10 h-10 rounded-lg bg-green flex items-center justify-center text-white font-deva font-bold text-base">
-                सहयोग
-              </span>
-              <div>
-                <h3 className="font-display font-bold text-ink text-lg leading-tight">SAHYOG Portal</h3>
-                <span className="text-[13px] font-medium text-ink-3">
-                  {lang === "hi"
-                    ? "सामाजिक नवाचार सहयोग मंच · झारखण्ड सरकार"
-                    : lang === "bn"
-                    ? "সামাজিক উদ্ভাবন সহযোগিতা পোর্টাল · ঝাড়খণ্ড সরকার"
-                    : lang === "sat"
-                    ? "ᱥᱟᱶᱛᱟ ᱩᱛᱱᱟᱹᱣ ᱜᱚᱲᱚ ᱯᱳᱨᱴᱟᱞ · ᱡᱷᱟᱨᱠᱷᱚᱸᱰ ᱥᱚᱨᱠᱟᱨ"
-                    : lang === "ur"
-                    ? "سماجی جدت اور اشتراک پورٹل · حکومت جھارکھنڈ"
-                    : "Societal Innovation Collaboration Portal · Govt. of Jharkhand"}
-                </span>
-              </div>
-            </div>
+            <GovBrandLockup
+              variant="dual"
+              theme="light"
+              size="md"
+              href="/"
+            />
             <p className="text-[14px] leading-relaxed">
               An intelligent, transparent civic grievance redressing and research matching platform developed under Smart India Hackathon (SIH26043) for the Department of Higher & Technical Education, Government of Jharkhand.
             </p>
@@ -277,19 +256,19 @@ export function GovFooter({ lang = "en" }) {
       {/* Mandatory Government Policies Strip */}
       <div className="border-t border-line bg-surface">
         <div className="max-w-[1400px] mx-auto px-6 py-4 flex flex-wrap justify-center gap-x-4 gap-y-2 text-[13px] font-medium text-ink-3">
-          <a href="#" className="hover:text-ink transition-colors">Website Policies</a>
+          <Link href="/policies" className="hover:text-ink transition-colors">Website Policies</Link>
           <span>|</span>
-          <a href="#" className="hover:text-ink transition-colors">Privacy Policy</a>
+          <Link href="/privacy" className="hover:text-ink transition-colors">Privacy Policy</Link>
           <span>|</span>
-          <a href="#" className="hover:text-ink transition-colors">Terms & Conditions</a>
+          <Link href="/terms" className="hover:text-ink transition-colors">Terms & Conditions</Link>
           <span>|</span>
-          <a href="#" className="hover:text-ink transition-colors">Hyperlink Policy</a>
+          <Link href="/hyperlink-policy" className="hover:text-ink transition-colors">Hyperlink Policy</Link>
           <span>|</span>
-          <a href="#" className="hover:text-ink transition-colors">Copyright Policy</a>
+          <Link href="/copyright" className="hover:text-ink transition-colors">Copyright Policy</Link>
           <span>|</span>
-          <a href="#" className="hover:text-ink transition-colors">Accessibility Statement</a>
+          <Link href="/accessibility" className="hover:text-ink transition-colors">Accessibility Statement</Link>
           <span>|</span>
-          <a href="#" className="hover:text-ink transition-colors">Help & FAQs</a>
+          <Link href="/faqs" className="hover:text-ink transition-colors">Help & FAQs</Link>
         </div>
       </div>
 
@@ -307,13 +286,15 @@ export function GovFooter({ lang = "en" }) {
           <div className="flex flex-col items-center md:items-end gap-4 text-paper/80">
             <div className="flex items-center gap-3">
               <span>Last Updated: <strong className="text-paper">{todayDate}</strong></span>
-              <span className="text-paper/40">•</span>
-              <span>Total Visitors: <strong className="text-paper">{visitorCount}</strong></span>
             </div>
             <div className="flex flex-wrap justify-center gap-2">
-              <span className="px-2 py-1 rounded bg-ink-2 text-paper text-[11px] font-bold uppercase tracking-wider">🇮🇳 Digital India</span>
-              <span className="px-2 py-1 rounded bg-ink-2 text-paper text-[11px] font-bold uppercase tracking-wider">NIC Powered</span>
-              <span className="px-2 py-1 rounded bg-ink-2 text-paper text-[11px] font-bold uppercase tracking-wider">MeitY</span>
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-ink-2 text-paper text-[11px] font-bold uppercase tracking-wider">
+                <span className="w-1.5 h-1.5 rounded-full bg-saffron" />
+                Digital India
+              </span>
+              <span className="px-2.5 py-1 rounded bg-ink-2 text-paper text-[11px] font-bold uppercase tracking-wider">NIC MeghRaj</span>
+              <span className="px-2.5 py-1 rounded bg-ink-2 text-paper text-[11px] font-bold uppercase tracking-wider">MeitY Certified</span>
+              <span className="px-2.5 py-1 rounded bg-ink-2 text-paper text-[11px] font-bold uppercase tracking-wider">GIGW 3.0</span>
             </div>
           </div>
         </div>

@@ -1,12 +1,12 @@
 import { NextResponse } from "next/server";
 import { getAuthenticatedUser, getAdminClient } from "@/lib/server-auth.js";
-import { generateProposalDraft } from "@/lib/ai.js";
+import { generateProposalDraft, AI_MODELS } from "@/lib/ai.js";
 
 export const maxDuration = 30;
 
 export async function POST(req) {
   try {
-    const { authUser, profile, error: authError } = await getAuthenticatedUser(req);
+    const { profile, error: authError } = await getAuthenticatedUser(req);
     if (authError || !profile) {
       return NextResponse.json({ ok: false, error: "Authentication required" }, { status: 401 });
     }
@@ -45,7 +45,7 @@ export async function POST(req) {
     return NextResponse.json({
       ok: true,
       draft,
-      source: "groq-llama-3.3-70b",
+      source: `groq:${AI_MODELS.deep}`,
     });
   } catch (err) {
     return NextResponse.json({ ok: false, error: err.message }, { status: 500 });

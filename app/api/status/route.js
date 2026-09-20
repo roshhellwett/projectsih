@@ -1,11 +1,17 @@
 import { NextResponse } from "next/server";
 import { getAuthenticatedUser, getAdminClient } from "@/lib/server-auth.js";
 
-const VALID_STATUSES = ["submitted", "routed", "proposal_submitted", "in_progress", "resolved"];
+/*
+ * Mirrors STATUS_FLOW in components/ui/constants.js and the `problems.status`
+ * CHECK constraint. `in_review` is part of the lifecycle (a university has taken
+ * the case but not yet filed a proposal) and must be reachable here — it was
+ * missing, which made that lifecycle stage unreachable through the API.
+ */
+const VALID_STATUSES = ["submitted", "routed", "in_review", "proposal_submitted", "in_progress", "resolved"];
 
 export async function POST(req) {
   try {
-    const { authUser, profile, error: authError } = await getAuthenticatedUser(req);
+    const { profile, error: authError } = await getAuthenticatedUser(req);
     if (authError || !profile) {
       return NextResponse.json({ ok: false, error: "Authentication required" }, { status: 401 });
     }
@@ -15,7 +21,7 @@ export async function POST(req) {
     }
 
     const body = await req.json().catch(() => null);
-    const { problem_id, status, routed_to, resolution_notes } = body || {};
+    const { problem_id, status, routed_to } = body || {};
 
     if (!problem_id || !status) {
       return NextResponse.json({ ok: false, error: "problem_id and status are required" }, { status: 400 });
@@ -73,7 +79,7 @@ export async function POST(req) {
       notifications.push({
         send_to: "admin",
         channel: "In-app",
-        text: `Problem "${shortTitle}…" in ${existing.district} was officially marked RESOLVED by ${profile.name}.`,
+        text: `Problem "${shortTitle}…" in ${existing.district} was officially marked RESOLVED by ${profile.name || "the state administrator"}.`,
       });
     } else if (status === "in_progress") {
       notifications.push({

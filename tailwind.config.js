@@ -4,31 +4,46 @@ export default {
   theme: {
     extend: {
       colors: {
-        paper: "var(--paper)",
-        "paper-2": "var(--paper-2)",
-        surface: "var(--surface)",
-        "surface-2": "var(--surface-2)",
-        ink: "var(--ink)",
-        "ink-2": "var(--ink-2)",
-        "ink-3": "var(--ink-3)",
-        line: "var(--line)",
-        "line-2": "var(--line-2)",
-        setu: "var(--green)",
-        sahyog: "var(--green)",
-        saffron: "var(--saffron)",
-        "saffron-hi": "var(--saffron-hi)",
-        "saffron-tint": "var(--saffron-tint)",
-        "saffron-2": "var(--saffron-2)",
-        green: "var(--green)",
-        "green-2": "var(--green-2)",
-        "green-tint": "var(--green-tint)",
-        "green-soft": "var(--green-soft)",
-        amber: "var(--amber)",
-        "amber-tint": "var(--amber-tint)",
-        "red-tint": "var(--red-tint)",
-        violet: "var(--violet)",
-        "violet-tint": "var(--violet-tint)",
-        "info-tint": "var(--info-tint)",
+        // ── Design tokens ────────────────────────────────────────────────
+        // Declared as `rgb(var(--x-rgb) / <alpha-value>)` so that Tailwind can
+        // generate opacity modifiers (`bg-surface/95`, `text-paper/70`, …).
+        // A raw `var(--x)` value silently emits NO CSS for those variants.
+        // The `--x-rgb` triplets live in app/globals.css (both :root and
+        // .theme-night) and are kept in sync by `npm run verify:tokens`.
+        paper: "rgb(var(--paper-rgb) / <alpha-value>)",
+        "paper-2": "rgb(var(--paper-2-rgb) / <alpha-value>)",
+        surface: "rgb(var(--surface-rgb) / <alpha-value>)",
+        "surface-2": "rgb(var(--surface-2-rgb) / <alpha-value>)",
+        ink: "rgb(var(--ink-rgb) / <alpha-value>)",
+        "ink-2": "rgb(var(--ink-2-rgb) / <alpha-value>)",
+        "ink-3": "rgb(var(--ink-3-rgb) / <alpha-value>)",
+        line: "rgb(var(--line-rgb) / <alpha-value>)",
+        "line-2": "rgb(var(--line-2-rgb) / <alpha-value>)",
+        setu: "rgb(var(--green-rgb) / <alpha-value>)",
+        sahyog: "rgb(var(--green-rgb) / <alpha-value>)",
+        saffron: "rgb(var(--saffron-rgb) / <alpha-value>)",
+        "saffron-hi": "rgb(var(--saffron-hi-rgb) / <alpha-value>)",
+        "saffron-tint": "rgb(var(--saffron-tint-rgb) / <alpha-value>)",
+        "saffron-2": "rgb(var(--saffron-2-rgb) / <alpha-value>)",
+        green: { DEFAULT: "rgb(var(--green-rgb) / <alpha-value>)" },
+        "green-2": "rgb(var(--green-2-rgb) / <alpha-value>)",
+        "green-tint": "rgb(var(--green-tint-rgb) / <alpha-value>)",
+        "green-soft": "rgb(var(--green-soft-rgb) / <alpha-value>)",
+        amber: { DEFAULT: "rgb(var(--amber-rgb) / <alpha-value>)" },
+        "amber-tint": "rgb(var(--amber-tint-rgb) / <alpha-value>)",
+        "amber-soft": "rgb(var(--amber-soft-rgb) / <alpha-value>)",
+        // NOTE: blue / purple / red use { DEFAULT } so Tailwind's deep-merge
+        // PRESERVES the stock numeric scales (red-500, blue-400, …) already in use.
+        blue: { DEFAULT: "rgb(var(--blue-rgb) / <alpha-value>)" },
+        "blue-tint": "rgb(var(--blue-tint-rgb) / <alpha-value>)",
+        "blue-soft": "rgb(var(--blue-soft-rgb) / <alpha-value>)",
+        purple: { DEFAULT: "rgb(var(--purple-rgb) / <alpha-value>)" },
+        "purple-tint": "rgb(var(--purple-tint-rgb) / <alpha-value>)",
+        red: { DEFAULT: "rgb(var(--red-rgb) / <alpha-value>)" },
+        "red-tint": "rgb(var(--red-tint-rgb) / <alpha-value>)",
+        violet: "rgb(var(--violet-rgb) / <alpha-value>)",
+        "violet-tint": "rgb(var(--violet-tint-rgb) / <alpha-value>)",
+        "info-tint": "rgb(var(--info-tint-rgb) / <alpha-value>)",
         // Gov UX4G semantic palette
         primary: {
           50: '#f2efff', 100: '#dcd4ff', 200: '#c0b3ff', 300: '#a391ff',

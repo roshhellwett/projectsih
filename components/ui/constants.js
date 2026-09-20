@@ -51,12 +51,9 @@ export const STATUS_LBL = {
   resolved: "Resolved",
 };
 
-export const DISTRICTS = [
-  "Bokaro", "Chatra", "Deoghar", "Dhanbad", "Dumka", "East Singhbhum",
-  "Garhwa", "Giridih", "Godda", "Gumla", "Hazaribagh", "Jamtara",
-  "Khunti", "Koderma", "Latehar", "Lohardaga", "Pakur", "Palamu",
-  "Ramgarh", "Ranchi", "Sahibganj", "Seraikela-Kharsawan", "Simdega", "West Singhbhum",
-];
+// The 24 Jharkhand districts live in lib/districts.js so the client pickers and
+// the server-side submission validator can never drift apart.
+export { DISTRICTS } from "@/lib/districts";
 
 export const fmtINR = (n) => "₹" + (n || 0).toLocaleString("en-IN");
 

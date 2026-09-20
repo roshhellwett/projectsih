@@ -83,7 +83,10 @@ export function BridgePanel({ lang = "en" }) {
             <div className="flex-1 min-w-0">
               <span className="block text-[14px] font-semibold text-ink leading-snug mb-1 truncate">{p.title}</span>
               <div className="flex items-center gap-2 text-[12px] text-ink-3">
-                <span className="font-medium text-ink-2">📍 {p.district || "Jharkhand"}</span>
+                <span className="font-medium text-ink-2 inline-flex items-center gap-1">
+                  <MapPin size={12} weight="fill" className="text-green shrink-0" />
+                  {p.district || "Jharkhand"}
+                </span>
                 <span>•</span>
                 <span>{getCatLabel(lang, p.category)}</span>
               </div>
@@ -559,6 +562,15 @@ const JHARKHAND_DISTRICTS = [
   { name: "Gumla", hi: "गुमला", activeCount: 7, resolved: 16, zone: "South Chotanagpur" },
 ];
 
+const ZONE_LABELS = {
+  all: { en: "All Divisions", hi: "सभी प्रमंडल", bn: "সকল বিভাগ", sat: "ᱡᱚᱛᱚ ᱛᱷᱚᱠ", ur: "تمام ڈویژنز" },
+  "North Chotanagpur": { en: "North Chotanagpur", hi: "उत्तरी छोटानागपुर", bn: "উত্তর ছোটনাগপুর", sat: "ᱠᱚᱸᱭᱮ ᱪᱷᱳᱴᱟᱱᱟᱜᱽᱯᱩᱨ", ur: "شمالی چھوٹا ناگپور" },
+  "South Chotanagpur": { en: "South Chotanagpur", hi: "दक्षिणी छोटानागपुर", bn: "দক্ষিণ ছোটনাগপুর", sat: "ᱮᱛᱚᱢ ᱪᱷᱳᱴᱟᱱᱟᱜᱽᱯᱩᱨ", ur: "جنوبی چھوٹا ناگپور" },
+  Kolhan: { en: "Kolhan", hi: "कोल्हान", bn: "কোলহান", sat: "ᱠᱳᱞᱦᱟᱱ", ur: "کولہان" },
+  "Santhal Pargana": { en: "Santhal Pargana", hi: "संथाल परगना", bn: "সাঁওতাল পরগনা", sat: "ᱥᱟᱱᱛᱟᱲ ᱯᱟᱨᱜᱟᱱᱟ", ur: "سنتھال پرگنہ" },
+  Palamu: { en: "Palamu", hi: "पलामू", bn: "পলামু", sat: "ᱯᱟᱞᱟᱢᱩ", ur: "پلامو" },
+};
+
 export function DistrictCoverageExplorer({ lang = "en" }) {
   const [selectedZone, setSelectedZone] = useState("all");
 
@@ -568,7 +580,7 @@ export function DistrictCoverageExplorer({ lang = "en" }) {
 
   return (
     <div className="w-full">
-      <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-12">
+      <div className="flex flex-col gap-6 mb-10">
         <div className="max-w-2xl">
           <span className="text-[12px] font-bold tracking-widest text-ink-3 uppercase mb-4 block">STATEWIDE REACH</span>
           <h2 className="font-display text-[32px] md:text-[40px] font-bold tracking-tight text-ink mb-4">
@@ -595,19 +607,26 @@ export function DistrictCoverageExplorer({ lang = "en" }) {
           </p>
         </div>
 
-        <div className="flex flex-wrap gap-2">
-          {["all", "North Chotanagpur", "South Chotanagpur", "Kolhan", "Santhal Pargana", "Palamu"].map((z) => (
-            <button
-              key={z}
-              type="button"
-              className={`px-4 py-2 rounded-full text-[13px] font-bold transition-colors border ${selectedZone === z ? "bg-green text-white border-green" : "bg-surface border-line text-ink-2 hover:bg-surface-2"}`}
-              onClick={() => setSelectedZone(z)}
-            >
-              {z === "all"
-                ? (lang === "hi" ? "सभी प्रमंडल" : lang === "bn" ? "সকল বিভাগ" : lang === "sat" ? "ᱡᱚᱛᱚ ᱛᱷᱚᱠ" : lang === "ur" ? "تمام ڈویژنز" : "All Divisions")
-                : z}
-            </button>
-          ))}
+        {/* Full-width Division Filter Pills Bar */}
+        <div className="flex flex-wrap items-center gap-2 p-1.5 bg-surface border border-line rounded-2xl w-fit shadow-xs">
+          {["all", "North Chotanagpur", "South Chotanagpur", "Kolhan", "Santhal Pargana", "Palamu"].map((z) => {
+            const zLabel = ZONE_LABELS[z]?.[lang] || ZONE_LABELS[z]?.en || z;
+            const isSelected = selectedZone === z;
+            return (
+              <button
+                key={z}
+                type="button"
+                className={`px-4 py-2 rounded-xl text-[13px] font-bold transition-all ${
+                  isSelected 
+                    ? "bg-green text-white shadow-sm" 
+                    : "text-ink-2 hover:bg-surface-2 hover:text-ink"
+                }`}
+                onClick={() => setSelectedZone(z)}
+              >
+                {zLabel}
+              </button>
+            );
+          })}
         </div>
       </div>
 
@@ -643,8 +662,9 @@ export function DistrictCoverageExplorer({ lang = "en" }) {
       </div>
 
       <div className="flex items-center justify-between border-t border-line pt-6">
-        <span className="text-[13px] text-ink-3">
-          📍 {lang === "hi"
+        <span className="text-[13px] text-ink-3 flex items-center gap-1.5">
+          <MapPin size={14} weight="fill" className="text-amber shrink-0" />
+          {lang === "hi"
             ? "शेष 12 जिलों के नोडल विश्वविद्यालयों की मैपिंग प्रगति पर है।"
             : lang === "bn"
             ? "বাকি ১২টি জেলার সমন্বয় কাজ চলছে।"

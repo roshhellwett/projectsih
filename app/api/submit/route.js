@@ -1,8 +1,7 @@
 import { NextResponse } from "next/server";
 import { runPipeline } from "@/lib/ai";
 import { getAuthenticatedUser, getAdminClient } from "@/lib/server-auth";
-
-const DISTRICTS = ["Bokaro", "Chatra", "Deoghar", "Dhanbad", "Dumka", "East Singhbhum", "Garhwa", "Giridih", "Godda", "Gumla", "Hazaribagh", "Jamtara", "Khunti", "Koderma", "Latehar", "Lohardaga", "Pakur", "Palamu", "Ramgarh", "Ranchi", "Sahibganj", "Seraikela-Kharsawan", "Simdega", "West Singhbhum"];
+import { DISTRICT_SET } from "@/lib/districts";
 
 export const maxDuration = 30;
 
@@ -16,8 +15,8 @@ export async function POST(req) {
   }
 
   // Verify district is in the expected list
-  const sanitizedDistrict = district.trim();
-  if (DISTRICTS && !DISTRICTS.includes(sanitizedDistrict)) {
+  const sanitizedDistrict = String(district).trim();
+  if (!DISTRICT_SET.has(sanitizedDistrict)) {
     return NextResponse.json({ ok: false, error: "Invalid district specified" }, { status: 400 });
   }
 

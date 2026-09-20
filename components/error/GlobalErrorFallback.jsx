@@ -2,25 +2,7 @@
 
 import { useState, useMemo } from "react";
 import Link from "next/link";
-import {
-  Warning,
-  Bug,
-  ArrowClockwise,
-  House,
-  ArrowLeft,
-  Copy,
-  Check,
-  DownloadSimple,
-  Trash,
-  CaretDown,
-  CaretUp,
-  TerminalWindow,
-  ShieldWarning,
-  Code,
-  Globe,
-  Broadcast,
-  Info,
-} from "@phosphor-icons/react";
+import { Bug, ArrowClockwise, House, ArrowLeft, Copy, Check, DownloadSimple, Trash, CaretDown, CaretUp, TerminalWindow, ShieldWarning, Code } from "@phosphor-icons/react";
 import { parseErrorInfo, generateErrorReport } from "./error-utils";
 
 /**
@@ -187,7 +169,7 @@ export default function GlobalErrorFallback({
                 )}
               </div>
               <h1 className="text-2xl md:text-3xl font-display font-bold text-ink tracking-tight">
-                Sorry, something got broken...
+                Sorry, something got broken…
               </h1>
               <p className="text-sm md:text-base text-ink-2 mt-1 leading-relaxed">
                 An unexpected error occurred while executing this view. We have captured complete
@@ -454,7 +436,7 @@ export default function GlobalErrorFallback({
                   className="px-3 py-1.5 rounded-lg bg-surface border border-line text-ink hover:bg-paper text-xs font-medium flex items-center gap-1.5 transition-colors"
                 >
                   <Trash size={14} className="text-red" />
-                  <span>{storageCleared ? "Resetting..." : "Clear Cache & Reload"}</span>
+                  <span>{storageCleared ? "Resetting…" : "Clear Cache & Reload"}</span>
                 </button>
               </div>
             </div>

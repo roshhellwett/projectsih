@@ -1,19 +1,20 @@
 import React from "react";
 import { cva } from "class-variance-authority";
+import { CircleNotch } from "@phosphor-icons/react";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex min-h-11 items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-semibold transition-all duration-200 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-setu focus-visible:ring-offset-2 focus-visible:ring-offset-surface disabled:pointer-events-none disabled:opacity-50 select-none",
+  "inline-flex min-h-11 items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-semibold transition-all duration-150 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-setu focus-visible:ring-offset-2 focus-visible:ring-offset-surface disabled:pointer-events-none disabled:opacity-50 select-none active:scale-[0.98]",
   {
     variants: {
       variant: {
-        default: "bg-setu text-white hover:bg-green-2 shadow-sm active:translate-y-px",
+        default: "bg-setu text-white hover:bg-green-2 shadow-sm hover:shadow-md",
         destructive: "bg-red-500 text-white hover:bg-red-600 shadow-sm",
         outline: "border border-line bg-surface text-ink hover:bg-paper-2 hover:border-green shadow-sm",
         secondary: "bg-surface-2 text-ink hover:bg-paper-2 shadow-sm",
         ghost: "hover:bg-surface-2 text-ink",
         link: "text-setu underline-offset-4 hover:underline",
-        navy: "bg-info text-white hover:brightness-110 shadow-sm active:translate-y-px",
+        navy: "bg-info text-white hover:brightness-110 shadow-sm hover:shadow-md",
       },
       size: {
         default: "h-11 px-5 py-2",
@@ -29,16 +30,30 @@ const buttonVariants = cva(
   }
 );
 
-const Button = React.forwardRef(({ className, variant, size, asChild = false, ...props }, ref) => {
-  const Comp = asChild ? React.Fragment : "button";
-  return (
-    <Comp
-      className={cn(buttonVariants({ variant, size, className }))}
-      ref={ref}
-      {...props}
-    />
-  );
-});
+const Button = React.forwardRef(
+  ({ className, variant, size, asChild = false, loading = false, disabled, children, ...props }, ref) => {
+    const Comp = asChild ? React.Fragment : "button";
+    const isDisabled = disabled || loading;
+
+    return (
+      <Comp
+        className={cn(
+          buttonVariants({ variant, size, className }),
+          loading && "cursor-wait opacity-80"
+        )}
+        ref={ref}
+        disabled={isDisabled}
+        aria-busy={loading}
+        {...props}
+      >
+        {loading && (
+          <CircleNotch size={16} weight="bold" className="animate-spin shrink-0 -ml-0.5" />
+        )}
+        {children}
+      </Comp>
+    );
+  }
+);
 Button.displayName = "Button";
 
 export { Button, buttonVariants };

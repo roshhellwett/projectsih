@@ -1,9 +1,22 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { List, SignOut, X, Bell, Globe } from "@phosphor-icons/react";
 import { CAT_LABEL } from "./constants";
 import { Button } from "./button";
-import { SUPPORTED_LANGUAGES, getStoredLang, setStoredLang } from "@/lib/i18n";
+import { GovBrandLockup } from "./GovEmblem";
+import { useI18n, SUPPORTED_LANGUAGES } from "@/lib/i18n";
+
+const NAV_MAP = {
+  dash: "navDashboard",
+  submit: "navReport",
+  track: "navTrack",
+  map: "navMap",
+  rnd: "navRndLab",
+  proposals: "navProposals",
+  escrow: "navEscrow",
+  admin_hud: "navAdminHud",
+  audit: "navAuditTrail",
+};
 
 export function Shell({
   user,
@@ -18,20 +31,10 @@ export function Shell({
   children,
 }) {
   const [open, setOpen] = useState(false);
-  const [lang, setLang] = useState("en");
-
-  useEffect(() => {
-    setLang(getStoredLang());
-    const onLangChange = (e) => {
-      if (e.detail?.lang) setLang(e.detail.lang);
-    };
-    window.addEventListener("sahyog_lang_changed", onLangChange);
-    return () => window.removeEventListener("sahyog_lang_changed", onLangChange);
-  }, []);
+  const { lang, setLang, t, cat } = useI18n();
 
   const changeLanguage = (code) => {
     setLang(code);
-    setStoredLang(code);
   };
 
   return (
@@ -48,14 +51,10 @@ export function Shell({
       <aside 
         className={`fixed inset-y-0 left-0 z-50 w-[264px] bg-green-2 text-white border-r border-green flex flex-col transition-transform duration-300 md:relative md:translate-x-0 ${open ? "translate-x-0" : "-translate-x-full"}`}
       >
-        <div className="flex items-center gap-3 p-5 border-b border-white/10 shrink-0">
-          <span className="w-9 h-9 rounded-md bg-saffron text-green-2 grid place-items-center font-deva text-[13px] shrink-0 shadow-sm">सहयोग</span>
-          <div className="flex flex-col">
-            <b className="text-[15px] leading-tight font-display font-bold">SAHYOG Portal</b>
-            <span className="text-[10px] text-white/60 uppercase tracking-wider font-semibold">Govt. of Jharkhand</span>
-          </div>
+        <div className="flex items-center justify-between gap-2 p-4 border-b border-white/10 shrink-0">
+          <GovBrandLockup variant="dual" theme="dark" size="sm" href="/portal" />
           <button 
-            className="md:hidden ml-auto p-2 text-white/70 hover:text-white rounded" 
+            className="md:hidden p-2 text-white/70 hover:text-white rounded" 
             onClick={() => setOpen(false)}
           >
             <X size={18} weight="bold" />
@@ -64,15 +63,23 @@ export function Shell({
 
         <div className="px-5 py-4 border-b border-white/10 shrink-0">
           <div className="font-bold text-[13.5px] truncate">
-            {user?.name || "Official User"}
+            {user?.name || t("officialUser", "Official User")}
           </div>
           <div className="flex flex-col gap-1.5 mt-1.5">
             <span className="inline-flex w-max px-2 py-0.5 rounded-md bg-white/10 text-saffron text-[10px] uppercase tracking-widest font-bold font-mono">
-              {roleName}
+              {roleName === "Citizen Portal"
+                ? t("citizenPortal", roleName)
+                : roleName === "University Portal"
+                ? t("universityPortal", roleName)
+                : roleName === "Industry Portal"
+                ? t("industryPortal", roleName)
+                : roleName === "Admin Portal" || roleName === "Government"
+                ? t("adminPortal", roleName)
+                : roleName}
             </span>
             {expertise && expertise.length > 0 && (
-              <span className="text-[11px] text-white/60 leading-snug truncate" title={expertise.map((e) => CAT_LABEL[e] || e).join(" · ")}>
-                {expertise.map((e) => CAT_LABEL[e] || e).join(" · ")}
+              <span className="text-[11px] text-white/60 leading-snug truncate" title={expertise.map((e) => cat(e) || e).join(" · ")}>
+                {expertise.map((e) => cat(e) || e).join(" · ")}
               </span>
             )}
           </div>
@@ -106,7 +113,7 @@ export function Shell({
                   dangerouslySetInnerHTML={{ __html: icon }}
                   className={`w-[18px] h-[18px] shrink-0 ${isActive ? "opacity-100" : "opacity-75"}`}
                 />
-                <span className="flex-1 truncate">{label}</span>
+                <span className="flex-1 truncate">{t(NAV_MAP[id] || label, label)}</span>
                 {count !== undefined && count !== null && (
                   <span className={`inline-flex items-center justify-center px-2 py-0.5 min-w-[20px] rounded-full text-[10px] font-bold ${
                     isActive ? "bg-green-tint text-green-2" : "bg-white/10 text-white/70"
@@ -125,7 +132,7 @@ export function Shell({
             className="w-full justify-start text-white/70 hover:text-white hover:bg-white/10 text-[13px]"
             onClick={onExit}
           >
-            <SignOut size={18} weight="bold" className="mr-1.5" /> Sign Out
+            <SignOut size={18} weight="bold" className="mr-1.5" /> {t("signOut", "Sign Out")}
           </Button>
         </div>
       </aside>
@@ -145,9 +152,29 @@ export function Shell({
 
           <div className="flex flex-col justify-center min-w-0">
             <h1 className="font-display font-bold text-[16px] md:text-[19px] text-ink leading-tight truncate">
-              {title}
+              {typeof title === "string" && title.startsWith("Welcome")
+                ? `${t("welcome", "Welcome")}${user?.name ? `, ${user.name}` : ""}`
+                : title === "File a Civic Grievance"
+                ? t("fileGrievanceTitle", title)
+                : title === "My Grievance Tracking"
+                ? t("trackTitle", title)
+                : title === "Jharkhand Live Problem Map"
+                ? t("mapTitle", title)
+                : title}
             </h1>
-            {sub && <div className="text-[11.5px] text-ink-3 truncate hidden sm:block">{sub}</div>}
+            {sub && (
+              <div className="text-[11.5px] text-ink-3 truncate hidden sm:block">
+                {sub === "Direct civic grievance reporting with Groq AI automated triage and university-CSR matching"
+                  ? t("welcomeSub", sub)
+                  : sub === "AI-assisted intake with geo-tagging and automatic multi-stakeholder routing"
+                  ? t("fileGrievanceSub", sub)
+                  : sub === "Live SLA countdown and milestone tracking under Jharkhand JRTPS Act 2011"
+                  ? t("trackSub", sub)
+                  : sub === "24-District spatial cluster map with GPS-verified community distress signals"
+                  ? t("mapSub", sub)
+                  : sub}
+              </div>
+            )}
           </div>
 
           <div className="ml-auto flex items-center gap-2 shrink-0">

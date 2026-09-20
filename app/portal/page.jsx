@@ -9,7 +9,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
-import { ToastStack, useToasts } from "@/components/ui";
+import { ToastStack, useToasts, JharkhandStateSeal } from "@/components/ui";
 
 import CitizenPortal from "@/components/portal/CitizenPortal";
 import UniversityPortal from "@/components/portal/UniversityPortal";
@@ -20,7 +20,6 @@ export default function Portal() {
   const router = useRouter();
   const { toasts, push, dismiss } = useToasts();
   const [user, setUser] = useState(null);
-  const [authUser, setAuthUser] = useState(null);
   const [view, setView] = useState("dash");
   const [problems, setProblems] = useState([]);
   const [proposals, setProposals] = useState([]);
@@ -36,7 +35,7 @@ export default function Portal() {
     const activeUser = u || user;
     const sb = supabase();
     try {
-      const [pb, pr, inr, nt, vd] = await Promise.all([
+      const [pb, pr, inr, nt, vd, vc] = await Promise.all([
         sb
           .from("problems")
           .select("*, routed_to_user:users!problems_routed_to_fkey(name), submitted_by_user:users!problems_submitted_by_fkey(name)")
@@ -60,9 +59,19 @@ export default function Portal() {
         activeUser
           ? sb.from("problem_votes").select("problem_id").eq("user_id", activeUser.id)
           : Promise.resolve({ data: [] }),
+        // `problems` has no `votes` column — the count only exists on the
+        // problems_with_votes view. Without this merge, every consumer that
+        // reads p.votes directly (notably the admin audit CSV export) reports 0.
+        sb.from("problems_with_votes").select("id, votes").limit(200),
       ]);
 
-      setProblems(pb.data || []);
+      const voteCounts = new Map((vc.data || []).map((v) => [v.id, v.votes]));
+      setProblems(
+        (pb.data || []).map((p) => ({
+          ...p,
+          votes: voteCounts.has(p.id) ? voteCounts.get(p.id) : (p.demo_votes ?? 0),
+        }))
+      );
       setProposals(pr.data || []);
       setInterests(inr.data || []);
       setNotifications(nt.data || []);
@@ -83,7 +92,6 @@ export default function Portal() {
         router.push("/login");
         return;
       }
-      setAuthUser(au);
 
       // Attempt 1: by auth_id
       const { data: profile } = await sb.from("users").select("*").eq("auth_id", au.id).maybeSingle();
@@ -162,14 +170,14 @@ export default function Portal() {
           j.voted ? n.add(pid) : n.delete(pid);
           return n;
         });
+        // Trust the server's authoritative count (real votes + demo traction)
+        // instead of guessing from an optimistic delta.
         setProblems((ps) =>
-          ps.map((p) =>
-            p.id === pid
-              ? { ...p, demo_votes: Math.max(0, (p.demo_votes || 0) + (j.voted ? 1 : -1)) }
-              : p
-          )
+          ps.map((p) => (p.id === pid && typeof j.votes === "number" ? { ...p, votes: j.votes } : p))
         );
         push(j.voted ? "Vote added" : "Vote removed", j.voted ? "Urgency priority increased" : "", "ok", 2200);
+      } else {
+        push("Vote failed", j.error || "Please try again.", "warn");
       }
     } catch (err) {
       push("Vote failed", err.message, "warn");
@@ -198,10 +206,15 @@ export default function Portal() {
     return (
       <div className="min-h-dvh grid place-items-center bg-paper text-ink p-6">
         <div className="flex flex-col items-center justify-center text-center max-w-sm">
-          <div className="w-12 h-12 rounded-xl bg-green-2 text-white grid place-items-center font-deva text-lg font-bold shadow-md mb-4 animate-pulse">
-            सहयोग
+          <div className="flex items-center justify-center mb-4 animate-pulse">
+            <JharkhandStateSeal size={64} />
           </div>
-          <h2 className="font-display text-xl font-bold text-ink mb-2">SAHYOG Portal</h2>
+          <h2 className="font-display text-2xl font-bold text-ink mb-1">
+            SAHYOG <span className="font-deva text-amber-500 text-lg font-bold">(सहयोग)</span>
+          </h2>
+          <p className="text-xs font-mono tracking-wider text-green-2 font-semibold uppercase mb-3">
+            Government of Jharkhand · झारखण्ड सरकार
+          </p>
           <div className="flex items-center gap-2 text-xs font-mono tracking-widest text-ink-3 uppercase font-semibold">
             <span className="w-2 h-2 rounded-full bg-green animate-ping" />
             {loading ? "SYNCHRONIZING PORTAL DATA…" : "INITIALIZING SESSION…"}

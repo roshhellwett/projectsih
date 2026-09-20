@@ -32,7 +32,7 @@ export const metadata = {
   description:
     "Crowdsource societal challenges and route them to the universities best equipped to solve them, with industry funding. SIH26043, Government of Jharkhand.",
   manifest: "/manifest.webmanifest",
-  icons: { icon: "/icon.svg" },
+  icons: { icon: "/jharkhand-gov-logo.png", apple: "/jharkhand-gov-logo.png" },
 };
 
 export const viewport = {

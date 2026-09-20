@@ -2,7 +2,7 @@
 
 import React, { Component } from "react";
 import GlobalErrorFallback from "./GlobalErrorFallback";
-import { Warning, Bug, X, Eye, ArrowClockwise, Sparkle } from "@phosphor-icons/react";
+import { Bug, X } from "@phosphor-icons/react";
 import { parseErrorInfo } from "./error-utils";
 
 /**

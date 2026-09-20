@@ -7,5 +7,5 @@
   "background_color": "#0B211C",
   "theme_color": "#0B211C",
   "lang": "en-IN",
-  "icons": [{ "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }]
+  "icons": [{ "src": "/jharkhand-gov-logo.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }]
 }

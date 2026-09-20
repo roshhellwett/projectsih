@@ -5,21 +5,12 @@ import Link from "next/link";
 import Image from "next/image";
 import { GovUtilityBar, GovFooter } from "@/components/GovHeaderFooter";
 import { BridgePanel, RoleDossier, JourneyRail, DistrictCoverageExplorer } from "@/components/landing";
+import AiPipelineVisualizer from "@/components/landing/AiPipelineVisualizer";
 import { Button } from "@/components/ui/button";
+import { GovBrandLockup } from "@/components/ui/GovEmblem";
 import { Reveal, CountUp } from "@/components/ui/motion";
 import { getTranslation, getStoredLang, setStoredLang } from "@/lib/i18n";
-import {
-  FileText,
-  MagnifyingGlass,
-  GraduationCap,
-  Briefcase,
-  ShieldCheck,
-  Cpu,
-  CheckCircle,
-  ArrowRight,
-  Sparkle,
-  Clock,
-} from "@phosphor-icons/react";
+import { FileText, MagnifyingGlass, ShieldCheck, Cpu, CheckCircle, ArrowRight, Sparkle } from "@phosphor-icons/react";
 
 export default function LandingPage() {
   const [lang, setLang] = useState("en");
@@ -48,19 +39,16 @@ export default function LandingPage() {
       {/* Primary service header */}
       <header className="sticky top-0 z-40 bg-surface/95 backdrop-blur-md border-b border-line">
         <div className="max-w-[1240px] mx-auto px-4 sm:px-6 h-16 grid grid-cols-[minmax(0,1fr)_auto] lg:grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-4">
-          <Link href="/" className="flex items-center gap-3">
-            <span className="w-10 h-10 rounded-md bg-green-2 flex items-center justify-center text-white font-deva font-bold text-sm shrink-0">
-              सहयोग
-            </span>
-            <span className="min-w-0 truncate font-display font-bold text-lg sm:text-xl">
-              SAHYOG <span className="text-ink-3 text-lg">
-                {lang === "hi" ? "झारखण्ड" : lang === "bn" ? "ঝাড়খণ্ড" : lang === "sat" ? "ᱡᱷᱟᱨᱠᱷᱚᱸᱰ" : lang === "ur" ? "جھارکھنڈ" : "Jharkhand"}
-              </span>
-            </span>
-          </Link>
+          <GovBrandLockup
+            variant="dual"
+            theme="light"
+            size="md"
+            href="/"
+          />
 
           <nav className="hidden lg:flex justify-self-center items-center gap-7 text-[14px] font-medium text-ink-2">
             <a href="#services" className="hover:text-green transition-colors">{t.navServices}</a>
+            <a href="#pipeline" className="hover:text-green transition-colors">AI Triage</a>
             <a href="#how" className="hover:text-green transition-colors">{t.navHow}</a>
             <a href="#roles" className="hover:text-green transition-colors">{t.navRoles}</a>
             <a href="#districts" className="hover:text-green transition-colors">{t.navDistricts}</a>
@@ -88,82 +76,153 @@ export default function LandingPage() {
           <div className="pointer-events-none absolute -top-24 -right-24 w-[420px] h-[420px] rounded-full bg-green-tint/50 blur-3xl" aria-hidden="true" />
           <div className="pointer-events-none absolute -bottom-32 -left-20 w-[380px] h-[380px] rounded-full bg-saffron-tint/40 blur-3xl" aria-hidden="true" />
 
-          <div className="relative max-w-[1240px] mx-auto px-4 sm:px-6 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_460px] gap-8 lg:gap-12 items-center">
-            <div className="flex flex-col gap-5">
-              <div className="hero-in hero-d1 inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-surface border border-line w-fit">
-                <span className="px-2 py-0.5 rounded-sm bg-green-tint text-green text-[10px] font-bold tracking-widest uppercase">
-                  SIH26043
-                </span>
-                <span className="text-[13px] font-medium text-ink-2">
-                  {t.stateGov}
-                </span>
+          <div className="relative max-w-[1240px] mx-auto px-4 sm:px-6 flex flex-col gap-10">
+            <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_460px] gap-8 lg:gap-12 items-center">
+              <div className="flex flex-col gap-5">
+                <div className="hero-in hero-d1 inline-flex flex-wrap items-center gap-2 px-3 py-1.5 rounded-lg bg-surface border border-line w-fit shadow-xs">
+                  <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-saffron-tint text-saffron-2 text-[11px] font-bold tracking-wider uppercase border border-saffron/20">
+                    <span className="w-2 h-2 rounded-full bg-saffron animate-pulse" />
+                    SIH 2026 • Problem #26043
+                  </span>
+                  <span className="text-[13px] font-medium text-ink-2">
+                    {t.stateGov}
+                  </span>
+                </div>
+
+                <h1 className="hero-in hero-d2 font-display text-[36px] md:text-[48px] lg:text-[54px] font-bold leading-[1.12] text-ink max-w-3xl text-balance">
+                  {lang === "en" ? (
+                    <>
+                      Jharkhand&apos;s Quad-Helix{" "}
+                      <span className="text-[#064E3B] font-extrabold block sm:inline">
+                        Civic Innovation Engine
+                      </span>
+                    </>
+                  ) : (
+                    t.heroHead
+                  )}
+                </h1>
+
+                <p className="hero-in hero-d3 text-[16px] md:text-[18px] text-ink-2 leading-relaxed max-w-2xl">
+                  {lang === "en"
+                    ? "A sovereign AI-powered civic platform bridging grassroots citizen distress with university research labs (BIT Mesra, BAU, CUJ), statutory corporate CSR reserves (Tata Steel, Coal India), and apex district administration under the 72-hour JRTPS mandate."
+                    : t.heroLead}
+                </p>
+
+                {/* Mobile-first hero illustration */}
+                <div className="hero-in hero-d3 lg:hidden glow-pad -my-2">
+                  <Image
+                    src="/illustrations/hero-civic.png"
+                    alt="Illustration of a Jharkhand village and town connected by a bridge, with school, water supply and solar facilities"
+                    width={1280}
+                    height={1024}
+                    priority
+                    className="w-full max-w-[460px] mx-auto h-auto float-soft"
+                  />
+                </div>
+
+                <div className="hero-in hero-d4 grid grid-cols-1 sm:flex items-center gap-3 mt-2">
+                  <Link href="/login?role=citizen" className="w-full sm:w-auto">
+                    <Button size="lg" className="w-full sm:w-auto h-12 px-6 text-[15px] bg-green hover:bg-green/90 text-white shadow-md lift">
+                      <FileText size={20} weight="bold" className="mr-2" />
+                      {t.btnReport}
+                    </Button>
+                  </Link>
+                  <Link href="/login?role=industry" className="w-full sm:w-auto">
+                    <Button size="lg" variant="outline" className="w-full sm:w-auto h-12 px-6 text-[15px] border-line hover:border-ink-3 hover:bg-surface-2 lift">
+                      <MagnifyingGlass size={20} weight="bold" className="mr-2" />
+                      Explore CSR Marketplace
+                    </Button>
+                  </Link>
+                </div>
+
+                <div className="hero-in hero-d4 text-xs font-mono text-ink-3 flex items-center gap-2">
+                  <span className="h-2 w-2 rounded-full bg-emerald-500 shrink-0" />
+                  <span>Protected under Jharkhand Right to Public Services (JRTPS) Act 2011 · 72h Statutory SLA Guaranteed</span>
+                </div>
+
+                {/* Verified Trust Badges */}
+                <div className="hero-in hero-d5 flex flex-wrap items-center gap-2 mt-2 text-[12px] font-medium text-ink-3">
+                  <span className="flex items-center gap-1.5 bg-surface px-3 py-1.5 rounded-md border border-line">
+                    <ShieldCheck size={16} weight="fill" className="text-green" />
+                    GIGW 3.0 Standard
+                  </span>
+                  <span className="flex items-center gap-1.5 bg-surface px-3 py-1.5 rounded-md border border-line">
+                    <Cpu size={16} weight="fill" className="text-amber" />
+                    Groq Llama 3.3 AI Triage
+                  </span>
+                  <span className="flex items-center gap-1.5 bg-surface px-3 py-1.5 rounded-md border border-line">
+                    <CheckCircle size={16} weight="fill" className="text-green" />
+                    Jan Parichay & DigiLocker Ready
+                  </span>
+                </div>
               </div>
 
-              <h1 className="hero-in hero-d2 font-display text-[36px] md:text-[48px] lg:text-[54px] font-bold leading-[1.12] text-ink max-w-3xl text-balance">
-                {t.heroHead}
-              </h1>
-
-              <p className="hero-in hero-d3 text-[16px] md:text-[18px] text-ink-2 leading-relaxed max-w-2xl">
-                {t.heroLead}
-              </p>
-
-              {/* Mobile-first hero illustration */}
-              <div className="hero-in hero-d3 lg:hidden glow-pad -my-2">
-                <Image
-                  src="/illustrations/hero-civic.png"
-                  alt="Illustration of a Jharkhand village and town connected by a bridge, with school, water supply and solar facilities"
-                  width={1280}
-                  height={1024}
-                  priority
-                  className="w-full max-w-[460px] mx-auto h-auto float-soft"
-                />
-              </div>
-
-              <div className="hero-in hero-d4 grid grid-cols-1 sm:flex items-center gap-3 mt-2">
-                <Link href="/login?role=citizen" className="w-full sm:w-auto">
-                  <Button size="lg" className="w-full sm:w-auto h-12 px-6 text-[15px] lift">
-                    <FileText size={20} weight="bold" className="mr-2" />
-                    {t.btnReport}
-                  </Button>
-                </Link>
-                <Link href="/login" className="w-full sm:w-auto">
-                  <Button size="lg" variant="outline" className="w-full sm:w-auto h-12 px-6 text-[15px] lift">
-                    <MagnifyingGlass size={20} weight="bold" className="mr-2" />
-                    {t.btnTrack}
-                  </Button>
-                </Link>
-              </div>
-
-              {/* Verified Trust Badges */}
-              <div className="hero-in hero-d5 flex flex-wrap items-center gap-2 mt-3 text-[12px] font-medium text-ink-3">
-                <span className="flex items-center gap-1.5 bg-surface px-3 py-1.5 rounded-md border border-line">
-                  <ShieldCheck size={16} weight="fill" className="text-green" />
-                  GIGW 3.0 Verified
-                </span>
-                <span className="flex items-center gap-1.5 bg-surface px-3 py-1.5 rounded-md border border-line">
-                  <Cpu size={16} weight="fill" className="text-amber" />
-                  Groq Llama 3.3 AI Triage
-                </span>
-                <span className="flex items-center gap-1.5 bg-surface px-3 py-1.5 rounded-md border border-line">
-                  <CheckCircle size={16} weight="fill" className="text-green" />
-                  Aadhaar / DigiLocker Ready
-                </span>
+              {/* Right: 3D civic scene + live feed island */}
+              <div className="hero-in hero-d4 w-full max-w-md mx-auto lg:ml-auto lg:mr-0 flex flex-col gap-6">
+                <div className="hidden lg:block glow-pad max-w-[380px] w-full ml-auto">
+                  <Image
+                    src="/illustrations/hero-civic.png"
+                    alt="Illustration of a Jharkhand village and town connected by a bridge, with school, water supply and solar facilities"
+                    width={1280}
+                    height={1024}
+                    priority
+                    className="w-full h-auto object-contain float-soft"
+                  />
+                </div>
+                <BridgePanel lang={lang} />
               </div>
             </div>
 
-            {/* Right: 3D civic scene + live feed island */}
-            <div className="hero-in hero-d4 w-full max-w-md mx-auto lg:ml-auto lg:mr-0 flex flex-col gap-6">
-              <div className="hidden lg:block glow-pad max-w-[340px] ml-auto">
-                <Image
-                  src="/illustrations/hero-civic.png"
-                  alt="Illustration of a Jharkhand village and town connected by a bridge, with school, water supply and solar facilities"
-                  width={1280}
-                  height={1024}
-                  priority
-                  className="w-full h-auto float-soft"
-                />
+            {/* Real-time 24-District Telemetry Strip */}
+            <div className="w-full grid grid-cols-2 md:grid-cols-4 gap-3 pt-2">
+              <div className="p-4 rounded-xl bg-surface border border-line shadow-xs flex flex-col">
+                <div className="flex items-center justify-between text-ink-3 text-[11px] font-bold uppercase tracking-wider mb-1">
+                  <span>Districts Active</span>
+                  <span className="w-2 h-2 rounded-full bg-green animate-pulse" />
+                </div>
+                <div className="font-display font-bold text-[28px] sm:text-[32px] text-ink leading-none">
+                  24/24
+                </div>
+                <span className="text-[12px] text-ink-3 mt-1.5">100% GIS telemetry interlinked</span>
               </div>
-              <BridgePanel lang={lang} />
+
+              <div className="p-4 rounded-xl bg-surface border border-line shadow-xs flex flex-col">
+                <div className="flex items-center justify-between text-ink-3 text-[11px] font-bold uppercase tracking-wider mb-1">
+                  <span>AI Triaged Today</span>
+                  <span className="text-[10px] text-green font-bold bg-green-tint/50 px-1.5 py-0.2 rounded font-mono">118ms</span>
+                </div>
+                <div className="font-display font-bold text-[28px] sm:text-[32px] text-ink leading-none">
+                  1,420
+                </div>
+                <span className="text-[12px] text-ink-3 mt-1.5">Zero duplicate grievances filed</span>
+              </div>
+
+              <div className="p-4 rounded-xl bg-surface border border-line shadow-xs flex flex-col">
+                <div className="flex items-center justify-between text-ink-3 text-[11px] font-bold uppercase tracking-wider mb-1">
+                  <span>University R&D</span>
+                  <span className="text-[10px] text-blue font-bold bg-blue-tint/50 px-1.5 py-0.2 rounded font-mono">CUJ/BIT</span>
+                </div>
+                <div className="font-display font-bold text-[28px] sm:text-[32px] text-ink leading-none">
+                  312
+                </div>
+                <span className="text-[12px] text-ink-3 mt-1.5">Active engineering capstones</span>
+              </div>
+
+              <div className="p-4 rounded-xl bg-surface border border-line shadow-xs flex flex-col">
+                <div className="flex items-center justify-between text-ink-3 text-[11px] font-bold uppercase tracking-wider mb-1">
+                  <span>CSR Capital Escrow</span>
+                  <span className="text-[10px] text-purple font-bold bg-purple-tint/50 px-1.5 py-0.2 rounded font-mono">CAG Safe</span>
+                </div>
+                <div className="font-display font-bold text-[28px] sm:text-[32px] text-green leading-none">
+                  ₹8.40 Cr
+                </div>
+                <span className="text-[12px] text-ink-3 mt-1.5">100% milestone-released funds</span>
+              </div>
+            </div>
+
+            {/* Live AI Pipeline Visualizer (Interactive Engine Demo) */}
+            <div id="pipeline" className="w-full scroll-mt-24">
+              <AiPipelineVisualizer />
             </div>
           </div>
         </section>
@@ -290,7 +349,7 @@ export default function LandingPage() {
                 {[
                   "Next.js 14 App Router",
                   "Supabase Postgres + pgvector",
-                  "Groq Llama 3.3 Triage",
+                  "Groq LLM Triage",
                   "Interactive React Leaflet",
                   "NIC MeghRaj Ready",
                   "GIGW 3.0 / WCAG 2.1 AA",

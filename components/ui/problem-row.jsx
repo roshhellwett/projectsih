@@ -1,9 +1,11 @@
-import { MapPin } from "@phosphor-icons/react";
+import { MapPin, GraduationCap, CaretUp } from "@phosphor-icons/react";
 import { CAT_ICONS, CAT_LABEL, STATUS_LBL } from "./constants";
 import { VoteBtn } from "./vote-btn";
 import { Button } from "./button";
+import { useI18n } from "@/lib/i18n";
 
 export function ProblemRow({ problem: p, viewerRole, onVote, onTrack, onPropose }) {
+  const { t, cat, status } = useI18n();
   const uni = p.routed_to_name;
   const canPropose = viewerRole === "university" && ["routed", "in_review"].includes(p.status);
   const isCitizen = viewerRole === "citizen";
@@ -23,17 +25,25 @@ export function ProblemRow({ problem: p, viewerRole, onVote, onTrack, onPropose 
     return m[cat] || m.other;
   };
   
-  // Status badge colors
+  /*
+   * Status → badge treatment. Keys must stay in sync with STATUS_FLOW
+   * (components/ui/constants.js). The previous map referenced statuses that do
+   * not exist in the schema ("new", "funding", "building") and omitted
+   * "proposal_submitted" / "in_progress", so those two — the most common
+   * mid-lifecycle states — fell through to a neutral grey.
+   */
   const getStatusClasses = (st) => {
     switch (st) {
-      case "new":
+      case "submitted":
+        return "bg-surface-2 text-ink-2 border-line";
       case "routed":
         return "bg-amber-tint text-amber border-amber-soft";
       case "in_review":
-      case "funding":
-        return "bg-blue-tint/50 text-blue border-blue/20";
-      case "building":
-        return "bg-purple-tint/50 text-purple border-purple/20";
+        return "bg-blue-tint text-blue border-blue-soft";
+      case "proposal_submitted":
+        return "bg-purple-tint text-purple border-purple";
+      case "in_progress":
+        return "bg-saffron-tint text-saffron-2 border-saffron-2";
       case "resolved":
         return "bg-green-tint text-green border-green-soft";
       default:
@@ -60,23 +70,24 @@ export function ProblemRow({ problem: p, viewerRole, onVote, onTrack, onPropose 
           {/* Mobile Priority Badge */}
           <div className="sm:hidden flex flex-col items-end shrink-0">
             <span className="text-[14px] font-display font-bold leading-none">{Number(p.priority_score ?? 5).toFixed(1)}</span>
-            <span className="text-[8px] font-mono tracking-widest text-ink-3 uppercase font-bold mt-0.5">SLA Prio</span>
+            <span className="text-[8px] font-mono tracking-widest text-ink-3 uppercase font-bold mt-0.5">{t("slaPriority", "SLA Prio")}</span>
           </div>
         </div>
 
         <div className="flex flex-wrap items-center gap-1.5 mb-2.5">
           <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-surface text-ink-2 text-[11px] font-semibold border border-line">
             <span className={`w-1.5 h-1.5 rounded-full ${getCatColor(p.category)}`} />
-            {CAT_LABEL[p.category] || "Other"}
+            {cat(p.category)}
           </span>
           <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider border ${getStatusClasses(p.status)}`}>
-            {STATUS_LBL[p.status] || p.status}
+            {status(p.status)}
           </span>
-          <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-surface-2 text-ink-2 text-[11px] font-medium border border-transparent">
-            📍 {p.district}
+          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-surface-2 text-ink-2 text-[11px] font-medium border border-transparent">
+            <MapPin size={12} weight="fill" className="text-amber" />
+            {p.district}
           </span>
           <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-mono text-ink-3 font-semibold bg-surface-2">
-            #{p.id.slice(0, 8)}
+            #{(p.id || "0000").slice(0, 8)}
           </span>
         </div>
 
@@ -88,14 +99,16 @@ export function ProblemRow({ problem: p, viewerRole, onVote, onTrack, onPropose 
           {isCitizen ? (
             <VoteBtn problem={p} onVote={onVote} />
           ) : (
-            <span className="inline-flex items-center px-2.5 py-1 rounded-lg bg-surface border border-line text-[11.5px] font-bold text-ink-2 shadow-sm">
-              ▲ {p.votes ?? 0} citizen votes
+            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-surface border border-line text-[11.5px] font-bold text-ink-2 shadow-sm">
+              <CaretUp size={12} weight="bold" className="text-green" />
+              {p.votes ?? 0} citizen votes
             </span>
           )}
           
           {uni && (
-            <span className="inline-flex items-center px-2.5 py-1 rounded-lg bg-blue-tint/30 border border-blue/10 text-[11.5px] font-medium text-blue">
-              🎓 {uni}
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-blue-tint/30 border border-blue/10 text-[11.5px] font-medium text-blue">
+              <GraduationCap size={13} weight="fill" />
+              {uni}
             </span>
           )}
 
@@ -107,7 +120,7 @@ export function ProblemRow({ problem: p, viewerRole, onVote, onTrack, onPropose 
             )}
             {onTrack && (
               <Button variant="outline" size="sm" onClick={() => onTrack(p)}>
-                Track Lifecycle
+                {t("trackLifecycle", "Track Lifecycle")}
               </Button>
             )}
           </div>
@@ -126,7 +139,7 @@ export function ProblemRow({ problem: p, viewerRole, onVote, onTrack, onPropose 
           />
         </div>
         <div className="text-[9px] font-mono tracking-widest uppercase font-bold text-ink-3 text-center leading-none">
-          SLA<br/>PRIO
+          {t("slaPriority", "SLA PRIO")}
         </div>
       </div>
     </div>

@@ -59,17 +59,24 @@ export default function ProblemDetailModal({
     return m[cat] || m.other;
   };
   
-  // Status badge colors
+  /*
+   * Status → badge treatment. Mirrors components/ui/problem-row.jsx and must
+   * stay in sync with STATUS_FLOW (components/ui/constants.js). The old map
+   * referenced non-existent statuses ("new", "funding", "building") and omitted
+   * "proposal_submitted" / "in_progress".
+   */
   const getStatusClasses = (st) => {
     switch (st) {
-      case "new":
+      case "submitted":
+        return "bg-surface-2 text-ink-2 border-line";
       case "routed":
         return "bg-amber-tint text-amber border-amber-soft";
       case "in_review":
-      case "funding":
-        return "bg-blue-tint/50 text-blue border-blue/20";
-      case "building":
-        return "bg-purple-tint/50 text-purple border-purple/20";
+        return "bg-blue-tint text-blue border-blue-soft";
+      case "proposal_submitted":
+        return "bg-purple-tint text-purple border-purple";
+      case "in_progress":
+        return "bg-saffron-tint text-saffron-2 border-saffron-2";
       case "resolved":
         return "bg-green-tint text-green border-green-soft";
       default:

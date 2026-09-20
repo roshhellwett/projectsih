@@ -3,7 +3,7 @@ import { getAuthenticatedUser, getAdminClient } from "@/lib/server-auth";
 
 /* industry expresses funding/mentorship interest on a proposal */
 export async function POST(req) {
-  const { authUser, profile, error: authError, status: authStatus } = await getAuthenticatedUser(req);
+  const { profile, error: authError, status: authStatus } = await getAuthenticatedUser(req);
   if (authError || !profile) {
     return NextResponse.json({ ok: false, error: authError || "Authentication required" }, { status: authStatus || 401 });
   }

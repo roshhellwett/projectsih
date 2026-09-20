@@ -93,15 +93,54 @@ alter table industry_interest enable row level security;
 alter table problem_votes enable row level security;
 alter table notifications enable row level security;
 
--- public read (demo/pilot posture; tighten for production)
-create policy "read users" on users for select using (true);
-create policy "users update own profile" on users for update using ((select auth.uid()) = auth_id);
-create policy "users insert own profile" on users for insert with check ((select auth.uid()) = auth_id);
+-- ─── RLS policies ─────────────────────────────────────────────────
+-- The public anon key ships in the browser bundle, so it is treated as public.
+--
+-- Read posture
+--   · problems / proposals / industry_interest / problem_votes → public SELECT
+--     (the landing feed and portal lists are read with the anon key)
+--   · users → authenticated only. `users` carries email and auth_id, so letting
+--     anon read it is a PII disclosure.
+--   · notifications → authenticated, scoped to the recipient's own audience.
+--
+-- Write posture
+--   No INSERT/UPDATE/DELETE policy is created for anon or authenticated, and
+--   table privileges for writes are revoked below. Every mutation in this app
+--   happens server-side through the service-role key (lib/admin-client.js),
+--   which bypasses RLS entirely.
+
 create policy "read problems" on problems for select using (true);
 create policy "read proposals" on proposals for select using (true);
 create policy "read interest" on industry_interest for select using (true);
 create policy "read votes" on problem_votes for select using (true);
-create policy "read notifs" on notifications for select using ((select auth.role()) = 'authenticated');
+
+create policy "read users" on users for select to authenticated using (true);
+create policy "users update own profile" on users for update using ((select auth.uid()) = auth_id);
+create policy "users insert own profile" on users for insert with check ((select auth.uid()) = auth_id);
+
+-- State admins see the full notification audit trail; everyone else sees only
+-- the notifications addressed to their own role or email address.
+create policy "notifications readable by intended audience"
+  on notifications for select to authenticated
+  using (
+    exists (
+      select 1
+      from users u
+      where u.auth_id = (select auth.uid())
+        and (
+          u.role = 'admin'
+          or notifications.send_to = u.role
+          or notifications.send_to = u.email
+        )
+    )
+  );
+
+-- Belt and braces: even with RLS on, explicitly remove every write privilege
+-- from the public API roles so a missing policy can never become a hole.
+revoke insert, update, delete, truncate on all tables in schema public from anon, authenticated;
+grant select on table problems, proposals, industry_interest, problem_votes to anon, authenticated;
+grant select on table users to authenticated;
+revoke select on table users from anon;
 
 -- performance & covering indexes
 create index if not exists idx_problems_district on problems (district);
@@ -220,9 +259,11 @@ update problems set demo_votes = case id
   else 10 + (abs(hashtext(id::text)) % 20)
 end;
 
-create or replace view problems_with_votes with (security_invoker = true) as
-select p.*, (select count(*) from problem_votes v where v.problem_id = p.id) + p.demo_votes as votes
+create or replace view problems_with_votes as
+select p.*, (select count(*) from problem_votes v where v.problem_id = p.id) + coalesce(p.demo_votes, 0) as votes
 from problems p;
+
+alter view problems_with_votes set (security_invoker = true);
 
 -- ─── photo storage (problem photos: public bucket, authed uploads) ───
 -- If your Supabase project rejects these two policies (rare), create the
