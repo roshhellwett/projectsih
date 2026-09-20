@@ -1114,7 +1114,7 @@ body.high-contrast .aurora{display:none!important}
 
 .glow-pad{position:relative}
 .glow-pad::before{content:"";position:absolute;left:50%;top:50%;width:86%;height:86%;transform:translate(-50%,-50%);border-radius:50%;
-  background:radial-gradient(circle,color-mix(in srgb,var(--green) 22%,transparent) 0%,transparent 68%);filter:blur(22px);z-index:0;pointer-events:none}
+  background:radial-gradient(circle,color-mix(in srgb,var(--green) 22%,transparent) 0%,transparent 70%);z-index:0;pointer-events:none}
 .glow-pad>*{position:relative;z-index:1}
 
 .tilt-3d{transition:transform .28s var(--ease),filter .28s var(--ease)}

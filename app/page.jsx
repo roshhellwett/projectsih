@@ -73,9 +73,6 @@ export default function LandingPage() {
       {/* Service gateway */}
       <main id="main-content" className="flex-1 flex flex-col">
         <section className="relative overflow-hidden bg-paper border-b border-line py-10 md:py-14 lg:py-16">
-          <div className="pointer-events-none absolute -top-24 -right-24 w-[420px] h-[420px] rounded-full bg-green-tint/50 blur-3xl" aria-hidden="true" />
-          <div className="pointer-events-none absolute -bottom-32 -left-20 w-[380px] h-[380px] rounded-full bg-saffron-tint/40 blur-3xl" aria-hidden="true" />
-
           <div className="relative max-w-[1240px] mx-auto px-4 sm:px-6 flex flex-col gap-10">
             <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_460px] gap-8 lg:gap-12 items-center">
               <div className="flex flex-col gap-5">
