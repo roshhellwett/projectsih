@@ -1,7 +1,7 @@
 "use client";
 
 /* ════════════════════════════════════════════════════════════════
-   SETU Portal Controller — Multi-Role Architecture
+   SAHYOG Portal Controller — Multi-Role Architecture
    - Session & Profile Resolution (Auth & Fallbacks)
    - Real-Time Supabase Sync (Live updates on problems/votes/status)
    - Role-Based Portal Delegation (Citizen / Uni / Industry / Admin)
@@ -44,12 +44,12 @@ export default function Portal() {
           .limit(200),
         sb
           .from("proposals")
-          .select("*, problem:problems(title,category,district,status)")
+          .select("*, problem:problems(*)")
           .order("created_at", { ascending: false })
           .limit(100),
         sb
           .from("industry_interest")
-          .select("*, proposal:proposals(*, problem:problems(title,category,district,status))")
+          .select("*, proposal:proposals(*, problem:problems(*))")
           .order("created_at", { ascending: false })
           .limit(100),
         sb
@@ -196,13 +196,16 @@ export default function Portal() {
   /* ─── Loading Screen ─── */
   if (loading || !user) {
     return (
-      <div style={{ minHeight: "100dvh", display: "grid", placeItems: "center", background: "var(--paper)" }}>
-        <div style={{ textAlign: "center" }}>
-          <div className="brand" style={{ justifyContent: "center", marginBottom: 14 }}>
-            <span className="brand-mark">सेतु</span>
-            <b>SETU Portal</b>
+      <div className="min-h-dvh grid place-items-center bg-paper text-ink p-6">
+        <div className="flex flex-col items-center justify-center text-center max-w-sm">
+          <div className="w-12 h-12 rounded-xl bg-green-2 text-white grid place-items-center font-deva text-lg font-bold shadow-md mb-4 animate-pulse">
+            सहयोग
           </div>
-          <p className="mono">{loading ? "SYNCHRONIZING PORTAL DATA…" : "REDIRECTING…"}</p>
+          <h2 className="font-display text-xl font-bold text-ink mb-2">SAHYOG Portal</h2>
+          <div className="flex items-center gap-2 text-xs font-mono tracking-widest text-ink-3 uppercase font-semibold">
+            <span className="w-2 h-2 rounded-full bg-green animate-ping" />
+            {loading ? "SYNCHRONIZING PORTAL DATA…" : "INITIALIZING SESSION…"}
+          </div>
         </div>
       </div>
     );

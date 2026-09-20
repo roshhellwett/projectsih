@@ -1,12 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { GovUtilityBar, GovFooter } from "@/components/GovHeaderFooter";
 import { BridgePanel, RoleDossier, JourneyRail, DistrictCoverageExplorer } from "@/components/landing";
 import { Button } from "@/components/ui/button";
 import { Reveal, CountUp } from "@/components/ui/motion";
+import { getTranslation, getStoredLang, setStoredLang } from "@/lib/i18n";
 import {
   FileText,
   MagnifyingGlass,
@@ -23,102 +24,47 @@ import {
 export default function LandingPage() {
   const [lang, setLang] = useState("en");
 
-  const t = {
-    en: {
-      initiative: "SIH26043 · Government of Jharkhand",
-      portalTitle: "SETU",
-      portalSub: "Societal Innovation Collaboration Portal",
-      heroHead: "Every civic grievance, matched to the right minds to solve.",
-      heroLead:
-        "Citizens report. Groq AI prioritises and routes. Universities solve. Industry CSR funds. Government oversees. One unified portal connecting 24 districts of Jharkhand.",
-      btnReport: "Report a Grievance",
-      btnTrack: "Track Grievance Status",
-      btnEnter: "Enter Portal",
-      btnSignIn: "Sign In",
-      quickTilesTitle: "Citizen & Stakeholder Services",
-      tile1T: "File a Grievance",
-      tile1D: "Upload photo, auto-detect GPS, and AI auto-classifies into correct civic department.",
-      tile2T: "Track Real-Time Status",
-      tile2D: "5-stage transparent timeline with SLA adherence and officer contact.",
-      tile3T: "University Research Hub",
-      tile3D: "Faculty and students claim domain-matched problems for funded live solutions.",
-      tile4T: "Industry CSR Sponsorship",
-      tile4D: "Sponsor vetted municipal projects with Schedule VII CSR compliance.",
-      stat1: "24",
-      stat1L: "Districts Reachable",
-      stat2: "7",
-      stat2L: "Civic Sectors Covered",
-      stat3: "6+",
-      stat3L: "Partner Universities",
-      stat4: "₹0",
-      stat4L: "Tech Stack Cost (Pilot)",
-      journeyTitle: "How a Problem Moves Through SETU",
-      journeyLead: "From ground-level citizen grievance to verified public infrastructure resolution.",
-      rolesTitle: "Four Stakeholders, One Collaborative Grid",
-      techTitle: "Built to Deploy. Sized to Scale.",
-      techLead:
-        "Engineered on Next.js 14, Supabase Postgres with pgvector, and high-throughput free-tier LLM triage. Architecture is 100% compliant with GIGW 3.0 and DPDPA 2023.",
-    },
-    hi: {
-      initiative: "एस.आई.एच 26043 · झारखण्ड सरकार",
-      portalTitle: "सेतु",
-      portalSub: "सामाजिक नवाचार सहयोग सेतु",
-      heroHead: "हर नागरिक समस्या, समाधान के लिए सही संस्थानों से जुड़ी।",
-      heroLead:
-        "नागरिक शिकायत दर्ज करते हैं। AI वर्गीकरण और प्राथमिकता तय करता है। विश्वविद्यालय समाधान करते हैं। उद्योग सीएसआर फंड देता है। झारखण्ड के सभी 24 जिलों के लिए एक मंच।",
-      btnReport: "शिकायत दर्ज करें",
-      btnTrack: "स्थिति जांचें",
-      btnEnter: "पोर्टल में प्रवेश करें",
-      btnSignIn: "लॉग सेन करें",
-      quickTilesTitle: "नागरिक एवं हितधारक सेवाएं",
-      tile1T: "नई शिकायत दर्ज करें",
-      tile1D: "फोटो अपलोड करें, जीपीएस लोकेशन के साथ एआई स्वतः विभाग तय करेगा।",
-      tile2T: "शिकायत की स्थिति ट्रैक करें",
-      tile2D: "5-चरणीय पारदर्शी समयरेखा और जवाबदेह अधिकारी की जानकारी।",
-      tile3T: "विश्वविद्यालय अनुसंधान हब",
-      tile3D: "प्राध्यापक और छात्र अपने विभाग की समस्याओं पर शोध व समाधान बनाएं।",
-      tile4T: "उद्योग सीएसआर भागीदारी",
-      tile4D: "सत्यापित परियोजनाओं को सीएसआर फंड और मेंटरशिप प्रदान करें।",
-      stat1: "24",
-      stat1L: "जिले आच्छादित",
-      stat2: "7",
-      stat2L: "नागरिक क्षेत्र",
-      stat3: "6+",
-      stat3L: "सहभागी विश्वविद्यालय",
-      stat4: "₹0",
-      stat4L: "पायलट तकनीक लागत",
-      journeyTitle: "सेतु पोर्टल पर समस्या निवारण चक्र",
-      journeyLead: "नागरिक शिकायत से लेकर सत्यापित सार्वजनिक अवसंरचना सुधार तक की पारदर्शी प्रक्रिया।",
-      rolesTitle: "चार मुख्य भूमिकाएं, एक एकीकृत मंच",
-      techTitle: "सुरक्षित, आधुनिक और व्यापक स्तर पर तैयार।",
-      techLead:
-        "Next.js 14, Supabase pgvector और सुरक्षित AI आर्किटेक्चर। GIGW 3.0 और DPDPA 2023 के सभी सुरक्षा एवं गोपनीयता मानकों के अनुरूप।",
-    },
-  }[lang];
+  useEffect(() => {
+    setLang(getStoredLang());
+    const onLangChange = (e) => {
+      if (e.detail?.lang) setLang(e.detail.lang);
+    };
+    window.addEventListener("sahyog_lang_changed", onLangChange);
+    return () => window.removeEventListener("sahyog_lang_changed", onLangChange);
+  }, []);
+
+  const t = getTranslation(lang);
+
+  const handleLangChange = (newLang) => {
+    setLang(newLang);
+    setStoredLang(newLang);
+  };
 
   return (
     <div className="min-h-screen bg-surface font-body text-ink flex flex-col overflow-x-hidden">
       {/* Official Government Top Utility Bar */}
-      <GovUtilityBar lang={lang} setLang={setLang} />
+      <GovUtilityBar lang={lang} setLang={handleLangChange} />
 
       {/* Primary service header */}
       <header className="sticky top-0 z-40 bg-surface/95 backdrop-blur-md border-b border-line">
         <div className="max-w-[1240px] mx-auto px-4 sm:px-6 h-16 grid grid-cols-[minmax(0,1fr)_auto] lg:grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-4">
           <Link href="/" className="flex items-center gap-3">
             <span className="w-10 h-10 rounded-md bg-green-2 flex items-center justify-center text-white font-deva font-bold text-sm shrink-0">
-              सेतु
+              सहयोग
             </span>
             <span className="min-w-0 truncate font-display font-bold text-lg sm:text-xl">
-              SETU <span className="text-ink-3 text-lg">{lang === "hi" ? "झारखण्ड" : "Jharkhand"}</span>
+              SAHYOG <span className="text-ink-3 text-lg">
+                {lang === "hi" ? "झारखण्ड" : lang === "bn" ? "ঝাড়খণ্ড" : lang === "sat" ? "ᱡᱷᱟᱨᱠᱷᱚᱸᱰ" : lang === "ur" ? "جھارکھنڈ" : "Jharkhand"}
+              </span>
             </span>
           </Link>
 
           <nav className="hidden lg:flex justify-self-center items-center gap-7 text-[14px] font-medium text-ink-2">
-            <a href="#services" className="hover:text-green transition-colors">{lang === "hi" ? "सेवाएं" : "Services"}</a>
-            <a href="#how" className="hover:text-green transition-colors">{lang === "hi" ? "कार्यप्रणाली" : "How it Works"}</a>
-            <a href="#roles" className="hover:text-green transition-colors">{lang === "hi" ? "हितधारक" : "Who Uses SETU"}</a>
-            <a href="#districts" className="hover:text-green transition-colors">{lang === "hi" ? "जिले" : "Districts"}</a>
-            <a href="#tech" className="hover:text-green transition-colors">{lang === "hi" ? "तकनीक" : "Architecture"}</a>
+            <a href="#services" className="hover:text-green transition-colors">{t.navServices}</a>
+            <a href="#how" className="hover:text-green transition-colors">{t.navHow}</a>
+            <a href="#roles" className="hover:text-green transition-colors">{t.navRoles}</a>
+            <a href="#districts" className="hover:text-green transition-colors">{t.navDistricts}</a>
+            <a href="#tech" className="hover:text-green transition-colors">{t.navTech}</a>
           </nav>
 
           <div className="flex items-center gap-3">
@@ -149,7 +95,7 @@ export default function LandingPage() {
                   SIH26043
                 </span>
                 <span className="text-[13px] font-medium text-ink-2">
-                  {lang === "hi" ? "झारखण्ड सरकार" : "Government of Jharkhand"}
+                  {t.stateGov}
                 </span>
               </div>
 

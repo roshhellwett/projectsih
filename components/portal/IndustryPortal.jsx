@@ -1,7 +1,7 @@
 "use client";
 
 /* ════════════════════════════════════════════════════════════════════════════
-   SETU Portal — Industry & CSR Corporate Workspace
+   SAHYOG Portal — Industry & CSR Corporate Workspace
 ════════════════════════════════════════════════════════════════════════════ */
 import { useState } from "react";
 import {
@@ -11,6 +11,7 @@ import {
   CAT_LABEL,
   CAT_ICONS,
   fmtINR,
+  EmptyState,
 } from "@/components/ui";
 import { Button, Input, Label, Textarea } from "@/components/ui";
 import ProblemDetailModal from "./ProblemDetailModal";
@@ -72,6 +73,7 @@ export default function IndustryPortal({
     ["my", "My CSR Commitments", ICON.heart, myInterests.length],
     ["impact", "Jharkhand ESG Impact", ICON.chart],
   ];
+  const activeView = NAV.some(([k]) => k === view) ? view : "proposals";
 
   /* ─── Submit CSR Pledge ─── */
   async function submitPledge(e) {
@@ -117,7 +119,7 @@ export default function IndustryPortal({
     <Shell
       user={user}
       roleName="Corporate CSR Partner"
-      active={view}
+      active={activeView}
       navItems={NAV}
       onNav={(id) => {
         setView(id);
@@ -125,16 +127,16 @@ export default function IndustryPortal({
       }}
       onExit={onSignOut}
       title={
-        view === "proposals"
+        activeView === "proposals"
           ? "Corporate CSR Opportunity Marketplace"
-          : view === "my"
+          : activeView === "my"
           ? "My Sponsored Projects"
           : "ESG & Community Impact"
       }
       sub="Deploy Section 135 CSR funds directly into vetted university engineering solutions across Jharkhand"
     >
       {/* ─── CSR MARKETPLACE ─── */}
-      {view === "proposals" && (
+      {activeView === "proposals" && (
         <div className="flex flex-col gap-6 max-w-[1200px] mx-auto w-full">
           {/* Filter Pills */}
           <div className="flex flex-wrap gap-2 pb-4 border-b border-line">
@@ -171,17 +173,16 @@ export default function IndustryPortal({
           </div>
 
           {filteredProposals.length === 0 ? (
-            <div className="flex flex-col items-center justify-center p-10 text-center bg-surface rounded-lg border border-dashed border-line">
-              <img src="/illustrations/empty-state.png" alt="" aria-hidden="true" width="112" height="112" loading="lazy" className="w-28 h-28 mb-3 float-soft" />
-              <h3 className="font-display text-xl font-bold text-ink mb-2">No Proposals in this Category</h3>
-              <p className="text-[14.5px] text-ink-2 max-w-md">
-                Check other sectors or await new proposals from university research teams.
-              </p>
+            <div className="bg-surface rounded-lg border border-dashed border-line">
+              <EmptyState
+                title="No Proposals in this Category"
+                hint="Check other sectors or await new proposals from university research teams."
+              />
             </div>
           ) : (
             <div className="flex flex-col gap-4">
               {filteredProposals.map((pr) => {
-                const prob = pr.problem || problems.find((p) => p.id === pr.problem_id);
+                const prob = problems.find((p) => p.id === pr.problem_id) || (pr.problem ? { ...pr.problem, id: pr.problem_id } : null);
                 const isBackedByMe = myInterests.some((i) => i.proposal_id === pr.id);
                 return (
                   <div key={pr.id} className="flex flex-col bg-surface rounded-lg border border-line shadow-sm overflow-hidden p-5 md:p-6 hover:border-green-soft transition-colors">
@@ -257,7 +258,7 @@ export default function IndustryPortal({
       )}
 
       {/* ─── MY COMMITMENTS ─── */}
-      {view === "my" && (
+      {activeView === "my" && (
         <div className="flex flex-col gap-6 max-w-[1200px] mx-auto w-full">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 pb-4 border-b border-line">
             <p className="text-[15px] text-ink-2 max-w-2xl leading-relaxed">
@@ -266,15 +267,16 @@ export default function IndustryPortal({
           </div>
 
           {myInterests.length === 0 ? (
-            <div className="flex flex-col items-center justify-center p-10 text-center bg-surface rounded-lg border border-dashed border-line">
-              <img src="/illustrations/empty-state.png" alt="" aria-hidden="true" width="112" height="112" loading="lazy" className="w-28 h-28 mb-3 float-soft" />
-              <h3 className="font-display text-xl font-bold text-ink mb-2">No Active CSR Pledges</h3>
-              <p className="text-[14.5px] text-ink-2 max-w-md mb-6">
-                Explore the CSR marketplace and partner with premier Jharkhand academic teams to solve real community challenges.
-              </p>
-              <Button onClick={() => setView("proposals")}>
-                Browse Marketplace
-              </Button>
+            <div className="bg-surface rounded-lg border border-dashed border-line">
+              <EmptyState
+                title="No Active CSR Pledges"
+                hint="Explore the CSR marketplace and partner with premier Jharkhand academic teams to solve real community challenges."
+                action={
+                  <Button onClick={() => setView("proposals")}>
+                    Browse Marketplace
+                  </Button>
+                }
+              />
             </div>
           ) : (
             <div className="flex flex-col gap-4">
@@ -282,30 +284,26 @@ export default function IndustryPortal({
                 const pr = item.proposal || proposals.find((p) => p.id === item.proposal_id);
                 const prob = pr?.problem || problems.find((p) => p.id === pr?.problem_id);
                 return (
-                  <div key={item.id} className="flex flex-col bg-surface rounded-lg border border-line shadow-sm overflow-hidden p-5 hover:border-green-soft transition-colors">
+                  <div key={item.id} className="flex flex-col bg-surface rounded-lg border border-line p-5 md:p-6 shadow-sm">
                     <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
                       <div className="flex flex-col">
-                        <div className="flex flex-wrap items-center gap-2 mb-2.5">
-                          <span className="inline-flex items-center px-2 py-1 rounded text-[11px] font-bold tracking-wider uppercase bg-amber/10 text-amber-600 border border-amber/20">
-                            PLEDGED ({item.interest_type.toUpperCase()})
+                        <div className="flex items-center gap-2 mb-2">
+                          <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-mono uppercase tracking-wider font-bold bg-green-tint text-green border border-green-soft">
+                            {item.interest_type}
                           </span>
-                          <span className="text-[11px] font-mono font-bold text-ink-3">
-                            {new Date(item.created_at).toLocaleDateString("en-IN")}
+                          <span className="text-[11px] text-ink-3">
+                            Committed {new Date(item.created_at).toLocaleDateString("en-IN")}
                           </span>
                         </div>
-                        <h3 className="font-display text-[18px] font-bold text-ink mb-2">
-                          Project: {prob?.title || "Proposal #" + item.proposal_id.slice(0, 8)}
+                        <h3 className="font-display text-[18px] md:text-[20px] font-bold text-ink mb-1">
+                          {prob?.title || "Sponsored Civic Solution"}
                         </h3>
-                        <p className="text-[14.5px] text-ink-2 leading-relaxed italic border-l-2 border-line pl-3 my-2">
-                          &ldquo;{item.message}&rdquo;
+                        <p className="text-[14px] text-ink-2 leading-relaxed mb-3">
+                          {item.message || "Corporate sponsorship pledged towards implementation."}
                         </p>
-                        {prob && (
-                          <div className="text-[13px] font-semibold text-ink-3 mt-2">
-                            📍 District: {prob.district}
-                          </div>
-                        )}
                       </div>
-                      <div className="shrink-0 flex flex-col items-start sm:items-end p-4 rounded-xl bg-surface border border-line mt-4 sm:mt-0">
+
+                      <div className="shrink-0 flex flex-col items-start sm:items-end p-4 rounded-lg bg-paper border border-line">
                         <span className="text-[11px] font-mono font-bold tracking-widest text-ink-3 uppercase mb-1">Committed Grant</span>
                         <strong className="font-display text-[20px] font-bold text-green">
                           {fmtINR(pr?.funding_sought || 250000)}
@@ -321,7 +319,7 @@ export default function IndustryPortal({
       )}
 
       {/* ─── ESG IMPACT METRICS ─── */}
-      {view === "impact" && (
+      {activeView === "impact" && (
         <div className="flex flex-col gap-6 max-w-[1200px] mx-auto w-full">
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">

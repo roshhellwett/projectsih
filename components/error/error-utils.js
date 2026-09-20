@@ -1,6 +1,6 @@
 /**
  * Utility functions for normalizing, parsing, and formatting errors
- * across the SETU application (React render errors, Next.js digests,
+ * across the SAHYOG application (React render errors, Next.js digests,
  * unhandled promise rejections, and window event listener errors).
  */
 
@@ -163,7 +163,7 @@ export function parseErrorInfo(rawError, errorInfo = null, eventType = "Render")
     ? `DIGEST-${digest}`
     : errorObj?.code
     ? String(errorObj.code)
-    : `ERR_SETU_${hashString(`${errorType}-${message}-${parsedStack.file}`)}`;
+    : `ERR_SAHYOG_${hashString(`${errorType}-${message}-${parsedStack.file}`)}`;
 
   // Capture environment details
   const pathname = typeof window !== "undefined" ? window.location.pathname : "SSR/Server";
@@ -214,7 +214,7 @@ export function parseErrorInfo(rawError, errorInfo = null, eventType = "Render")
  */
 export function generateErrorReport(info) {
   return `========================================
-SETU COLLABORATION PORTAL — ERROR REPORT
+SAHYOG COLLABORATION PORTAL — ERROR REPORT
 ========================================
 Timestamp:    ${info.timestamp} (${info.isoTimestamp})
 Error Code:   ${info.errorCode}

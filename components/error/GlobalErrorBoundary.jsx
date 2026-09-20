@@ -44,7 +44,7 @@ export class GlobalErrorBoundaryClass extends Component {
 
     // Check if user preferred full fallback screen on any error
     try {
-      const savedPref = localStorage.getItem("setu_error_force_fullscreen");
+      const savedPref = localStorage.getItem("sahyog_error_force_fullscreen") || localStorage.getItem("setu_error_force_fullscreen");
       if (savedPref === "true") {
         this.setState({ forceFullScreenOnAnyError: true });
       }
@@ -132,7 +132,7 @@ export class GlobalErrorBoundaryClass extends Component {
       () => {
         try {
           localStorage.setItem(
-            "setu_error_force_fullscreen",
+            "sahyog_error_force_fullscreen",
             this.state.forceFullScreenOnAnyError ? "true" : "false"
           );
         } catch {}

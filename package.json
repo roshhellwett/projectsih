@@ -1,9 +1,9 @@
 {
-  "name": "setu-portal",
+  "name": "sahyog-portal",
   "version": "1.0.0",
   "type": "module",
   "private": true,
-  "description": "SETU — Societal Innovation Collaboration Portal · SIH26043, Government of Jharkhand",
+  "description": "SAHYOG — Societal Innovation Collaboration Portal · SIH26043, Government of Jharkhand",
   "scripts": {
     "dev": "next dev",
     "build:dev": "next build",
@@ -11,7 +11,7 @@
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
-    "test": "node tests/ai.test.mjs && node tests/groq-pipeline.test.mjs",
+    "test": "node tests/ai.test.mjs && node tests/groq-pipeline.test.mjs && node tests/test-supabase.mjs",
     "prepare": "husky"
   },
   "dependencies": {
@@ -25,6 +25,7 @@
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "react-leaflet": "^4.2.1",
+    "sharp": "^0.35.4",
     "tailwind-merge": "^3.7.0"
   },
   "devDependencies": {

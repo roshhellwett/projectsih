@@ -125,15 +125,15 @@ function AuthForm() {
   }
 
   return (
-    <div className="min-h-dvh grid grid-cols-1 lg:grid-cols-[minmax(340px,0.8fr)_minmax(480px,1.2fr)] bg-paper text-ink font-body">
+    <div id="main-content" className="min-h-dvh grid grid-cols-1 lg:grid-cols-[minmax(340px,0.8fr)_minmax(480px,1.2fr)] bg-paper text-ink font-body">
       {/* Left Pillar: Government Identity & Trust Shield */}
       <div className="hidden lg:flex flex-col justify-between relative overflow-hidden bg-green-2 text-white p-10 xl:p-14">
         
         <div className="flex flex-col gap-6 relative z-10">
           <Link href="/" className="flex items-center gap-3 font-bold tracking-wide">
-            <span className="w-9 h-9 rounded-md bg-saffron text-green-2 grid place-items-center font-deva text-base shrink-0">सेतु</span>
+            <span className="w-9 h-9 rounded-md bg-saffron text-green-2 grid place-items-center font-deva text-base shrink-0">सहयोग</span>
             <span className="text-xl">
-              <b>SETU</b> <span className="text-sm text-white/60 font-normal">झारखण्ड सरकार</span>
+              <b>SAHYOG</b> <span className="text-sm text-white/60 font-normal">झारखण्ड सरकार</span>
             </span>
           </Link>
 
@@ -199,11 +199,11 @@ function AuthForm() {
         <div className="w-full max-w-[500px] bg-surface rounded-lg p-2 sm:p-7 lg:p-8 lg:shadow-sm lg:border lg:border-line">
           <div className="mb-6">
             <div className="flex items-center gap-2.5 mb-4 md:hidden">
-              <span className="w-8 h-8 rounded-md bg-green-2 text-white grid place-items-center font-deva text-sm">सेतु</span>
-              <span className="font-bold">SETU Portal</span>
+              <span className="w-8 h-8 rounded-md bg-green-2 text-white grid place-items-center font-deva text-sm">सहयोग</span>
+              <span className="font-bold">SAHYOG Portal</span>
             </div>
             <h1 className="font-display text-2xl font-bold">
-              {mode === "signin" ? "Sign in to SETU" : "Create Official Account"}
+              {mode === "signin" ? "Sign in to SAHYOG" : "Create Official Account"}
             </h1>
             <p className="text-sm text-ink-2 mt-1">
               Secure citizen and institutional access to the Jharkhand Civic Innovation Grid.
@@ -409,7 +409,7 @@ export default function LoginPage() {
     <Suspense
       fallback={
         <div className="min-h-dvh grid place-items-center font-mono text-ink-3 bg-surface">
-          Loading SETU Authentication…
+          Loading SAHYOG Authentication…
         </div>
       }
     >

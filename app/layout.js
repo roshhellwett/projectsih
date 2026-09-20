@@ -28,7 +28,7 @@ const tiroDeva = Tiro_Devanagari_Hindi({
 });
 
 export const metadata = {
-  title: "SETU — Societal Innovation Collaboration Portal · SIH26043",
+  title: "SAHYOG — Societal Innovation Collaboration Portal · SIH26043",
   description:
     "Crowdsource societal challenges and route them to the universities best equipped to solve them, with industry funding. SIH26043, Government of Jharkhand.",
   manifest: "/manifest.webmanifest",

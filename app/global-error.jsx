@@ -17,7 +17,7 @@ export default function GlobalError({ error, reset }) {
   return (
     <html lang="en">
       <head>
-        <title>Fatal Error · SETU Collaboration Portal</title>
+        <title>Fatal Error · SAHYOG Collaboration Portal</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </head>
       <body>

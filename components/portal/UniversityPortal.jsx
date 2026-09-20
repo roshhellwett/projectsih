@@ -1,7 +1,7 @@
 "use client";
 
 /* ════════════════════════════════════════════════════════════════════════════
-   SETU Portal — University Solver & Research Workspace
+   SAHYOG Portal — University Solver & Research Workspace
 ════════════════════════════════════════════════════════════════════════════ */
 import { useState } from "react";
 import {
@@ -12,6 +12,7 @@ import {
   CAT_ICONS,
   STATUS_LBL,
   fmtINR,
+  EmptyState,
 } from "@/components/ui";
 import { Input, Button, Label, Textarea } from "@/components/ui";
 import ProblemDetailModal from "./ProblemDetailModal";
@@ -61,6 +62,7 @@ export default function UniversityPortal({
     ["proposals", "My Submitted Proposals", ICON.doc, myProposals.length],
     ["all", "All State Grievances", ICON.list],
   ];
+  const activeView = NAV.some(([k]) => k === view) ? view : "inbox";
 
   /* ─── Groq AI Proposal Generator ─── */
   async function draftWithAI() {
@@ -139,7 +141,7 @@ export default function UniversityPortal({
       user={user}
       roleName="University Research Partner"
       expertise={user.domain_expertise}
-      active={view}
+      active={activeView}
       navItems={NAV}
       onNav={(id) => {
         setView(id);
@@ -147,16 +149,16 @@ export default function UniversityPortal({
       }}
       onExit={onSignOut}
       title={
-        view === "inbox"
+        activeView === "inbox"
           ? "Domain-Matched Civic Problems"
-          : view === "proposals"
+          : activeView === "proposals"
           ? "Submitted University Proposals"
           : "Statewide Civic Challenges"
       }
       sub="Form faculty-student teams, engineer practical solutions, and receive corporate CSR grant funding"
     >
       {/* ─── INBOX OF ROUTED PROBLEMS ─── */}
-      {view === "inbox" && (
+      {activeView === "inbox" && (
         <div className="flex flex-col gap-6 max-w-[1200px] mx-auto w-full">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 pb-4 border-b border-line">
             <p className="text-[15px] text-ink-2 max-w-2xl leading-relaxed">
@@ -168,15 +170,16 @@ export default function UniversityPortal({
           </div>
 
           {routedToMe.length === 0 ? (
-            <div className="flex flex-col items-center justify-center p-10 text-center bg-surface rounded-lg border border-dashed border-line">
-              <img src="/illustrations/empty-state.png" alt="" aria-hidden="true" width="112" height="112" loading="lazy" className="w-28 h-28 mb-3 float-soft" />
-              <h3 className="font-display text-xl font-bold text-ink mb-2">No Assigned Problems in Queue</h3>
-              <p className="text-[14.5px] text-ink-2 max-w-md mb-6">
-                When citizen grievances matching your domain are validated by AI triage, they will appear here. You can also explore statewide problems.
-              </p>
-              <Button onClick={() => setView("all")}>
-                Browse All State Grievances <ArrowRight size={16} className="ml-1" />
-              </Button>
+            <div className="bg-surface rounded-lg border border-dashed border-line">
+              <EmptyState
+                title="No Assigned Problems in Queue"
+                hint="When citizen grievances matching your domain are validated by AI triage, they will appear here. You can also explore statewide problems."
+                action={
+                  <Button onClick={() => setView("all")}>
+                    Browse All State Grievances <ArrowRight size={16} className="ml-1" />
+                  </Button>
+                }
+              />
             </div>
           ) : (
             <div className="flex flex-col gap-4">
@@ -195,7 +198,7 @@ export default function UniversityPortal({
       )}
 
       {/* ─── MY PROPOSALS LIST ─── */}
-      {view === "proposals" && (
+      {activeView === "proposals" && (
         <div className="flex flex-col gap-6 max-w-[1200px] mx-auto w-full">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 pb-4 border-b border-line">
             <p className="text-[15px] text-ink-2 max-w-2xl leading-relaxed">
@@ -204,20 +207,21 @@ export default function UniversityPortal({
           </div>
 
           {myProposals.length === 0 ? (
-            <div className="flex flex-col items-center justify-center p-10 text-center bg-surface rounded-lg border border-dashed border-line">
-              <img src="/illustrations/empty-state.png" alt="" aria-hidden="true" width="112" height="112" loading="lazy" className="w-28 h-28 mb-3 float-soft" />
-              <h3 className="font-display text-xl font-bold text-ink mb-2">No Proposals Submitted Yet</h3>
-              <p className="text-[14.5px] text-ink-2 max-w-md mb-6">
-                Claim a routed problem from your inbox, use the AI Co-Pilot to draft a scope, and submit your proposal for CSR sponsorship.
-              </p>
-              <Button onClick={() => setView("inbox")}>
-                Go to Routed Inbox <ArrowRight size={16} className="ml-1" />
-              </Button>
+            <div className="bg-surface rounded-lg border border-dashed border-line">
+              <EmptyState
+                title="No Proposals Submitted Yet"
+                hint="Claim a routed problem from your inbox, use the AI Co-Pilot to draft a scope, and submit your proposal for CSR sponsorship."
+                action={
+                  <Button onClick={() => setView("inbox")}>
+                    Go to Routed Inbox <ArrowRight size={16} className="ml-1" />
+                  </Button>
+                }
+              />
             </div>
           ) : (
             <div className="flex flex-col gap-4">
               {myProposals.map((pr) => {
-                const prob = pr.problem || problems.find((p) => p.id === pr.problem_id);
+                const prob = problems.find((p) => p.id === pr.problem_id) || (pr.problem ? { ...pr.problem, id: pr.problem_id } : null);
                 const matchedInterests = interests.filter((i) => i.proposal_id === pr.id);
                 return (
                   <div key={pr.id} className="flex flex-col bg-surface rounded-lg border border-line shadow-sm overflow-hidden p-5 md:p-6 hover:border-green-soft transition-colors relative">
@@ -265,7 +269,7 @@ export default function UniversityPortal({
       )}
 
       {/* ─── ALL STATE PROBLEMS ─── */}
-      {view === "all" && (
+      {activeView === "all" && (
         <div className="flex flex-col gap-6 max-w-[1200px] mx-auto w-full">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 pb-4 border-b border-line">
             <p className="text-[15px] text-ink-2 max-w-2xl leading-relaxed">

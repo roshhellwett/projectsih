@@ -14,6 +14,7 @@ export default {
         line: "var(--line)",
         "line-2": "var(--line-2)",
         setu: "var(--green)",
+        sahyog: "var(--green)",
         saffron: "var(--saffron)",
         "saffron-hi": "var(--saffron-hi)",
         "saffron-tint": "var(--saffron-tint)",

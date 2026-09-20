@@ -103,7 +103,7 @@ export async function POST(req) {
     await admin.from("notifications").insert({
       send_to: "citizen",
       channel: "SMS",
-      text: `Ticket ${inserted.id.slice(0, 8)} registered for ${sanitizedDistrict}. Category ${cls.category}. Track it on SETU portal.`,
+      text: `Ticket ${inserted.id.slice(0, 8)} registered for ${sanitizedDistrict}. Category ${cls.category}. Track it on SAHYOG portal.`,
     });
 
     return NextResponse.json({

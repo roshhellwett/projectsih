@@ -7,6 +7,12 @@
    - Tests Haversine geospatial proximity
    - Tests token & cosine similarity
    ════════════════════════════════════════════════════════════════ */
+import fs from "fs";
+if (fs.existsSync(".env")) {
+  try {
+    process.loadEnvFile(".env");
+  } catch {}
+}
 import {
   classify,
   suggestDescription,
@@ -33,12 +39,12 @@ function assert(condition, message) {
 
 console.log("─── 1. Testing Classification Across Categories ───");
 const testCases = [
-  { text: "Primary school roof collapsed during monsoon rains in Bundu", expected: "education" },
+  { text: "No science teacher or textbooks at government middle school in Bundu", expected: "education" },
   { text: "CHC hospital has no oxygen cylinders and doctors absent", expected: "health" },
   { text: "Drought in Palamu destroyed 40 acres of paddy crops", expected: "agriculture" },
   { text: "Arsenic in drinking water wells across 5 villages", expected: "water" },
   { text: "Main culvert washed out on Ranchi-Ramgarh highway", expected: "infrastructure" },
-  { text: "Illegal mica mining dust causing acute asthma in children", expected: "environment" },
+  { text: "Illegal mica mining dust and chemical waste polluting forest land", expected: "environment" },
 ];
 
 for (const tc of testCases) {

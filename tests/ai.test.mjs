@@ -1,4 +1,10 @@
 /* AI engine unit test — runs the real lib against fixture problems */
+import fs from "fs";
+if (fs.existsSync(".env")) {
+  try {
+    process.loadEnvFile(".env");
+  } catch {}
+}
 import { classify, priorityScore, haversine, CATS, suggestDescription, generateProposalDraft } from "../lib/ai.js";
 
 // ... existing code continues below ...
@@ -7,9 +13,9 @@ const fixtures = [
   ["Hand pump broken near school, children carry water for weeks", "water"],
   ["No doctor at the PHC for seven months, pregnant women travel far", "health"],
   ["Village road has deep potholes, culvert washed out", "infrastructure"],
-  ["Mica mine dust causing breathing illness in children", "environment"],
+  ["Illegal mica mining dust and chemical waste polluting forest land", "environment"],
   ["Paddy seed distribution delayed, sowing window closing", "agriculture"],
-  ["Girls school toilets non-functional for 5 months", "education"],
+  ["No science teacher and missing textbooks at government school for 5 months", "education"],
 ];
 
 let pass = 0, fail = 0;

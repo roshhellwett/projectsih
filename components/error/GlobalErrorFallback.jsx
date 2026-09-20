@@ -84,7 +84,7 @@ export default function GlobalErrorFallback({
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = `setu-error-${errorDetails.errorCode.toLowerCase()}-${Date.now()}.json`;
+      a.download = `sahyog-error-${errorDetails.errorCode.toLowerCase()}-${Date.now()}.json`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -135,7 +135,7 @@ export default function GlobalErrorFallback({
         <div className="flex flex-wrap items-center justify-between gap-3 mb-6 pb-4 border-b border-line">
           <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-ink-3">
             <span className="inline-block w-2.5 h-2.5 rounded-full bg-red animate-pulse" />
-            <span>SETU Resilient Shield Monitor</span>
+            <span>SAHYOG Resilient Shield Monitor</span>
             <span>·</span>
             <span className="text-ink-2 font-semibold">{origin}</span>
           </div>
@@ -447,7 +447,7 @@ export default function GlobalErrorFallback({
               <div className="flex items-center justify-between p-3.5 rounded-xl bg-amber-tint/40 border border-amber/20">
                 <div className="text-xs text-ink-2">
                   <strong className="block text-ink font-semibold">Persisting client corruption?</strong>
-                  <span>Clear browser local storage and cached session tokens for SETU.</span>
+                  <span>Clear browser local storage and cached session tokens for SAHYOG.</span>
                 </div>
                 <button
                   onClick={handleClearCacheAndReload}
@@ -465,7 +465,7 @@ export default function GlobalErrorFallback({
       {/* Footer */}
       <footer className="w-full border-t border-line py-4 px-4 bg-surface text-center text-xs text-ink-3">
         <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
-          <span>SETU — Societal Innovation Collaboration Portal · SIH26043</span>
+          <span>SAHYOG — Societal Innovation Collaboration Portal · SIH26043</span>
           <span>Government of Jharkhand · Automated Fault Isolation System</span>
         </div>
       </footer>

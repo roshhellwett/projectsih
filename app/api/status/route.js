@@ -68,7 +68,7 @@ export async function POST(req) {
       notifications.push({
         send_to: "citizen",
         channel: "SMS",
-        text: `Resolution Confirmed: Ticket "${shortTitle}…" has been marked Resolved. Thank you for reporting on SETU.`,
+        text: `Resolution Confirmed: Ticket "${shortTitle}…" has been marked Resolved. Thank you for reporting on SAHYOG.`,
       });
       notifications.push({
         send_to: "admin",

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { SUPPORTED_LANGUAGES, setStoredLang } from "@/lib/i18n";
 import {
   Globe,
   Sun,
@@ -108,23 +109,29 @@ export function GovUtilityBar({ lang, setLang }) {
             </button>
 
             {/* Language Switcher */}
-            <div className="flex items-center gap-1.5 border-l border-line pl-4">
-              <Globe size={14} weight="bold" />
-              <button
-                type="button"
-                className={`hover:text-ink transition-colors ${lang === "en" ? "text-ink font-bold" : ""}`}
-                onClick={() => setLang && setLang("en")}
-              >
-                EN
-              </button>
-              <span className="text-ink-3">/</span>
-              <button
-                type="button"
-                className={`hover:text-ink transition-colors ${lang === "hi" ? "text-ink font-bold" : ""}`}
-                onClick={() => setLang && setLang("hi")}
-              >
-                HI
-              </button>
+            <div className="flex items-center gap-1.5 border-l border-line pl-2 sm:pl-4">
+              <Globe size={14} weight="bold" className="text-ink-3 hidden sm:inline" />
+              <div className="flex items-center gap-1 bg-surface border border-line rounded p-0.5" role="group" aria-label="Language Selector">
+                {SUPPORTED_LANGUAGES.map((item) => (
+                  <button
+                    key={item.code}
+                    type="button"
+                    title={item.name}
+                    className={`px-1.5 py-0.5 text-[11px] sm:text-[12px] rounded transition-all ${
+                      lang === item.code
+                        ? "bg-green text-white font-bold shadow-xs"
+                        : "hover:bg-surface-2 text-ink-2"
+                    }`}
+                    onClick={() => {
+                      if (setLang) setLang(item.code);
+                      setStoredLang(item.code);
+                    }}
+                  >
+                    <span className="sm:hidden">{item.short}</span>
+                    <span className="hidden sm:inline">{item.nativeName}</span>
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
         </div>
@@ -152,15 +159,21 @@ export function GovFooter({ lang = "en" }) {
           {/* Col 1: Portal Identity */}
           <div className="flex flex-col gap-4">
             <div className="flex items-center gap-3">
-              <span className="w-10 h-10 rounded-lg bg-green flex items-center justify-center text-white font-serif font-bold text-lg">
-                सेतु
+              <span className="w-10 h-10 rounded-lg bg-green flex items-center justify-center text-white font-deva font-bold text-base">
+                सहयोग
               </span>
               <div>
-                <h3 className="font-display font-bold text-ink text-lg leading-tight">SETU Portal</h3>
+                <h3 className="font-display font-bold text-ink text-lg leading-tight">SAHYOG Portal</h3>
                 <span className="text-[13px] font-medium text-ink-3">
                   {lang === "hi"
-                    ? "सामाजिक नवाचार सहयोग सेतु · झारखण्ड सरकार"
-                    : "Societal Innovation Collaboration Portal"}
+                    ? "सामाजिक नवाचार सहयोग मंच · झारखण्ड सरकार"
+                    : lang === "bn"
+                    ? "সামাজিক উদ্ভাবন সহযোগিতা পোর্টাল · ঝাড়খণ্ড সরকার"
+                    : lang === "sat"
+                    ? "ᱥᱟᱶᱛᱟ ᱩᱛᱱᱟᱹᱣ ᱜᱚᱲᱚ ᱯᱳᱨᱴᱟᱞ · ᱡᱷᱟᱨᱠᱷᱚᱸᱰ ᱥᱚᱨᱠᱟᱨ"
+                    : lang === "ur"
+                    ? "سماجی جدت اور اشتراک پورٹل · حکومت جھارکھنڈ"
+                    : "Societal Innovation Collaboration Portal · Govt. of Jharkhand"}
                 </span>
               </div>
             </div>

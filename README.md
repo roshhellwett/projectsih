@@ -1,4 +1,4 @@
-# SETU Portal — SIH26043 · Government of Jharkhand
+# SAHYOG Portal — SIH26043 · Government of Jharkhand
 
 **Production app: Next.js 14 + Supabase + real AI pipeline. Zero monthly cost.**
 

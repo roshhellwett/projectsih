@@ -58,11 +58,11 @@ export async function POST(req) {
   }
 
   const notifs = [
-    { send_to: uniEmail || "university team", channel: "In-app", text: `Industry partner expressed ${interest_type} interest on your proposal for "${title}…". Respond via the SETU portal.` },
+    { send_to: uniEmail || "university team", channel: "In-app", text: `Industry partner expressed ${interest_type} interest on your proposal for "${title}…". Respond via the SAHYOG portal.` },
     { send_to: "admin", channel: "In-app", text: `Industry interest (${interest_type}) logged on "${title}…" — problem advanced to In Progress.` },
   ];
   if (submittedBy) {
-    notifs.push({ send_to: "citizen", channel: "SMS", text: `Good news: an industry partner backed the project for "${title}…". Your problem is now In Progress — track it on SETU.` });
+    notifs.push({ send_to: "citizen", channel: "SMS", text: `Good news: an industry partner backed the project for "${title}…". Your problem is now In Progress — track it on SAHYOG.` });
   }
   await admin.from("notifications").insert(notifs);
 

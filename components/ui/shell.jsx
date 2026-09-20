@@ -1,8 +1,9 @@
 "use client";
-import { useState } from "react";
-import { List, SignOut, X, Bell } from "@phosphor-icons/react";
+import { useState, useEffect } from "react";
+import { List, SignOut, X, Bell, Globe } from "@phosphor-icons/react";
 import { CAT_LABEL } from "./constants";
 import { Button } from "./button";
+import { SUPPORTED_LANGUAGES, getStoredLang, setStoredLang } from "@/lib/i18n";
 
 export function Shell({
   user,
@@ -17,6 +18,21 @@ export function Shell({
   children,
 }) {
   const [open, setOpen] = useState(false);
+  const [lang, setLang] = useState("en");
+
+  useEffect(() => {
+    setLang(getStoredLang());
+    const onLangChange = (e) => {
+      if (e.detail?.lang) setLang(e.detail.lang);
+    };
+    window.addEventListener("sahyog_lang_changed", onLangChange);
+    return () => window.removeEventListener("sahyog_lang_changed", onLangChange);
+  }, []);
+
+  const changeLanguage = (code) => {
+    setLang(code);
+    setStoredLang(code);
+  };
 
   return (
     <div className="flex h-[100dvh] bg-paper font-body overflow-hidden relative text-ink">
@@ -33,9 +49,9 @@ export function Shell({
         className={`fixed inset-y-0 left-0 z-50 w-[264px] bg-green-2 text-white border-r border-green flex flex-col transition-transform duration-300 md:relative md:translate-x-0 ${open ? "translate-x-0" : "-translate-x-full"}`}
       >
         <div className="flex items-center gap-3 p-5 border-b border-white/10 shrink-0">
-          <span className="w-9 h-9 rounded-md bg-saffron text-green-2 grid place-items-center font-deva text-[13px] shrink-0 shadow-sm">सेतु</span>
+          <span className="w-9 h-9 rounded-md bg-saffron text-green-2 grid place-items-center font-deva text-[13px] shrink-0 shadow-sm">सहयोग</span>
           <div className="flex flex-col">
-            <b className="text-[15px] leading-tight font-display font-bold">SETU Portal</b>
+            <b className="text-[15px] leading-tight font-display font-bold">SAHYOG Portal</b>
             <span className="text-[10px] text-white/60 uppercase tracking-wider font-semibold">Govt. of Jharkhand</span>
           </div>
           <button 
@@ -135,6 +151,27 @@ export function Shell({
           </div>
 
           <div className="ml-auto flex items-center gap-2 shrink-0">
+            {/* Multilingual Selector */}
+            <div className="flex items-center gap-1 bg-surface-2 border border-line rounded px-1 py-0.5" role="group" aria-label="Portal Language">
+              <Globe size={14} className="text-ink-3 ml-0.5 shrink-0 hidden sm:inline" />
+              {SUPPORTED_LANGUAGES.map((item) => (
+                <button
+                  key={item.code}
+                  type="button"
+                  title={item.name}
+                  className={`px-1.5 py-0.5 text-[10px] md:text-[11px] font-semibold rounded transition-colors ${
+                    lang === item.code
+                      ? "bg-green text-white"
+                      : "text-ink-2 hover:bg-surface"
+                  }`}
+                  onClick={() => changeLanguage(item.code)}
+                >
+                  <span className="sm:hidden">{item.short}</span>
+                  <span className="hidden sm:inline">{item.nativeName}</span>
+                </button>
+              ))}
+            </div>
+
             <Button variant="ghost" size="icon" className="hidden sm:inline-flex" aria-label="Notifications">
               <Bell size={19} />
             </Button>

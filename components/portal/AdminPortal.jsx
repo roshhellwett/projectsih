@@ -1,7 +1,7 @@
 "use client";
 
 /* ════════════════════════════════════════════════════════════════════════════
-   SETU Portal — Government & State Command Center
+   SAHYOG Portal — Government & State Command Center
 ════════════════════════════════════════════════════════════════════════════ */
 import { useState } from "react";
 import {
@@ -14,6 +14,7 @@ import {
   STATUS_LBL,
   DISTRICTS,
   fmtINR,
+  EmptyState,
 } from "@/components/ui";
 import { Button } from "@/components/ui";
 import ProblemDetailModal from "./ProblemDetailModal";
@@ -62,6 +63,7 @@ export default function AdminPortal({
     ["stats", "State Command Dashboard", ICON.chart],
     ["audit", "Audit Trail & Dispatch Log", ICON.bell, notifications.length],
   ];
+  const activeView = NAV.some(([k]) => k === view) ? view : "all";
 
   /* ─── CSV Export for Official Records ─── */
   function exportCSV() {
@@ -94,7 +96,7 @@ export default function AdminPortal({
     link.setAttribute("href", encodedUri);
     link.setAttribute(
       "download",
-      `SETU_Jharkhand_Grievances_${new Date().toISOString().slice(0, 10)}.csv`
+      `SAHYOG_Jharkhand_Grievances_${new Date().toISOString().slice(0, 10)}.csv`
     );
     document.body.appendChild(link);
     link.click();
@@ -157,7 +159,7 @@ export default function AdminPortal({
     <Shell
       user={user}
       roleName="State Government Administrator"
-      active={view}
+      active={activeView}
       navItems={NAV}
       onNav={(id) => {
         setView(id);
@@ -165,16 +167,16 @@ export default function AdminPortal({
       }}
       onExit={onSignOut}
       title={
-        view === "all"
+        activeView === "all"
           ? "Statewide Civic Grievance Queue"
-          : view === "stats"
+          : activeView === "stats"
           ? "Jharkhand Civic Command Dashboard"
           : "Official Audit Trail & Dispatches"
       }
       sub="Statewide oversight, automated AI triage governance, university-CSR monitoring, and SLA enforcement"
     >
       {/* ─── CIVIC GRIEVANCES QUEUE ─── */}
-      {view === "all" && (
+      {activeView === "all" && (
         <div className="flex flex-col gap-6 max-w-[1200px] mx-auto w-full">
           {/* Controls Bar */}
           <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-4 p-4 rounded-lg bg-surface border border-line shadow-sm">
@@ -233,12 +235,11 @@ export default function AdminPortal({
 
           {/* Grievance List */}
           {filteredProblems.length === 0 ? (
-            <div className="flex flex-col items-center justify-center p-10 text-center bg-surface rounded-lg border border-dashed border-line">
-              <img src="/illustrations/empty-state.png" alt="" aria-hidden="true" width="112" height="112" loading="lazy" className="w-28 h-28 mb-3 float-soft" />
-              <h3 className="font-display text-xl font-bold text-ink mb-2">No Matching Grievances Found</h3>
-              <p className="text-[14.5px] text-ink-2 max-w-md">
-                Try resetting filters or checking another district.
-              </p>
+            <div className="bg-surface rounded-lg border border-dashed border-line">
+              <EmptyState
+                title="No Matching Grievances Found"
+                hint="Try resetting filters or checking another district."
+              />
             </div>
           ) : (
             <div className="flex flex-col gap-4">
@@ -255,8 +256,8 @@ export default function AdminPortal({
         </div>
       )}
 
-      {/* ─── STATE COMMAND DASHBOARD ─── */}
-      {view === "stats" && (
+      {/* ─── STATE COMMAND METRICS ─── */}
+      {activeView === "stats" && (
         <div className="flex flex-col gap-6 max-w-[1200px] mx-auto w-full">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <div className="flex flex-col bg-surface border border-line rounded-lg p-5 shadow-sm">
@@ -317,7 +318,7 @@ export default function AdminPortal({
       )}
 
       {/* ─── AUDIT TRAIL & LOGS ─── */}
-      {view === "audit" && (
+      {activeView === "audit" && (
         <div className="flex flex-col gap-6 max-w-[1200px] mx-auto w-full">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 pb-4 border-b border-line">
             <p className="text-[15px] text-ink-2 max-w-2xl leading-relaxed">

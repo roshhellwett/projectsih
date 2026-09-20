@@ -81,7 +81,7 @@ create table if not exists notifications (
 );
 
 -- votes count helper
-create or replace function problem_vote_count(p uuid) returns int language sql as $$
+create or replace function problem_vote_count(p uuid) returns int language sql set search_path = public, pg_temp as $$
   select count(*)::int from problem_votes where problem_id = p;
 $$;
 
@@ -95,22 +95,27 @@ alter table notifications enable row level security;
 
 -- public read (demo/pilot posture; tighten for production)
 create policy "read users" on users for select using (true);
-create policy "users update own profile" on users for update using (auth.uid() = auth_id);
-create policy "users insert own profile" on users for insert with check (auth.uid() = auth_id);
+create policy "users update own profile" on users for update using ((select auth.uid()) = auth_id);
+create policy "users insert own profile" on users for insert with check ((select auth.uid()) = auth_id);
 create policy "read problems" on problems for select using (true);
 create policy "read proposals" on proposals for select using (true);
 create policy "read interest" on industry_interest for select using (true);
 create policy "read votes" on problem_votes for select using (true);
-create policy "read notifs" on notifications for select using (auth.role() = 'authenticated');
+create policy "read notifs" on notifications for select using ((select auth.role()) = 'authenticated');
 
--- performance indexes
+-- performance & covering indexes
 create index if not exists idx_problems_district on problems (district);
 create index if not exists idx_problems_status on problems (status);
 create index if not exists idx_problems_category on problems (category);
 create index if not exists idx_problems_routed_to on problems (routed_to);
+create index if not exists idx_problems_duplicate_of on problems (duplicate_of);
+create index if not exists idx_problems_submitted_by on problems (submitted_by);
 create index if not exists idx_proposals_problem_id on proposals (problem_id);
+create index if not exists idx_proposals_university_id on proposals (university_id);
 create index if not exists idx_industry_interest_proposal_id on industry_interest (proposal_id);
+create index if not exists idx_industry_interest_industry_id on industry_interest (industry_id);
 create index if not exists idx_problem_votes_user_id on problem_votes (user_id);
+create index if not exists idx_users_auth_id on users (auth_id);
 
 -- ════════════════════════════════════════════════════════════════
 -- SEED DATA — demo accounts & 24 realistic Jharkhand problems
@@ -215,7 +220,7 @@ update problems set demo_votes = case id
   else 10 + (abs(hashtext(id::text)) % 20)
 end;
 
-create or replace view problems_with_votes as
+create or replace view problems_with_votes with (security_invoker = true) as
 select p.*, (select count(*) from problem_votes v where v.problem_id = p.id) + p.demo_votes as votes
 from problems p;
 

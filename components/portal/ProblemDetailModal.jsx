@@ -1,7 +1,7 @@
 "use client";
 
 /* ════════════════════════════════════════════════════════════════════════════
-   SETU Portal — Problem Detail & Case File Modal
+   SAHYOG Portal — Problem Detail & Case File Modal
 ════════════════════════════════════════════════════════════════════════════ */
 import { useState } from "react";
 import { Modal, Stepper, CAT_LABEL, CAT_ICONS, STATUS_LBL, fmtINR } from "@/components/ui";
@@ -33,7 +33,7 @@ export default function ProblemDetailModal({
 
   if (!problem) return null;
 
-  const relevantProposals = proposals.filter((p) => p.problem_id === problem.id);
+  const relevantProposals = proposals.filter((p) => problem?.id && p.problem_id === problem.id);
   const relevantInterests = interests.filter((i) =>
     relevantProposals.some((p) => p.id === i.proposal_id)
   );
@@ -91,7 +91,7 @@ export default function ProblemDetailModal({
   }
 
   return (
-    <Modal title={`Civic Grievance Case File · #${problem.id.slice(0, 8)}`} onClose={onClose} wide>
+    <Modal title={`Civic Grievance Case File · #${problem?.id ? problem.id.slice(0, 8) : "N/A"}`} onClose={onClose} wide>
       <div className="flex flex-col gap-6 font-body text-ink max-h-[85vh] overflow-y-auto p-1 custom-scrollbar">
         {/* Header Summary */}
         <div className="flex flex-col gap-3">

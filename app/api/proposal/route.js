@@ -49,7 +49,7 @@ export async function POST(req) {
   await admin.from("notifications").insert({
     send_to: "citizen",
     channel: "SMS",
-    text: `Proposal received for "${(p?.title || "").slice(0, 36)}…" from a university team. Track it on SETU.`,
+    text: `Proposal received for "${(p?.title || "").slice(0, 36)}…" from a university team. Track it on SAHYOG.`,
   });
 
   return NextResponse.json({ ok: true, proposal_id: data.id });

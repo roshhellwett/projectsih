@@ -1,7 +1,7 @@
 "use client";
 
 /* ════════════════════════════════════════════════════════════════════════════
-   SETU Portal — Citizen Grievance & Tracking Workspace
+   SAHYOG Portal — Citizen Grievance & Tracking Workspace
 ════════════════════════════════════════════════════════════════════════════ */
 import { useState } from "react";
 import { supabase } from "@/lib/supabase";
@@ -15,6 +15,7 @@ import {
   CAT_ICONS,
   STATUS_LBL,
   DISTRICTS,
+  EmptyState,
 } from "@/components/ui";
 import { Input, Button, Label, Textarea } from "@/components/ui";
 import ProblemDetailModal from "./ProblemDetailModal";
@@ -527,13 +528,16 @@ export default function CitizenPortal({
       {view === "track" && (
         <div className="flex flex-col gap-8 max-w-[1200px] mx-auto w-full">
           {myProblems.length === 0 ? (
-            <div className="flex flex-col items-center justify-center p-10 text-center bg-surface rounded-lg border border-dashed border-line">
-              <img src="/illustrations/empty-state.png" alt="" aria-hidden="true" width="112" height="112" loading="lazy" className="w-28 h-28 mb-3 float-soft" />
-              <h3 className="font-display text-xl font-bold text-ink mb-2">No Grievances Logged Yet</h3>
-              <p className="text-[14.5px] text-ink-2 max-w-md mb-6">You have not submitted any civic complaints under this account.</p>
-              <Button onClick={() => setView("submit")}>
-                <Plus size={16} weight="bold" /> Report a Grievance
-              </Button>
+            <div className="bg-surface rounded-lg border border-dashed border-line">
+              <EmptyState
+                title="No Grievances Logged Yet"
+                hint="You have not submitted any civic complaints under this account."
+                action={
+                  <Button onClick={() => setView("submit")}>
+                    <Plus size={16} weight="bold" /> Report a Grievance
+                  </Button>
+                }
+              />
             </div>
           ) : (
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
