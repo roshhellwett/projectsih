@@ -126,7 +126,7 @@ export default function ProblemDetailModal({
         </div>
 
         {/* Lifecycle Stepper */}
-        <div className="bg-surface rounded-lg p-5 border border-line shadow-sm">
+        <div className="glass-card rounded-xl p-5 border border-line shadow-sm">
           <div className="flex items-center gap-2 text-[13px] font-bold text-ink-2 mb-2 uppercase tracking-wide">
             <Clock size={18} weight="bold" />
             Civic Resolution Lifecycle
@@ -136,17 +136,17 @@ export default function ProblemDetailModal({
 
         {/* Priority & Metrics Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4">
-          <div className="bg-surface rounded-lg p-4 border border-line shadow-sm flex flex-col justify-center">
+          <div className="glass-card sheen-hover rounded-xl p-4 border border-line flex flex-col justify-center">
             <span className="text-[11px] font-mono tracking-widest text-ink-3 uppercase font-bold mb-1">Citizen Upvotes</span>
             <strong className="font-display text-2xl font-bold text-green">▲ {problem.votes ?? 0}</strong>
           </div>
-          <div className="bg-surface rounded-lg p-4 border border-line shadow-sm flex flex-col justify-center">
+          <div className="glass-card sheen-hover rounded-xl p-4 border border-line flex flex-col justify-center">
             <span className="text-[11px] font-mono tracking-widest text-ink-3 uppercase font-bold mb-1">SLA Priority Score</span>
             <strong className="font-display text-2xl font-bold text-amber">
               {Number(problem.priority_score ?? 5).toFixed(1)} / 10
             </strong>
           </div>
-          <div className="bg-surface rounded-lg p-4 border border-line shadow-sm flex flex-col justify-center">
+          <div className="glass-card sheen-hover rounded-xl p-4 border border-line flex flex-col justify-center">
             <span className="text-[11px] font-mono tracking-widest text-ink-3 uppercase font-bold mb-1">Routed Institution</span>
             <strong className="text-[14px] font-semibold text-ink leading-snug">
               {problem.routed_to_name || "Pending Automated Matching"}
@@ -156,7 +156,7 @@ export default function ProblemDetailModal({
 
         {/* Field Photo Attachment */}
         {problem.photo_url && (
-          <div className="bg-surface rounded-lg p-5 border border-line shadow-sm">
+          <div className="glass-card rounded-xl p-5 border border-line shadow-sm">
             <div className="flex items-center gap-2 text-[13px] font-bold text-ink-2 mb-4 uppercase tracking-wide">
               Field Photographic Evidence
             </div>
@@ -170,14 +170,14 @@ export default function ProblemDetailModal({
         )}
 
         {/* University Proposals Section */}
-        <div className="bg-surface rounded-lg p-5 border border-line shadow-sm">
+        <div className="glass-card rounded-xl p-5 border border-line shadow-sm">
           <div className="flex flex-wrap items-center justify-between gap-4 mb-5 pb-4 border-b border-line">
             <div className="flex items-center gap-2 text-[13px] font-bold text-ink-2 uppercase tracking-wide">
               <GraduationCap size={20} weight="duotone" className="text-blue" />
               University Solutions & Proposals ({relevantProposals.length})
             </div>
             {isUni && ["routed", "in_review"].includes(problem.status) && onPropose && (
-              <Button size="sm" onClick={() => onPropose(problem)}>
+              <Button size="sm" className="spring-press" onClick={() => onPropose(problem)}>
                 + Draft Solution Proposal
               </Button>
             )}
@@ -190,14 +190,14 @@ export default function ProblemDetailModal({
           ) : (
             <div className="flex flex-col gap-4">
               {relevantProposals.map((pr) => (
-                <div key={pr.id} className="p-4 rounded-lg bg-paper border border-line shadow-sm relative">
+                <div key={pr.id} className="p-4 rounded-xl glass-elevated border border-line shadow-sm relative">
                   <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
                     <strong className="text-[14px] font-semibold">Funding Sought: {fmtINR(pr.funding_sought)}</strong>
                     <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider border ${getStatusClasses(pr.status)}`}>{pr.status}</span>
                   </div>
                   <p className="text-[13.5px] text-ink-2 leading-relaxed mb-3 whitespace-pre-wrap">{pr.proposal_text}</p>
                   {Array.isArray(pr.team_members) && pr.team_members.length > 0 && (
-                    <div className="text-[12px] text-ink-3 p-2 bg-surface rounded-md border border-line mt-2">
+                    <div className="text-[12px] text-ink-3 p-2 bg-surface-2/60 rounded-md border border-line mt-2">
                       <span className="font-semibold text-ink-2 mr-1">Research Team:</span> {pr.team_members.join(", ")}
                     </div>
                   )}
@@ -205,7 +205,7 @@ export default function ProblemDetailModal({
                     <Button
                       variant="outline"
                       size="sm"
-                      className="mt-4 w-full sm:w-auto"
+                      className="mt-4 w-full sm:w-auto spring-press"
                       onClick={() => onPledge(pr)}
                     >
                       Pledge CSR Support for this Proposal
@@ -219,7 +219,7 @@ export default function ProblemDetailModal({
 
         {/* Corporate CSR Commitments */}
         {relevantInterests.length > 0 && (
-          <div className="bg-surface rounded-lg p-5 border border-line shadow-sm">
+          <div className="glass-card rounded-xl p-5 border border-line shadow-sm">
             <div className="flex items-center gap-2 text-[13px] font-bold text-ink-2 mb-4 uppercase tracking-wide">
               <Briefcase size={20} weight="duotone" className="text-amber" />
               Corporate CSR Commitments ({relevantInterests.length})
@@ -242,7 +242,7 @@ export default function ProblemDetailModal({
 
         {/* Administrative State Control Panel */}
         {isAdmin && (
-          <div className="bg-surface rounded-lg p-5 border border-line shadow-sm border-l-4 border-l-red">
+          <div className="glass-card rounded-xl p-5 border border-line shadow-sm border-l-4 border-l-red">
             <div className="flex items-center gap-2 text-[13px] font-bold text-red-600 mb-4 uppercase tracking-wide">
               <Bank size={20} weight="duotone" />
               Government Administrative Actions

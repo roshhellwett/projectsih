@@ -57,9 +57,9 @@ export function BridgePanel({ lang = "en" }) {
   const activeItems = (items && items.length) ? items : demoItems;
 
   return (
-    <div className="bg-surface rounded-2xl border border-line shadow-md overflow-hidden flex flex-col w-full">
+    <div className="glass-elevated rounded-2xl border border-glass-rim shadow-lg overflow-hidden flex flex-col w-full">
       {/* Feed Header */}
-      <div className="bg-surface-2/80 border-b border-line p-4 sm:p-5 flex items-center justify-between">
+      <div className="bg-surface-2/70 border-b border-line p-4 sm:p-5 flex items-center justify-between">
         <div>
           <div className="flex items-center gap-2 mb-0.5">
             <h3 className="font-display font-bold text-ink text-[16px] sm:text-[17px]">
@@ -70,7 +70,7 @@ export function BridgePanel({ lang = "en" }) {
             {t.liveStreamSub}
           </p>
         </div>
-        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-red-tint/40 border border-red/25 text-[11px] font-bold text-red tracking-wider uppercase shadow-xs shrink-0">
+        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-red-tint/40 border border-red/25 text-[11px] font-bold text-red tracking-wider uppercase shadow-xs shrink-0 glass-pill">
           <span className="w-2 h-2 rounded-full bg-red animate-pulse" />
           LIVE
         </span>
@@ -81,7 +81,7 @@ export function BridgePanel({ lang = "en" }) {
         {activeItems.slice(0, 5).map((p, i) => (
           <div
             key={i}
-            className="flex items-start gap-3 p-3 rounded-xl bg-surface border border-line hover:border-green/50 hover:shadow-xs transition-all group"
+            className="flex items-start gap-3 p-3 rounded-xl glass-card sheen-hover border border-line/80 hover:border-green/50 hover:shadow-xs transition-all group"
           >
             <span
               className={`mt-1.5 shrink-0 w-2.5 h-2.5 rounded-full ${CAT_COLOR[p.category] || CAT_COLOR.other}`}
@@ -122,7 +122,7 @@ export function BridgePanel({ lang = "en" }) {
         </span>
         <Link
           href="/login"
-          className="font-bold text-green hover:text-green/80 transition-colors inline-flex items-center gap-1"
+          className="font-bold text-green hover:text-green/80 transition-colors inline-flex items-center gap-1 spring-press"
         >
           {t.viewAllReports} <ArrowRight size={12} />
         </Link>
@@ -197,10 +197,10 @@ export function JourneyRail({ lang = "en" }) {
           <div key={s.t} className="flex-1 flex flex-row md:flex-col items-center md:items-start text-left relative z-10 group">
             {/* Desktop Connector Line */}
             {i < journeySteps.length - 1 && (
-              <div className="hidden md:block absolute top-6 left-12 right-[-2rem] h-[2px] bg-line -z-10 group-hover:bg-green/50 transition-colors" />
+              <div className="hidden md:block absolute top-6 left-12 right-[-2rem] h-[2px] bg-line -z-10 group-hover:bg-green/60 transition-colors duration-300" />
             )}
             
-            <div className={`w-12 h-12 rounded-full ${s.bg} ${s.color} flex items-center justify-center border border-line mb-4 shrink-0 group-hover:scale-110 group-hover:shadow-lg transition-all`}>
+            <div className={`w-12 h-12 rounded-full ${s.bg} ${s.color} glass-pill flex items-center justify-center border border-line mb-4 shrink-0 group-hover:scale-110 group-hover:shadow-md transition-all duration-300 spring-press`}>
               <Icon size={24} weight="duotone" />
             </div>
             
@@ -462,43 +462,13 @@ const ROLE_DATA = {
 export function RoleDossier({ lang = "en" }) {
   const [role, setRole] = useState("citizen");
   const dict = ROLE_DATA[lang] || ROLE_DATA.en;
-
   const roles = [
-    {
-      id: "citizen",
-      icon: "citizen",
-      color: "text-green",
-      bg: "bg-green-tint/50",
-      border: "border-green/20",
-      ...dict.citizen,
-    },
-    {
-      id: "university",
-      icon: "university",
-      color: "text-blue",
-      bg: "bg-blue-tint/50",
-      border: "border-blue/20",
-      ...dict.university,
-    },
-    {
-      id: "industry",
-      icon: "industry",
-      color: "text-purple",
-      bg: "bg-purple-tint/50",
-      border: "border-purple/20",
-      ...dict.industry,
-    },
-    {
-      id: "admin",
-      icon: "admin",
-      color: "text-red",
-      bg: "bg-red-tint/50",
-      border: "border-red/20",
-      ...dict.admin,
-    },
+    { id: "citizen", icon: "citizen", color: "text-green", bg: "bg-green-tint/50", border: "border-green/30", ...dict.citizen },
+    { id: "university", icon: "university", color: "text-blue", bg: "bg-blue-tint/50", border: "border-blue/30", ...dict.university },
+    { id: "industry", icon: "industry", color: "text-purple", bg: "bg-purple-tint/50", border: "border-purple/30", ...dict.industry },
+    { id: "admin", icon: "admin", color: "text-red", bg: "bg-red-tint/50", border: "border-red/30", ...dict.admin },
   ];
-
-  const active = roles.find((r) => r.id === role);
+  const active = roles.find((r) => r.id === role) || roles[0];
   const ActiveIcon = ROLE_ICONS[active.icon];
 
   return (
@@ -511,7 +481,7 @@ export function RoleDossier({ lang = "en" }) {
             <button
               key={r.id}
               type="button"
-              className={`flex items-center text-left p-4 rounded-xl border-2 transition-all duration-300 ${isSelected ? `bg-surface border-line shadow-md scale-105 z-10 ${r.color}` : "bg-transparent border-transparent hover:bg-surface-2 text-ink-2"}`}
+              className={`flex items-center text-left p-4 rounded-xl border-2 transition-all duration-300 ${isSelected ? `glass-card border-line shadow-md scale-102 z-10 ${r.color}` : "bg-transparent border-transparent hover:bg-surface-2/60 text-ink-2"}`}
               onClick={() => setRole(r.id)}
             >
               <span className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 mr-4 ${isSelected ? r.bg : "bg-surface text-ink-3"}`}>
@@ -527,7 +497,7 @@ export function RoleDossier({ lang = "en" }) {
         })}
       </div>
 
-      <div className="flex-1 w-full bg-surface rounded-3xl p-8 lg:p-12 border border-line shadow-lg relative overflow-hidden">
+      <div className="flex-1 w-full glass-elevated rounded-3xl p-8 lg:p-12 border border-line relative overflow-hidden">
         <div className={`absolute top-0 left-0 w-2 h-full ${active.bg}`} />
         <div className="animate-in fade-in slide-in-from-right-4 duration-500" key={role}>
           <div className="flex items-center gap-4 mb-6">
@@ -554,7 +524,7 @@ export function RoleDossier({ lang = "en" }) {
           </div>
 
           <div>
-            <Link href={"/login?role=" + active.id} className={`inline-flex items-center justify-center h-12 px-8 rounded-lg font-bold text-white shadow-md transition-transform hover:scale-105 active:scale-95 ${active.id === 'citizen' ? 'bg-green' : active.id === 'university' ? 'bg-blue-600' : active.id === 'industry' ? 'bg-purple-600' : 'bg-red-600'}`}>
+            <Link href={"/login?role=" + active.id} className={`inline-flex items-center justify-center h-12 px-8 rounded-lg font-bold text-white shadow-md transition-transform hover:scale-105 active:scale-95 spring-press ${active.id === 'citizen' ? 'bg-green' : active.id === 'university' ? 'bg-blue-600' : active.id === 'industry' ? 'bg-purple-600' : 'bg-red-600'}`}>
               {active.btnText} <ArrowRight size={18} className="ml-2" />
             </Link>
           </div>
@@ -628,7 +598,7 @@ export function DistrictCoverageExplorer({ lang = "en" }) {
         </div>
 
         {/* Full-width Division Filter Pills Bar */}
-        <div className="flex flex-wrap items-center gap-2 p-1.5 bg-surface border border-line rounded-2xl w-fit shadow-xs">
+        <div className="flex flex-wrap items-center gap-2 p-1.5 glass-pill rounded-2xl w-fit shadow-xs">
           {["all", "North Chotanagpur", "South Chotanagpur", "Kolhan", "Santhal Pargana", "Palamu"].map((z) => {
             const zLabel = ZONE_LABELS[z]?.[lang] || ZONE_LABELS[z]?.en || z;
             const isSelected = selectedZone === z;
@@ -636,7 +606,7 @@ export function DistrictCoverageExplorer({ lang = "en" }) {
               <button
                 key={z}
                 type="button"
-                className={`px-4 py-2 rounded-xl text-[13px] font-bold transition-all ${
+                className={`px-4 py-2 rounded-xl text-[13px] font-bold transition-all spring-press ${
                   isSelected 
                     ? "bg-green text-white shadow-sm" 
                     : "text-ink-2 hover:bg-surface-2 hover:text-ink"
@@ -655,7 +625,7 @@ export function DistrictCoverageExplorer({ lang = "en" }) {
         {/* District Cards Grid (8 cols on lg) */}
         <div className="lg:col-span-7 xl:col-span-8 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
           {filtered.map((d) => (
-            <div key={d.name} className="bg-surface rounded-xl p-5 border border-line shadow-xs hover:border-green hover:shadow-md transition-all flex flex-col justify-between">
+            <div key={d.name} className="glass-card sheen-hover rounded-xl p-5 border border-line flex flex-col justify-between">
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center gap-2">
                   <MapPin size={16} weight="fill" className="text-amber shrink-0" />
