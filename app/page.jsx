@@ -38,7 +38,7 @@ export default function LandingPage() {
 
       {/* Primary service header */}
       <header className="sticky top-0 z-40 bg-surface/95 backdrop-blur-md border-b border-line">
-        <div className="max-w-[1240px] mx-auto px-4 sm:px-6 h-16 grid grid-cols-[minmax(0,1fr)_auto] lg:grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-4">
+        <div className="max-w-[1240px] mx-auto px-4 sm:px-6 min-h-16 h-auto py-2.5 sm:py-0 grid grid-cols-[minmax(0,1fr)_auto] lg:grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 sm:gap-4">
           <GovBrandLockup
             variant="dual"
             theme="light"

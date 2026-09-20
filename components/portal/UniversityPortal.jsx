@@ -299,28 +299,32 @@ export default function UniversityPortal({
           onClose={() => setProposingOn(null)}
           wide
         >
-          <div className="flex flex-col gap-6 font-body max-h-[85vh] overflow-y-auto p-1 custom-scrollbar text-ink">
+          <div className="flex flex-col gap-6 font-body text-ink">
             
-            <div className="p-4 rounded-lg bg-surface border border-line">
+            <div className="p-4 rounded-lg bg-surface border border-line shrink-0">
               <span className="text-[10px] font-mono tracking-widest text-ink-3 uppercase font-bold mb-2 block">TARGET CIVIC GRIEVANCE</span>
               <h4 className="font-bold text-[16px] text-ink leading-snug mb-1">{proposingOn.title}</h4>
               <p className="text-[13px] text-ink-2 leading-relaxed">{proposingOn.description}</p>
             </div>
 
-            <div className="flex flex-col gap-3 p-5 rounded-xl bg-green-2 text-white border border-green shadow-inner relative overflow-hidden">
+            <div className="flex flex-col gap-3.5 p-5 rounded-xl bg-green-2 text-white border border-green shadow-inner relative shrink-0">
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 relative z-10">
-                <div>
-                  <strong className="block font-display text-[15px] mb-1">Groq Llama 3.3 Solution Synthesizer</strong>
-                  <p className="text-[12px] opacity-80 max-w-md leading-snug">Auto-generate academic methodology, team structure, and budget estimate based on the grievance context.</p>
+                <div className="flex-1">
+                  <strong className="block font-display text-[16px] font-bold tracking-tight mb-1 text-white">
+                    Groq Llama 3.3 Solution Synthesizer
+                  </strong>
+                  <p className="text-[12.5px] text-white/80 max-w-lg leading-relaxed">
+                    Auto-generate academic methodology, team structure, and budget estimate based on the grievance context.
+                  </p>
                 </div>
                 <Button
                   type="button"
-                  variant="secondary"
-                  className="relative z-10 shrink-0 w-full sm:w-auto shadow-sm"
+                  variant="default"
+                  className="bg-white text-green font-bold hover:bg-white/90 shrink-0 shadow-md h-10 px-4 text-xs"
                   onClick={draftWithAI}
                   disabled={aiDrafting}
                 >
-                  <Sparkle size={18} weight="fill" className={aiDrafting ? "text-ink-3" : "text-amber"} />
+                  <Sparkle size={16} weight="fill" className={aiDrafting ? "text-ink-3" : "text-amber"} />
                   {aiDrafting ? "Synthesizing Draft…" : "Auto-Draft Proposal with AI"}
                 </Button>
               </div>

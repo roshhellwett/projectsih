@@ -30,6 +30,7 @@ import {
   IdentificationCard,
   DeviceMobile,
   MapPin,
+  CaretDown,
   Lightning,
 } from "@phosphor-icons/react";
 
@@ -527,12 +528,12 @@ function AuthForm() {
                   Jurisdiction District (जिला) <span className="text-red-500">*</span>
                 </Label>
                 <div className="relative">
-                  <MapPin size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-ink-3" />
+                  <MapPin size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-3 pointer-events-none z-10" />
                   <select
                     id="auth-district"
                     value={district}
                     onChange={(e) => setDistrict(e.target.value)}
-                    className="w-full bg-paper border border-line rounded-lg pl-9 pr-4 py-2.5 text-xs font-semibold text-ink focus:outline-none focus:ring-2 focus:ring-ink"
+                    className="w-full appearance-none bg-paper border border-line rounded-lg pl-10 pr-9 py-2.5 text-xs font-semibold text-ink focus:outline-none focus:ring-2 focus:ring-green focus:border-green transition-all cursor-pointer"
                   >
                     {DISTRICTS.map((d) => (
                       <option key={d} value={d}>
@@ -540,6 +541,7 @@ function AuthForm() {
                       </option>
                     ))}
                   </select>
+                  <CaretDown size={14} weight="bold" className="absolute right-3.5 top-1/2 -translate-y-1/2 text-ink-3 pointer-events-none" />
                 </div>
               </div>
 

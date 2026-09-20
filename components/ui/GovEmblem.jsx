@@ -247,35 +247,38 @@ export function GovBrandLockup({
 }) {
   const isDark = theme === "dark";
   const sizeMap = {
-    sm: { emblem: 40, title: "text-base", sub: "text-[10px]" },
-    md: { emblem: 48, title: "text-xl", sub: "text-xs" },
-    lg: { emblem: 58, title: "text-2xl", sub: "text-sm" },
+    sm: { emblem: 36, title: "text-base", sub: "text-[9.5px]" },
+    md: { emblem: 44, title: "text-lg sm:text-xl", sub: "text-[10px] sm:text-xs" },
+    lg: { emblem: 54, title: "text-xl sm:text-2xl", sub: "text-xs sm:text-sm" },
   };
   const s = sizeMap[size] || sizeMap.md;
 
   const content = (
-    <div className={`inline-flex items-center gap-3.5 ${className}`}>
+    <div className={`inline-flex items-center gap-2.5 sm:gap-3.5 min-w-0 ${className}`}>
       {/* Official State Seal */}
-      <div className="relative flex items-center">
+      <div className="relative flex items-center shrink-0">
         {variant === "ashoka" ? (
           <AshokaLionCapital size={s.emblem} />
         ) : (
-          <JharkhandStateSeal size={s.emblem} />
+          <JharkhandStateSeal size={s.emblem} className="w-9 h-9 sm:w-11 sm:h-11" />
         )}
       </div>
 
       {/* Typography Section */}
-      <div className="flex flex-col">
-        <div className="flex items-baseline gap-2">
+      <div className="flex flex-col min-w-0">
+        <div className="flex items-baseline gap-1.5 sm:gap-2">
           <span className={`font-display font-black tracking-tight ${s.title} ${isDark ? "text-white" : "text-slate-900"}`}>
             SAHYOG
           </span>
-          <span className="font-deva font-bold text-amber-500 text-sm tracking-normal">
+          <span className="font-deva font-bold text-amber-500 text-xs sm:text-sm tracking-normal shrink-0">
             (सहयोग)
           </span>
         </div>
-        <span className={`font-mono font-semibold tracking-wider uppercase ${s.sub} ${isDark ? "text-emerald-300" : "text-emerald-700"}`}>
-          Government of Jharkhand <span className="text-slate-400 font-normal">|</span> झारखण्ड सरकार
+        <span className={`font-mono font-semibold tracking-wider uppercase ${s.sub} ${isDark ? "text-emerald-300" : "text-emerald-700"} whitespace-nowrap truncate`}>
+          <span className="sm:hidden">Govt. of Jharkhand</span>
+          <span className="hidden sm:inline">Government of Jharkhand</span>
+          <span className="text-slate-400 font-normal mx-1">|</span>
+          <span>झारखण्ड सरकार</span>
         </span>
       </div>
     </div>
