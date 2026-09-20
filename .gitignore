@@ -12,6 +12,7 @@ node_modules/
 
 # ─── Production & Build Outputs ──────────────────────────────────
 .next/
+.open-next/
 out/
 build/
 dist/
