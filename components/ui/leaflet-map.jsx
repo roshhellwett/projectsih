@@ -6,6 +6,22 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { STATUS_LBL } from "./constants";
 
+// Defend against Leaflet _leaflet_pos crash on unmount or interrupted zoom transitions
+if (typeof window !== "undefined" && L && L.DomUtil && !L.DomUtil._sahyogPatched) {
+  const originalGetPosition = L.DomUtil.getPosition;
+  L.DomUtil.getPosition = function (el) {
+    if (!el) {
+      return new L.Point(0, 0);
+    }
+    try {
+      return originalGetPosition.call(this, el);
+    } catch {
+      return new L.Point(0, 0);
+    }
+  };
+  L.DomUtil._sahyogPatched = true;
+}
+
 // Custom Leaflet DivIcon to avoid broken image URLs in Next.js
 const createMarkerIcon = (priority) => {
   const isHighPrio = priority > 7;
@@ -40,14 +56,35 @@ function MapBounds({ problems }) {
   const map = useMap();
   
   useEffect(() => {
-    const validCoords = problems.filter(
-      p => p.latitude != null && p.longitude != null && !isNaN(Number(p.latitude)) && !isNaN(Number(p.longitude))
-    );
-    if (validCoords.length > 0) {
-      const bounds = L.latLngBounds(validCoords.map(p => [Number(p.latitude), Number(p.longitude)]));
-      map.fitBounds(bounds, { padding: [50, 50], maxZoom: 14 });
+    if (!map) return;
+    try {
+      const container = map.getContainer();
+      if (!container || !map._mapPane) return;
+
+      const validCoords = problems.filter(
+        p => p.latitude != null && p.longitude != null && !isNaN(Number(p.latitude)) && !isNaN(Number(p.longitude))
+      );
+      if (validCoords.length > 0) {
+        const bounds = L.latLngBounds(validCoords.map(p => [Number(p.latitude), Number(p.longitude)]));
+        if (bounds.isValid()) {
+          // Disable animation to prevent asynchronous _onZoomTransitionEnd firing after component unmount
+          map.fitBounds(bounds, { padding: [50, 50], maxZoom: 14, animate: false });
+        }
+      }
+    } catch {
+      // Guard against race conditions during view transitions
     }
   }, [problems, map]);
+
+  useEffect(() => {
+    return () => {
+      if (map) {
+        try {
+          map.stop();
+        } catch {}
+      }
+    };
+  }, [map]);
 
   return null;
 }
