@@ -41,7 +41,7 @@ export async function POST(req) {
   }
 
   const { data: pr } = await admin.from("proposals").select("problem_id, university_id").eq("id", proposal_id).maybeSingle();
-  if (pr?.problem_id) {
+  if (pr?.problem_id && (interest_type === "funding" || interest_type === "both")) {
     await admin.from("problems").update({ status: "in_progress" }).eq("id", pr.problem_id);
   }
 
@@ -59,9 +59,9 @@ export async function POST(req) {
 
   const notifs = [
     { send_to: uniEmail || "university team", channel: "In-app", text: `Industry partner expressed ${interest_type} interest on your proposal for "${title}…". Respond via the SAHYOG portal.` },
-    { send_to: "admin", channel: "In-app", text: `Industry interest (${interest_type}) logged on "${title}…" — problem advanced to In Progress.` },
+    { send_to: "admin", channel: "In-app", text: `Industry interest (${interest_type}) logged on "${title}…" — ${interest_type === "mentorship" ? "mentorship pledged." : "problem advanced to In Progress."}` },
   ];
-  if (submittedBy) {
+  if (submittedBy && (interest_type === "funding" || interest_type === "both")) {
     notifs.push({ send_to: "citizen", channel: "SMS", text: `Good news: an industry partner backed the project for "${title}…". Your problem is now In Progress — track it on SAHYOG.` });
   }
   await admin.from("notifications").insert(notifs);

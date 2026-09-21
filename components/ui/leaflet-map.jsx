@@ -40,8 +40,11 @@ function MapBounds({ problems }) {
   const map = useMap();
   
   useEffect(() => {
-    if (problems.length > 0) {
-      const bounds = L.latLngBounds(problems.map(p => [p.latitude || 23.35, p.longitude || 85.33]));
+    const validCoords = problems.filter(
+      p => p.latitude != null && p.longitude != null && !isNaN(Number(p.latitude)) && !isNaN(Number(p.longitude))
+    );
+    if (validCoords.length > 0) {
+      const bounds = L.latLngBounds(validCoords.map(p => [Number(p.latitude), Number(p.longitude)]));
       map.fitBounds(bounds, { padding: [50, 50], maxZoom: 14 });
     }
   }, [problems, map]);
@@ -55,7 +58,7 @@ export default function LeafletMapClient({ problems = [], onSelect }) {
   const defaultZoom = 7;
 
   return (
-    <div className="w-full h-full min-h-[400px] z-0 rounded-2xl overflow-hidden shadow-inner border border-line">
+    <div className="relative w-full h-full min-h-[400px] z-0 rounded-2xl overflow-hidden shadow-inner border border-line">
       <MapContainer 
         center={defaultCenter} 
         zoom={defaultZoom} 
@@ -70,8 +73,11 @@ export default function LeafletMapClient({ problems = [], onSelect }) {
         {problems.length > 0 && <MapBounds problems={problems} />}
 
         {problems.map((p) => {
-          const lat = p.latitude || 23.35;
-          const lng = p.longitude || 85.33;
+          if (p.latitude == null || p.longitude == null || isNaN(Number(p.latitude)) || isNaN(Number(p.longitude))) {
+            return null;
+          }
+          const lat = Number(p.latitude);
+          const lng = Number(p.longitude);
           const pr = Number(p.priority_score ?? p.priority ?? 5);
           
           return (
@@ -93,6 +99,11 @@ export default function LeafletMapClient({ problems = [], onSelect }) {
                     <span className="text-[10px] bg-green-tint text-green px-1.5 py-0.5 rounded font-bold uppercase">
                       {STATUS_LBL[p.status] || p.status}
                     </span>
+                    {p.routed_to_name && (
+                      <span className="text-[10px] bg-surface-2 text-ink-2 px-1.5 py-0.5 rounded font-medium">
+                        🎓 {p.routed_to_name}
+                      </span>
+                    )}
                   </div>
                   <div className="flex justify-between items-center mt-2 pt-2 border-t border-line">
                     <span className="text-[10px] font-mono font-bold text-ink-3">PRIORITY: {pr.toFixed(1)}</span>

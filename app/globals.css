@@ -1141,3 +1141,25 @@ body.high-contrast .aurora{display:none!important}
   .tilt-3d,.lift{transition:none!important}
   .group:hover .tilt-3d,.tilt-3d:hover,.lift:hover{transform:none!important}
 }
+
+/* Custom scrollbar utility */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(var(--ink-rgb) / 0.15);
+  border-radius: 8px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(var(--ink-rgb) / 0.25);
+}
+@supports not selector(::-webkit-scrollbar) {
+  .custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(var(--ink-rgb) / 0.15) transparent;
+  }
+}

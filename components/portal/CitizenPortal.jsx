@@ -200,8 +200,12 @@ export default function CitizenPortal({
         if (!upErr) {
           const { data: pub } = sb.storage.from("problems").getPublicUrl(path);
           photo_url = pub?.publicUrl || null;
+        } else {
+          push("Photo Attachment Note", "Could not upload photo; proceeding to submit grievance details.", "warn", 4000);
         }
-      } catch {}
+      } catch (e) {
+        push("Photo Attachment Note", "Could not upload photo; proceeding to submit grievance details.", "warn", 4000);
+      }
     }
 
     try {
@@ -246,6 +250,14 @@ export default function CitizenPortal({
       }
 
       await loadAll();
+      setForm({ title: "", description: "", district: form.district, address: "" });
+      setGeo(null);
+      setPhotoFile(null);
+      setPhotoName(null);
+      setSelectedCat(null);
+      setInputTab("text");
+      setIsRecording(false);
+      setAiState(null);
     } catch (err) {
       timers.forEach(clearTimeout);
       push("Submission Failed", err.message, "warn");

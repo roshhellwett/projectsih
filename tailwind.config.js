@@ -60,6 +60,7 @@ export default {
         sans: ['"IBM Plex Sans"', 'system-ui', 'sans-serif'],
         mono: ['"IBM Plex Mono"', 'monospace'],
         display: ['"Libre Baskerville"', 'Georgia', 'serif'],
+        deva: ['"Noto Sans Devanagari"', '"Tiro Devanagari Hindi"', 'serif'],
       }
     },
   },

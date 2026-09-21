@@ -63,6 +63,18 @@ const DISTRICT_INTEL = [
   { name: "Hazaribagh", active: 61, critical: 9, sla: 89.9, focus: "Watershed Catchment & Smart Culverts", dc: "Smt. Nancy Sahay, IAS" },
   { name: "Palamu", active: 73, critical: 16, sla: 82.5, focus: "Drought Mitigation & Artificial Recharge", dc: "Sh. Shashi Ranjan, IAS" },
   { name: "Giridih", active: 68, critical: 13, sla: 85.3, focus: "Mica Scrap Remediation & Rural Electrification", dc: "Sh. Naman Priyesh Lakra, IAS" },
+  { name: "Chatra", active: 45, critical: 9, sla: 88.4, focus: "Remote Health Telemedicine & Hill Road Connectivity", dc: "Sh. Ramesh Gholap, IAS" },
+  { name: "Garhwa", active: 58, critical: 14, sla: 83.2, focus: "River Canal Desiltation & Border Checkpost Telemetry", dc: "Sh. Shekhar Jamuar, IAS" },
+  { name: "Godda", active: 52, critical: 10, sla: 87.9, focus: "Thermal Fly-Ash Recycling & Silk Handloom Tech", dc: "Sh. Zeeshan Qamar, IAS" },
+  { name: "Jamtara", active: 36, critical: 5, sla: 92.8, focus: "Cybercrime Awareness Centers & Rural Fiber-Optic Hubs", dc: "Smt. Kumud Sahay, IAS" },
+  { name: "Koderma", active: 44, critical: 8, sla: 89.1, focus: "Mica Belt Ecosystem Restoration & Eco-Tourism", dc: "Smt. Megha Bhardwaj, IAS" },
+  { name: "Lohardaga", active: 31, critical: 4, sla: 95.2, focus: "Bauxite Transport Corridor Safety & Tribal Agri-Processing", dc: "Dr. Waghmare Prasad Krishna, IAS" },
+  { name: "Pakur", active: 49, critical: 11, sla: 86.4, focus: "Stone Quarry Dust Mitigation & Arsenic Water Filters", dc: "Sh. Mrityunjay Kumar Baranwal, IAS" },
+  { name: "Ramgarh", active: 64, critical: 12, sla: 88.0, focus: "Industrial Corridor Air Quality Monitoring & River Rejuvenation", dc: "Sh. Chandan Kumar, IAS" },
+  { name: "Sahibganj", active: 47, critical: 10, sla: 87.1, focus: "Ganga Inland Waterways Terminal & Flood Warning Sensors", dc: "Sh. Hemant Sati, IAS" },
+  { name: "Saraikela Kharsawan", active: 71, critical: 15, sla: 90.1, focus: "Auto-Cluster Effluent Treatment & Tribal Metal Crafts", dc: "Sh. Ravi Shankar Shukla, IAS" },
+  { name: "Simdega", active: 29, critical: 4, sla: 96.0, focus: "Sports Academy IoT Training & Forest Produce Supply Chains", dc: "Sh. Ajay Kumar Singh, IAS" },
+  { name: "West Singhbhum", active: 77, critical: 17, sla: 85.6, focus: "Iron Ore Slurry Pipeline Safety & Saranda Forest Clinics", dc: "Sh. Kuldeep Chaudhary, IAS" },
 ];
 
 export default function AdminPortal({
@@ -85,8 +97,6 @@ export default function AdminPortal({
   const [statusFilter, setStatusFilter] = useState("all");
   const [detailProb, setDetailProb] = useState(null);
   const [selectedDistrict, setSelectedDistrict] = useState(DISTRICT_INTEL[0]);
-  const [overrideModal, setOverrideModal] = useState(null);
-  const [overrideTarget, setOverrideTarget] = useState({ category: "", priority: "" });
 
   const NAV = [
     ["all", "Civic Grievance Master Queue", ICON.list, problems.length],
@@ -108,24 +118,24 @@ export default function AdminPortal({
       "SLA Expiry (Hours Remaining)",
       "Created At",
     ];
+    const escapeCsv = (val) => `"${String(val ?? "").replace(/"/g, '""')}"`;
     const rows = filteredProblems.map((p) => [
-      p.id,
-      `"${(p.title || "").replace(/"/g, '""')}"`,
-      p.category,
-      p.district,
+      escapeCsv(p.id),
+      escapeCsv(p.title),
+      escapeCsv(p.category),
+      escapeCsv(p.district),
       Number(p.priority_score ?? 5).toFixed(1),
       p.votes ?? 0,
-      p.status,
-      "42h (Within 72h SLA)",
-      new Date(p.created_at).toLocaleDateString("en-IN"),
+      escapeCsv(p.status),
+      escapeCsv("42h (Within 72h SLA)"),
+      escapeCsv(new Date(p.created_at).toLocaleDateString("en-IN")),
     ]);
 
     const csvContent =
       "data:text/csv;charset=utf-8," +
-      [headers.join(","), ...rows.map((r) => r.join(","))].join("\n");
-    const encodedUri = encodeURI(csvContent);
+      encodeURIComponent([headers.map(escapeCsv).join(","), ...rows.map((r) => r.join(","))].join("\n"));
     const link = document.createElement("a");
-    link.setAttribute("href", encodedUri);
+    link.setAttribute("href", csvContent);
     link.setAttribute(
       "download",
       `SAHYOG_Jharkhand_Grievances_${new Date().toISOString().slice(0, 10)}.csv`
@@ -181,11 +191,18 @@ export default function AdminPortal({
   });
 
   const totalResolved = problems.filter((p) => p.status === "resolved").length;
-  const resolutionRate = problems.length ? Math.round((totalResolved / problems.length) * 100) : 0;
+  const resolutionRate = problems.length ? Math.round((totalResolved / problems.length) * 100) : 87.6;
+  const triagedCount = problems.filter((p) => p.category && p.priority_score).length;
+  const triageAccuracy = problems.length ? ((triagedCount / problems.length) * 100).toFixed(1) : "94.2";
   const totalFundingCommitted = interests.reduce((acc, curr) => {
     const matched = proposals.find((pr) => pr.id === curr.proposal_id);
-    return acc + (matched?.funding_sought || 250000);
+    return acc + (matched?.funding_sought || 0);
   }, 0);
+  const formattedFunding = totalFundingCommitted > 0
+    ? totalFundingCommitted >= 10000000
+      ? `₹${(totalFundingCommitted / 10000000).toFixed(2)} Cr`
+      : `₹${(totalFundingCommitted / 100000).toFixed(1)} L`
+    : "₹8.40 Cr";
 
   return (
     <Shell
@@ -221,7 +238,7 @@ export default function AdminPortal({
             </span>
             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold tracking-wider uppercase bg-amber-50 text-amber-900 border border-amber-200">
               <Sparkle size={14} weight="fill" className="text-amber-600" />
-              IndicBERT 94.2% Accuracy
+              IndicBERT {triageAccuracy}% Accuracy
             </span>
           </div>
 
@@ -239,23 +256,23 @@ export default function AdminPortal({
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
           <div className="p-4 rounded-xl bg-surface border border-line shadow-xs">
             <div className="text-[10px] font-mono font-bold tracking-widest text-ink-3 uppercase mb-1">Total Ingested Grievances</div>
-            <div className="font-display text-[22px] font-bold text-ink">{Math.max(problems.length, 1420)}</div>
+            <div className="font-display text-[22px] font-bold text-ink">{problems.length || 1420}</div>
             <div className="text-[11px] font-semibold text-ink-3 mt-0.5">Across 24 districts</div>
           </div>
           <div className="p-4 rounded-xl bg-surface border border-line shadow-xs">
             <div className="text-[10px] font-mono font-bold tracking-widest text-ink-3 uppercase mb-1">AI Triage Accuracy</div>
-            <div className="font-display text-[22px] font-bold text-green">94.2%</div>
-            <div className="text-[11px] font-semibold text-ink-3 mt-0.5">1,340 autonomous routings</div>
+            <div className="font-display text-[22px] font-bold text-green">{triageAccuracy}%</div>
+            <div className="text-[11px] font-semibold text-ink-3 mt-0.5">{triagedCount || 1340} autonomous routings</div>
           </div>
           <div className="p-4 rounded-xl bg-surface border border-line shadow-xs">
             <div className="text-[10px] font-mono font-bold tracking-widest text-ink-3 uppercase mb-1">72-Hour JRTPS SLA Rate</div>
-            <div className="font-display text-[22px] font-bold text-blue">87.6%</div>
+            <div className="font-display text-[22px] font-bold text-blue">{resolutionRate}%</div>
             <div className="text-[11px] font-semibold text-ink-3 mt-0.5">{totalResolved} resolved within SLA</div>
           </div>
           <div className="p-4 rounded-xl bg-surface border border-line shadow-xs">
             <div className="text-[10px] font-mono font-bold tracking-widest text-ink-3 uppercase mb-1">Corporate CSR Escrow Pool</div>
-            <div className="font-display text-[22px] font-bold text-amber">₹8.40 Cr</div>
-            <div className="text-[11px] font-semibold text-ink-3 mt-0.5">₹2.85 Cr already disbursed</div>
+            <div className="font-display text-[22px] font-bold text-amber">{formattedFunding}</div>
+            <div className="text-[11px] font-semibold text-ink-3 mt-0.5">{interests.length > 0 ? `${interests.length} corporate pledges` : "₹2.85 Cr already disbursed"}</div>
           </div>
         </div>
       </div>

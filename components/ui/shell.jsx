@@ -18,6 +18,27 @@ const NAV_MAP = {
   audit: "navAuditTrail",
 };
 
+const TITLE_MAP = {
+  "File a Civic Grievance": "fileGrievanceTitle",
+  "My Grievance Tracking": "trackTitle",
+  "Jharkhand Live Problem Map": "mapTitle",
+};
+
+const SUB_MAP = {
+  "Direct civic grievance reporting with Groq AI automated triage and university-CSR matching": "welcomeSub",
+  "AI-assisted intake with geo-tagging and automatic multi-stakeholder routing": "fileGrievanceSub",
+  "Live SLA countdown and milestone tracking under Jharkhand JRTPS Act 2011": "trackSub",
+  "24-District spatial cluster map with GPS-verified community distress signals": "mapSub",
+};
+
+function sanitizeSvg(raw) {
+  if (typeof raw !== "string") return "";
+  if (/<(?!path|polyline|circle|rect|line|polygon|g|\/)\w+/i.test(raw) || /on\w+=/i.test(raw)) {
+    return "";
+  }
+  return raw;
+}
+
 export function Shell({
   user,
   roleName,
@@ -110,7 +131,7 @@ export function Shell({
                   strokeWidth={isActive ? "2.2" : "1.8"}
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  dangerouslySetInnerHTML={{ __html: icon }}
+                  dangerouslySetInnerHTML={{ __html: sanitizeSvg(icon) }}
                   className={`w-[18px] h-[18px] shrink-0 ${isActive ? "opacity-100" : "opacity-75"}`}
                 />
                 <span className="flex-1 truncate">{t(NAV_MAP[id] || label, label)}</span>
@@ -154,25 +175,13 @@ export function Shell({
             <h1 className="font-display font-bold text-[16px] md:text-[19px] text-ink leading-tight truncate">
               {typeof title === "string" && title.startsWith("Welcome")
                 ? `${t("welcome", "Welcome")}${user?.name ? `, ${user.name}` : ""}`
-                : title === "File a Civic Grievance"
-                ? t("fileGrievanceTitle", title)
-                : title === "My Grievance Tracking"
-                ? t("trackTitle", title)
-                : title === "Jharkhand Live Problem Map"
-                ? t("mapTitle", title)
+                : TITLE_MAP[title]
+                ? t(TITLE_MAP[title], title)
                 : title}
             </h1>
             {sub && (
               <div className="text-[11.5px] text-ink-3 truncate hidden sm:block">
-                {sub === "Direct civic grievance reporting with Groq AI automated triage and university-CSR matching"
-                  ? t("welcomeSub", sub)
-                  : sub === "AI-assisted intake with geo-tagging and automatic multi-stakeholder routing"
-                  ? t("fileGrievanceSub", sub)
-                  : sub === "Live SLA countdown and milestone tracking under Jharkhand JRTPS Act 2011"
-                  ? t("trackSub", sub)
-                  : sub === "24-District spatial cluster map with GPS-verified community distress signals"
-                  ? t("mapSub", sub)
-                  : sub}
+                {SUB_MAP[sub] ? t(SUB_MAP[sub], sub) : sub}
               </div>
             )}
           </div>

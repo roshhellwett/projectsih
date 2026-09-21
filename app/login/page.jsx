@@ -86,7 +86,12 @@ function AuthForm() {
     setNotice(null);
 
     // Simple captcha check
-    if (captchaAnswer.trim() && parseInt(captchaAnswer.trim(), 10) !== captchaChallenge.a) {
+    if (mode === "signup") {
+      if (!captchaAnswer.trim() || parseInt(captchaAnswer.trim(), 10) !== captchaChallenge.a) {
+        setErr("Security verification failed. Please enter the correct mathematical challenge answer.");
+        return;
+      }
+    } else if (captchaAnswer.trim() && parseInt(captchaAnswer.trim(), 10) !== captchaChallenge.a) {
       setErr("Security verification failed. Please enter the correct mathematical challenge answer.");
       return;
     }

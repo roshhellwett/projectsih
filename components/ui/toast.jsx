@@ -51,7 +51,7 @@ export function useToasts() {
 
   const push = (title, msg, type = "ok", ms = 4200) => {
     const id = ++idRef.current;
-    setToasts((ts) => [...ts, { id, title, msg, type }]);
+    setToasts((ts) => [...ts.slice(-4), { id, title, msg, type }]);
     setTimeout(() => setToasts((ts) => ts.filter((t) => t.id !== id)), ms);
   };
 

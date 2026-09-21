@@ -32,15 +32,33 @@ const buttonVariants = cva(
 
 const Button = React.forwardRef(
   ({ className, variant, size, asChild = false, loading = false, disabled, children, ...props }, ref) => {
-    const Comp = asChild ? React.Fragment : "button";
     const isDisabled = disabled || loading;
+    const combinedClassName = cn(
+      buttonVariants({ variant, size, className }),
+      loading && "cursor-wait opacity-80"
+    );
+
+    if (asChild && React.isValidElement(children)) {
+      return React.cloneElement(children, {
+        className: cn(combinedClassName, children.props.className),
+        ref,
+        "aria-busy": loading || undefined,
+        "aria-disabled": isDisabled || undefined,
+        ...props,
+        children: (
+          <>
+            {loading && (
+              <CircleNotch size={16} weight="bold" className="animate-spin shrink-0 -ml-0.5" />
+            )}
+            {children.props.children}
+          </>
+        ),
+      });
+    }
 
     return (
-      <Comp
-        className={cn(
-          buttonVariants({ variant, size, className }),
-          loading && "cursor-wait opacity-80"
-        )}
+      <button
+        className={combinedClassName}
         ref={ref}
         disabled={isDisabled}
         aria-busy={loading}
@@ -50,7 +68,7 @@ const Button = React.forwardRef(
           <CircleNotch size={16} weight="bold" className="animate-spin shrink-0 -ml-0.5" />
         )}
         {children}
-      </Comp>
+      </button>
     );
   }
 );

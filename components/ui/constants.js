@@ -57,12 +57,12 @@ export { DISTRICTS } from "@/lib/districts";
 
 export const fmtINR = (n) => "₹" + (n || 0).toLocaleString("en-IN");
 
-export const initials = (m) =>
-  m
-    ? m
-        .split(" ")
-        .map((x) => x[0])
-        .slice(0, 2)
-        .join("")
-        .toUpperCase()
-    : "SE";
+export const initials = (m) => {
+  if (!m || typeof m !== "string") return "SE";
+  const parts = m.trim().split(/\s+/).filter(Boolean);
+  if (parts.length === 0) return "SE";
+  if (parts.length === 1) {
+    return parts[0].slice(0, 2).toUpperCase();
+  }
+  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+};

@@ -256,6 +256,7 @@ export default function ProblemDetailModal({
                   onChange={(e) => setNewStatus(e.target.value)}
                 >
                   <option value="submitted">Submitted</option>
+                  <option value="in_review">In Review</option>
                   <option value="routed">Routed to University</option>
                   <option value="proposal_submitted">Proposal Submitted</option>
                   <option value="in_progress">Work In Progress</option>

@@ -140,6 +140,20 @@ export default function Portal() {
       )
       .on(
         "postgres_changes",
+        { event: "*", schema: "public", table: "proposals" },
+        () => {
+          loadAll();
+        }
+      )
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "industry_interest" },
+        () => {
+          loadAll();
+        }
+      )
+      .on(
+        "postgres_changes",
         { event: "INSERT", schema: "public", table: "notifications" },
         (payload) => {
           if (payload.new) {
@@ -190,14 +204,18 @@ export default function Portal() {
     router.push("/");
   }
 
+  const resolveName = (u) => {
+    if (!u) return null;
+    if (Array.isArray(u)) return u[0]?.name || null;
+    if (typeof u === "object") return u.name || null;
+    return null;
+  };
+
   const problemWithMeta = (p) => ({
     ...p,
     votes: p.votes ?? p.demo_votes ?? 0,
-    routed_to_name: p.routed_to_user
-      ? Array.isArray(p.routed_to_user)
-        ? p.routed_to_user[0]?.name
-        : p.routed_to_user.name
-      : null,
+    routed_to_name: resolveName(p.routed_to_user),
+    submitted_by_name: resolveName(p.submitted_by_user),
     viewer_voted: votedIds.has(p.id),
   });
 

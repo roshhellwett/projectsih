@@ -77,7 +77,6 @@ export default function IndustryPortal({
   const [pledgeForm, setPledgeForm] = useState({ type: "funding", message: "", customAmount: "" });
   const [busy, setBusy] = useState(false);
   const [catFilter, setCatFilter] = useState("all");
-  const [sdgFilter, setSdgFilter] = useState("all");
   const [detailProb, setDetailProb] = useState(null);
   const [certModal, setCertModal] = useState(null);
 
@@ -126,13 +125,12 @@ export default function IndustryPortal({
   const filteredProposals = proposals.filter((pr) => {
     const pCat = pr.problem?.category || problems.find((p) => p.id === pr.problem_id)?.category || "other";
     if (catFilter !== "all" && pCat !== catFilter) return false;
-    if (sdgFilter !== "all" && pCat !== sdgFilter) return false;
     return true;
   });
 
   const totalFundsPledged = myInterests.reduce((acc, curr) => {
     const matchedProp = proposals.find((p) => p.id === curr.proposal_id);
-    return acc + (matchedProp?.funding_sought || 250000);
+    return acc + (matchedProp?.funding_sought || 0);
   }, 0);
 
   // Featured Project (CUJ Latehar or fallback to first proposal)
